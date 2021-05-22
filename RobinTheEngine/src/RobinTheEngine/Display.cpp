@@ -1,14 +1,15 @@
 #include "Display.h"
+#include <iostream>
 
-RTE::Display::Display(HINSTANCE hinst, int Width, int Height) : m_HInst(hinst),
-	m_ClientWidth(Width), m_ClientHeight(Height)
+RTE::Display::Display(HINSTANCE hinst, int Width, int Height) : m_Hinst(hinst),
+m_ClientWidth(Width), m_ClientHeight(Height)
 {
 
 }
 
 RTE::Display::~Display()
 {
-	
+
 }
 
 LRESULT CALLBACK MainWndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
@@ -27,7 +28,7 @@ bool RTE::Display::Init()
 	wc.lpfnWndProc = MainWndProc;
 	wc.cbClsExtra = 0;
 	wc.cbWndExtra = 0;
-	wc.hInstance = m_HInst;
+	wc.hInstance = m_Hinst;
 	wc.hIcon = LoadIcon(0, IDI_APPLICATION);
 	wc.hCursor = LoadCursor(0, IDC_ARROW);
 	wc.hbrBackground = (HBRUSH)GetStockObject(NULL_BRUSH);
@@ -47,7 +48,7 @@ bool RTE::Display::Init()
 	int height = R.bottom - R.top;
 
 	m_HWnd = CreateWindow(L"MainWnd", m_MainWndCaption.c_str(),
-		WS_OVERLAPPEDWINDOW, CW_USEDEFAULT, CW_USEDEFAULT, width, height, 0, 0, m_HInst, 0);
+		WS_OVERLAPPEDWINDOW, CW_USEDEFAULT, CW_USEDEFAULT, width, height, 0, 0, m_Hinst, 0);
 
 	if (!m_HWnd)
 	{

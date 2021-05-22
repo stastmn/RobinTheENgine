@@ -57,6 +57,7 @@
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
       <PreprocessorDefinitions>RTE_PLATFORM_WINDOWS;RTE_BUILD_DLL;_WINDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(SolutionDir)RobinTheEngine\vendor\spdlog\include;</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -71,6 +72,7 @@
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
       <PreprocessorDefinitions>RTE_PLATFORM_WINDOWS;RTE_BUILD_DLL;_WINDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(SolutionDir)RobinTheEngine\vendor\spdlog\include;</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -79,6 +81,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\RobinTheEngine\Log.cpp" />
     <ClCompile Include="src\RobinTheEngine\Application.cpp" />
     <ClCompile Include="src\RobinTheEngine\d3dUtils.cpp" />
     <ClCompile Include="src\RobinTheEngine\DirectXRenderSystem.cpp" />
@@ -87,6 +90,7 @@
     <ClCompile Include="src\RobinTheEngine\RenderSystem.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\RobinTheEngine\Log.h" />
     <ClInclude Include="src\RobinTheEngine\Application.h" />
     <ClInclude Include="src\RobinTheEngine\Core.h" />
     <ClInclude Include="src\RobinTheEngine\d3dUtils.h" />

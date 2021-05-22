@@ -16,7 +16,7 @@ namespace RTE
 	private:
 		void WndProc();
 
-		HINSTANCE m_HInst = nullptr; // application instance handle
+		HINSTANCE m_Hinst = nullptr; // application instance handle
 		HWND      m_HWnd = nullptr; // main window handle
 
 		int m_ClientWidth = 800;
