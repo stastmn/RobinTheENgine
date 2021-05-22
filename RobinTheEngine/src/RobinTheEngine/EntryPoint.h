@@ -8,9 +8,6 @@ int main(int argc, char** argv)
 {
 	RTE::Log::Init();
 	RTE_TRACE("Hello");
-	RTE_INFO("World");
-	RTE_WARN("WARN");
-	RTE_ERROR("ERROR");
 
 	auto app = RTE::CreateApplication();
 	app->Run();

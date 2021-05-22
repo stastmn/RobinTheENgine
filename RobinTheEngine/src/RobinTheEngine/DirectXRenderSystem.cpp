@@ -1,4 +1,6 @@
+#include "rtepch.h"
 #include "DirectXRenderSystem.h"
+
 
 RTE::DirectXRenderSystem::DirectXRenderSystem(HINSTANCE hInst)
 {

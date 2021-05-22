@@ -1,5 +1,5 @@
+#include "rtepch.h"
 #include "Display.h"
-#include <iostream>
 
 RTE::Display::Display(HINSTANCE hinst, int Width, int Height) : m_Hinst(hinst),
 m_ClientWidth(Width), m_ClientHeight(Height)

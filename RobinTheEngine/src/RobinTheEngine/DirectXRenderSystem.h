@@ -1,18 +1,17 @@
 #pragma once
-#include "RenderSystem.h"
 
-#include <string>
-#include <windows.h>
-#include <wrl.h>
-#include <dxgi1_4.h>
-#include <d3d12.h>
+
 #include <D3Dcompiler.h>
 #include <DirectXMath.h>
 #include <DirectXPackedVector.h>
 #include <DirectXColors.h>
 #include <DirectXCollision.h>
+#include <wrl.h>
+#include <dxgi1_4.h>
+#include <d3d12.h>
+
+#include "RenderSystem.h"
 #include "d3dUtils.h"
-#include <vector>
 
 #pragma comment(lib,"d3dcompiler.lib")
 #pragma comment(lib, "D3D12.lib")

@@ -19,6 +19,9 @@ workspace "RobinTheEngine"
  targetdir ("bin/" .. outputdir .. "/%{prj.name}")
  objdir ("bin-int/" .. outputdir .. "/%{prj.name}")
 
+ pchheader "rtepch.h"
+ pchsource "RobinTheEngine/src/rtepch.cpp"
+
  files
  {
   "%{prj.name}/src/**.h",

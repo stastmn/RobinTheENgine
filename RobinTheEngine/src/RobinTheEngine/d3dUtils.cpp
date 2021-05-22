@@ -1,4 +1,6 @@
+#include "rtepch.h"
 #include "d3dUtils.h"
+#include <comdef.h>
 
 
 

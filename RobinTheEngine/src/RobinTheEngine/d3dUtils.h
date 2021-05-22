@@ -1,8 +1,6 @@
 #pragma once
 #include <string>
 #include <windows.h>
-#include <comdef.h>
-
 
 
 namespace D3DUtils {
