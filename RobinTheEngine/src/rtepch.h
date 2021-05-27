@@ -13,8 +13,11 @@
 #include <unordered_map>
 #include <unordered_set>
 
+#include "RobinTheEngine/Log.h"
+
 #ifdef RTE_PLATFORM_WINDOWS
 #include <Windows.h>
 
+#include "d3dx12.h"
 #endif // RTE_PLATFORM_WINDOWS
 

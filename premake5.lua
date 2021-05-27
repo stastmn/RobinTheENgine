@@ -1,112 +1,133 @@
+   workspace "RobinTheEngine"
+      architecture "x64"
 
-workspace "RobinTheEngine"
- architecture "x64"
+      configurations
+      {
+         "Debug",
+         "Release",
+         "Dist"
+      }
 
- configurations
- {
-  "Debug",
-  "Release",
-  "Dist"
- }
+   outputdir = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
+ 
+   -- Include directories relative to root folder (solution directory)
+   IncludeDir = {}
+   IncludeDir["GLFW"] = "RobinTheEngine/vendor/GLFW/include"
 
- outputdir = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
+   include "RobinTheEngine/vendor/GLFW"
 
- project "RobinTheEngine"
- location "RobinTheEngine"
- kind "SharedLib"
- language "C++"
 
- targetdir ("bin/" .. outputdir .. "/%{prj.name}")
- objdir ("bin-int/" .. outputdir .. "/%{prj.name}")
+   project "RobinTheEngine"
+      location "RobinTheEngine"
+      kind "SharedLib"
+      language "C++"
 
- pchheader "rtepch.h"
- pchsource "RobinTheEngine/src/rtepch.cpp"
+      targetdir ("bin/" .. outputdir .. "/%{prj.name}")
+      objdir ("bin-int/" .. outputdir .. "/%{prj.name}")
 
- files
- {
-  "%{prj.name}/src/**.h",
-  "%{prj.name}/src/**.cpp"
- }
+      pchheader "rtepch.h"
+      pchsource "RobinTheEngine/src/rtepch.cpp"
 
- includedirs
- {
-  "%{prj.name}/vendor/spdlog/include"
- }
+      files
+      {
+         "%{prj.name}/src/**.h",
+         "%{prj.name}/src/**.cpp"
+      }
+	  defines
+	  {
+	     "_CRT_SECURE_NO_WARNINGS",
+		 "GLFW_INCLUDE_NONE"
+	  }
 
- filter "system:windows"
-  cppdialect "C++17"
-  staticruntime "On"
-  systemversion "latest"
+      includedirs
+      {
+         "%{prj.name}/src",
+         "%{prj.name}/vendor/spdlog/include",
+         "%{prj.name}/vendor/DirectX12-Headers/include/directx",
+         "%{IncludeDir.GLFW}"
+      }
+ 
+      links
+      {
+         "GLFW",
+		 "opengl32.lib"
+      }
 
-  defines
-  {
-   "RTE_PLATFORM_WINDOWS",
-   "RTE_BUILD_DLL"
-  }
+      filter "system:windows"
+         cppdialect "C++17"
+         staticruntime "On"
+         systemversion "latest"
 
-  postbuildcommands
-  {
-   ("{COPY} %{cfg.buildtarget.relpath} ../bin/" .. outputdir .. "/Sandbox")
-  }
+         defines
+         {
+            "RTE_PLATFORM_WINDOWS",
+            "RTE_BUILD_DLL"
+         }
 
- filter "configurations:Debug"
-  defines "RTE_DEBUG"
-  symbols "On"
+         postbuildcommands
+         {
+            ("{COPY} %{cfg.buildtarget.relpath} ../bin/" .. outputdir .. "/Sandbox")
+         }
 
- filter "configurations:Release"
-  defines "RTE_RELEASE"
-  optimize "On"
+      filter "configurations:Debug"
+         defines "RTE_DEBUG"
+         symbols "On"
 
- filter "configurations:Dist"
-  defines "RTE_DIST"
-  optimize "On"
+      filter "configurations:Release"
+         defines "RTE_RELEASE"
+         optimize "On"
 
-project "Sandbox"
- location "Sandbox"
- kind "ConsoleApp"
- language "C++"
+      filter "configurations:Dist"
+         defines "RTE_DIST"
+         optimize "On"
 
- targetdir ("bin/" .. outputdir .. "/%{prj.name}")
- objdir ("bin-int/" .. outputdir .. "/%{prj.name}")
 
- files
- {
-  "%{prj.name}/src/**.h",
-  "%{prj.name}/src/**.cpp"
- }
+   project "Sandbox"
+      location "Sandbox"
+      kind "ConsoleApp"
+      language "C++"
 
- includedirs
- {
-  "RobinTheEngine/vendor/spdlog/include",
-  "RobinTheEngine/src"
- }
+      targetdir ("bin/" .. outputdir .. "/%{prj.name}")
+      objdir ("bin-int/" .. outputdir .. "/%{prj.name}")
 
- links
- {
-  "RobinTheEngine"
- }
+      files
+      {
+         "%{prj.name}/src/**.h",
+         "%{prj.name}/src/**.cpp"
+      }
 
- filter "system:windows"
-  cppdialect "C++17"
-  staticruntime "On"
-  systemversion "latest"
+      includedirs
+      {
+         "RobinTheEngine/vendor/spdlog/include",
+         "RobinTheEngine/src"
+      }
 
-  defines
-  {
-   "RTE_PLATFORM_WINDOWS"
-  }
+      links
+      {
+         "RobinTheEngine"
+      }
 
- filter "configurations:Debug"
-  defines "RTE_DEBUG"
-  symbols "On"
+      filter "system:windows"
+         cppdialect "C++17"
+         staticruntime "On"
+         systemversion "latest"
 
- filter "configurations:Release"
-  defines "RTE_RELEASE"
-  optimize "On"
+         defines
+         {
+            "RTE_PLATFORM_WINDOWS"
+         }
 
- filter "configurations:Dist"
-  defines "RTE_DIST"
-  optimize "On"
+      filter "configurations:Debug"
+         defines "RTE_DEBUG"
+         symbols "On"
+
+      filter "configurations:Release"
+         defines "RTE_RELEASE"
+         optimize "On"
+
+      filter "configurations:Dist"
+         defines "RTE_DIST"
+         optimize "On"
 
 
 

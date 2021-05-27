@@ -13,6 +13,7 @@
 #include "RenderSystem.h"
 #include "d3dUtils.h"
 
+
 #pragma comment(lib,"d3dcompiler.lib")
 #pragma comment(lib, "D3D12.lib")
 #pragma comment(lib, "dxgi.lib")
@@ -25,10 +26,23 @@ namespace RTE {
 	class DirectXRenderSystem : public RTE::RenderSystem
 	{
 	public:
-		DirectXRenderSystem(HINSTANCE hInst);
+		DirectXRenderSystem(HWND hwnd);
 		~DirectXRenderSystem();
 		void Init() override;
 		void LogAdapters();
+
+		void Render();
+
+	protected:
+		void CreateSwapChain();
+		D3D12_CPU_DESCRIPTOR_HANDLE CurrentBackBufferView()const;
+		D3D12_CPU_DESCRIPTOR_HANDLE DepthStencilView()const;
+		ID3D12Resource* CurrentBackBuffer()const;
+
+
+		void FlushCommandQueue();
+
+
 
 	private:
 		void LogAdapterOutputs(IDXGIAdapter* adapter);
@@ -41,6 +55,8 @@ namespace RTE {
 		Microsoft::WRL::ComPtr<ID3D12CommandQueue> m_CommandQueue;
 		Microsoft::WRL::ComPtr<ID3D12CommandAllocator> m_DirectCmdListAlloc;
 		Microsoft::WRL::ComPtr<ID3D12GraphicsCommandList> m_CommandList;
+		Microsoft::WRL::ComPtr<IDXGISwapChain> mSwapChain;
+
 
 		UINT64 m_CurrentFence = 0;
 
@@ -48,9 +64,31 @@ namespace RTE {
 		UINT m_DsvDescriptorSize = 0;
 		UINT m_CbvSrvUavDescriptorSize = 0;
 
+
+		Microsoft::WRL::ComPtr<ID3D12DescriptorHeap> m_RtvHeap;
+		Microsoft::WRL::ComPtr<ID3D12DescriptorHeap> m_DsvHeap;
+
+		static const int SwapChainBufferCount = 2;
+		Microsoft::WRL::ComPtr<ID3D12Resource> m_SwapChainBuffer[SwapChainBufferCount];
+		Microsoft::WRL::ComPtr<ID3D12Resource> m_DepthStencilBuffer;
+
+
 		DXGI_FORMAT m_BackBufferFormat = DXGI_FORMAT_R8G8B8A8_UNORM;
+
+		// Set true to use 4X MSAA (§4.1.8).  The default is false.
+		bool      m_4xMsaaState = false; // 4X MSAA enabled
 		UINT      m_4xMsaaQuality = 0;      // quality level of 4X MSAA
 
+
+
+
+		int mCurrBackBuffer = 0;
+		HWND m_hMainWnd;
+		int m_ClientWidth = 800;
+		int m_ClientHeight = 600;
+
+		D3D12_VIEWPORT m_ScreenViewport;
+		D3D12_RECT m_ScissorRect;
 
 	};
 }

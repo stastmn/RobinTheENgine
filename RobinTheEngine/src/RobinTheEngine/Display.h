@@ -12,6 +12,8 @@ namespace RTE
 		~Display();
 		bool Init();
 
+		HWND GetHWND() { return m_HWnd; }
+
 	private:
 		void WndProc();
 
