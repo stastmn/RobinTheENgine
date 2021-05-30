@@ -1,6 +1,10 @@
 #pragma once
 #include "RobinTheEngine/Window.h"
 #include "GLFW/glfw3.h"
+#define GLFW_EXPOSE_NATIVE_WIN32
+#include <glfw/glfw3native.h>
+
+#include "RobinTheEngine/Events/ApplicationEvent.h"
 
 namespace RTE
 {
@@ -24,6 +28,7 @@ namespace RTE
 	private:
 		virtual void Init(const WindowProps& props);
 		virtual void Shutdown();
+
 	private:
 		GLFWwindow* m_Window;
 
@@ -38,7 +43,7 @@ namespace RTE
 
 		WindowData m_Data;
 	public:
-		GLFWwindow* GetWindow() { return m_Window; }
+		HWND GetHwnd() { return glfwGetWin32Window(m_Window); }
 
 	};
 

@@ -61,7 +61,8 @@
          defines
          {
             "RTE_PLATFORM_WINDOWS",
-            "RTE_BUILD_DLL"
+            "RTE_BUILD_DLL",
+			"GLFW_INCLUDE_NONE"
          }
 
          postbuildcommands
@@ -72,14 +73,17 @@
       filter "configurations:Debug"
          defines "RTE_DEBUG"
          symbols "On"
+		 buildoptions "/MDd"
 
       filter "configurations:Release"
          defines "RTE_RELEASE"
          optimize "On"
+		 buildoptions "/MD"
 
       filter "configurations:Dist"
          defines "RTE_DIST"
          optimize "On"
+		 buildoptions "/MD"
 
 
    project "Sandbox"
@@ -120,14 +124,17 @@
       filter "configurations:Debug"
          defines "RTE_DEBUG"
          symbols "On"
+		 buildoptions "/MDd"
 
       filter "configurations:Release"
          defines "RTE_RELEASE"
          optimize "On"
+		 buildoptions "/MD"
 
       filter "configurations:Dist"
          defines "RTE_DIST"
          optimize "On"
+		 buildoptions "/MD"	
 
 
 

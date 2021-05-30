@@ -1,6 +1,4 @@
 #pragma once
-
-
 #include <D3Dcompiler.h>
 #include <DirectXMath.h>
 #include <DirectXPackedVector.h>
@@ -10,8 +8,8 @@
 #include <dxgi1_4.h>
 #include <d3d12.h>
 
-#include "RenderSystem.h"
-#include "d3dUtils.h"
+#include "RobinTheEngine/RenderSystem.h"
+#include "RobinTheEngine/d3dUtils.h"
 
 
 #pragma comment(lib,"d3dcompiler.lib")
@@ -29,25 +27,19 @@ namespace RTE {
 		DirectXRenderSystem(HWND hwnd);
 		~DirectXRenderSystem();
 		void Init() override;
+		void OnResize(int width, int height) override;
+		void OnRender() override;
 		void LogAdapters();
-
-		void Render();
-
 	protected:
 		void CreateSwapChain();
 		D3D12_CPU_DESCRIPTOR_HANDLE CurrentBackBufferView()const;
 		D3D12_CPU_DESCRIPTOR_HANDLE DepthStencilView()const;
 		ID3D12Resource* CurrentBackBuffer()const;
-
-
 		void FlushCommandQueue();
-
-
 
 	private:
 		void LogAdapterOutputs(IDXGIAdapter* adapter);
 		void LogOutputDisplayModes(IDXGIOutput* output, DXGI_FORMAT format);
-
 
 		Microsoft::WRL::ComPtr<IDXGIFactory4> m_dxgiFactory;
 		Microsoft::WRL::ComPtr<ID3D12Device> m_d3dDevice;
@@ -59,7 +51,6 @@ namespace RTE {
 
 
 		UINT64 m_CurrentFence = 0;
-
 		UINT m_RtvDescriptorSize = 0;
 		UINT m_DsvDescriptorSize = 0;
 		UINT m_CbvSrvUavDescriptorSize = 0;
@@ -74,13 +65,12 @@ namespace RTE {
 
 
 		DXGI_FORMAT m_BackBufferFormat = DXGI_FORMAT_R8G8B8A8_UNORM;
+		DXGI_FORMAT m_DepthStencilFormat = DXGI_FORMAT_D24_UNORM_S8_UINT;
+
 
 		// Set true to use 4X MSAA (§4.1.8).  The default is false.
 		bool      m_4xMsaaState = false; // 4X MSAA enabled
 		UINT      m_4xMsaaQuality = 0;      // quality level of 4X MSAA
-
-
-
 
 		int mCurrBackBuffer = 0;
 		HWND m_hMainWnd;

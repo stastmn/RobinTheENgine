@@ -7,7 +7,6 @@ extern RTE::Application* RTE::CreateApplication();
 int main(int argc, char** argv) 
 {
 	RTE::Log::Init();
-	RTE_TRACE("Hello");
 
 	auto app = RTE::CreateApplication();
 	app->Run();

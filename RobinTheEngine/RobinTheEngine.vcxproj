@@ -85,6 +85,7 @@
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
       <Optimization>Disabled</Optimization>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+      <AdditionalOptions>/MDd %(AdditionalOptions)</AdditionalOptions>
       <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
@@ -110,6 +111,7 @@
       <MinimalRebuild>false</MinimalRebuild>
       <StringPooling>true</StringPooling>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <AdditionalOptions>/MD %(AdditionalOptions)</AdditionalOptions>
       <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
@@ -136,6 +138,7 @@
       <MinimalRebuild>false</MinimalRebuild>
       <StringPooling>true</StringPooling>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <AdditionalOptions>/MD %(AdditionalOptions)</AdditionalOptions>
       <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
@@ -150,15 +153,19 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="src\Platform\DirectX12\DirectXRenderSystem.h" />
     <ClInclude Include="src\Platform\Windows\WindowsWindow.h" />
+    <ClInclude Include="src\RobinTheEngine\Layer.h" />
+    <ClInclude Include="src\RobinTheEngine\LayerStack.h" />
     <ClInclude Include="src\RTE.h" />
     <ClInclude Include="src\RobinTheEngine\Application.h" />
     <ClInclude Include="src\RobinTheEngine\Core.h" />
-    <ClInclude Include="src\RobinTheEngine\D3D11RenderSystem.h" />
-    <ClInclude Include="src\RobinTheEngine\DirectXRenderSystem.h" />
     <ClInclude Include="src\RobinTheEngine\Display.h" />
     <ClInclude Include="src\RobinTheEngine\EntryPoint.h" />
+    <ClInclude Include="src\RobinTheEngine\Events\ApplicationEvent.h" />
     <ClInclude Include="src\RobinTheEngine\Events\Event.h" />
+    <ClInclude Include="src\RobinTheEngine\Events\KeyEvent.h" />
+    <ClInclude Include="src\RobinTheEngine\Events\MouseEvent.h" />
     <ClInclude Include="src\RobinTheEngine\Log.h" />
     <ClInclude Include="src\RobinTheEngine\RenderSystem.h" />
     <ClInclude Include="src\RobinTheEngine\Window.h" />
@@ -166,11 +173,12 @@
     <ClInclude Include="src\rtepch.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\Platform\DirectX12\DirectXRenderSystem.cpp" />
     <ClCompile Include="src\Platform\Windows\WindowsWindow.cpp" />
     <ClCompile Include="src\RobinTheEngine\Application.cpp" />
-    <ClCompile Include="src\RobinTheEngine\D3D11RenderSystem.cpp" />
-    <ClCompile Include="src\RobinTheEngine\DirectXRenderSystem.cpp" />
     <ClCompile Include="src\RobinTheEngine\Display.cpp" />
+    <ClCompile Include="src\RobinTheEngine\Layer.cpp" />
+    <ClCompile Include="src\RobinTheEngine\LayerStack.cpp" />
     <ClCompile Include="src\RobinTheEngine\Log.cpp" />
     <ClCompile Include="src\RobinTheEngine\d3dUtils.cpp" />
     <ClCompile Include="src\rtepch.cpp">

@@ -4,6 +4,9 @@
     <Filter Include="Platform">
       <UniqueIdentifier>{2AC788B4-1694-E3BF-3FAD-D1672BD9184E}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Platform\DirectX12">
+      <UniqueIdentifier>{6FE5EAC0-5BC9-AB16-C429-A669B02C9698}</UniqueIdentifier>
+    </Filter>
     <Filter Include="Platform\Windows">
       <UniqueIdentifier>{64FBD71A-50F4-F66C-7926-DCF1657ED678}</UniqueIdentifier>
     </Filter>
@@ -15,6 +18,9 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\Platform\DirectX12\DirectXRenderSystem.h">
+      <Filter>Platform\DirectX12</Filter>
+    </ClInclude>
     <ClInclude Include="src\Platform\Windows\WindowsWindow.h">
       <Filter>Platform\Windows</Filter>
     </ClInclude>
@@ -25,19 +31,22 @@
     <ClInclude Include="src\RobinTheEngine\Core.h">
       <Filter>RobinTheEngine</Filter>
     </ClInclude>
-    <ClInclude Include="src\RobinTheEngine\D3D11RenderSystem.h">
-      <Filter>RobinTheEngine</Filter>
-    </ClInclude>
-    <ClInclude Include="src\RobinTheEngine\DirectXRenderSystem.h">
-      <Filter>RobinTheEngine</Filter>
-    </ClInclude>
     <ClInclude Include="src\RobinTheEngine\Display.h">
       <Filter>RobinTheEngine</Filter>
     </ClInclude>
     <ClInclude Include="src\RobinTheEngine\EntryPoint.h">
       <Filter>RobinTheEngine</Filter>
     </ClInclude>
+    <ClInclude Include="src\RobinTheEngine\Events\ApplicationEvent.h">
+      <Filter>RobinTheEngine\Events</Filter>
+    </ClInclude>
     <ClInclude Include="src\RobinTheEngine\Events\Event.h">
+      <Filter>RobinTheEngine\Events</Filter>
+    </ClInclude>
+    <ClInclude Include="src\RobinTheEngine\Events\KeyEvent.h">
+      <Filter>RobinTheEngine\Events</Filter>
+    </ClInclude>
+    <ClInclude Include="src\RobinTheEngine\Events\MouseEvent.h">
       <Filter>RobinTheEngine\Events</Filter>
     </ClInclude>
     <ClInclude Include="src\RobinTheEngine\Log.h">
@@ -53,18 +62,17 @@
       <Filter>RobinTheEngine</Filter>
     </ClInclude>
     <ClInclude Include="src\rtepch.h" />
+    <ClInclude Include="src\RobinTheEngine\Layer.h" />
+    <ClInclude Include="src\RobinTheEngine\LayerStack.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\Platform\DirectX12\DirectXRenderSystem.cpp">
+      <Filter>Platform\DirectX12</Filter>
+    </ClCompile>
     <ClCompile Include="src\Platform\Windows\WindowsWindow.cpp">
       <Filter>Platform\Windows</Filter>
     </ClCompile>
     <ClCompile Include="src\RobinTheEngine\Application.cpp">
-      <Filter>RobinTheEngine</Filter>
-    </ClCompile>
-    <ClCompile Include="src\RobinTheEngine\D3D11RenderSystem.cpp">
-      <Filter>RobinTheEngine</Filter>
-    </ClCompile>
-    <ClCompile Include="src\RobinTheEngine\DirectXRenderSystem.cpp">
       <Filter>RobinTheEngine</Filter>
     </ClCompile>
     <ClCompile Include="src\RobinTheEngine\Display.cpp">
@@ -77,5 +85,7 @@
       <Filter>RobinTheEngine</Filter>
     </ClCompile>
     <ClCompile Include="src\rtepch.cpp" />
+    <ClCompile Include="src\RobinTheEngine\Layer.cpp" />
+    <ClCompile Include="src\RobinTheEngine\LayerStack.cpp" />
   </ItemGroup>
 </Project>
