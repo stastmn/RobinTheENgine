@@ -10,6 +10,7 @@ RTE::DirectXRenderSystem::DirectXRenderSystem(HWND hwnd) :m_hMainWnd(hwnd)
 
 RTE::DirectXRenderSystem::~DirectXRenderSystem()
 {
+	FlushCommandQueue();
 }
 
 void RTE::DirectXRenderSystem::Init()
@@ -123,81 +124,15 @@ void RTE::DirectXRenderSystem::Init()
 		&dsvHeapDesc, IID_PPV_ARGS(m_DsvHeap.GetAddressOf())));
 
 
-	///////////////Temp
+	OnResize(m_ClientWidth, m_ClientHeight);
 
-	// Update the viewport transform to cover the client area.
-	m_ScreenViewport.TopLeftX = 0;
-	m_ScreenViewport.TopLeftY = 0;
-	m_ScreenViewport.Width = static_cast<float>(m_ClientWidth);
-	m_ScreenViewport.Height = static_cast<float>(m_ClientHeight);
-	m_ScreenViewport.MinDepth = 0.0f;
-	m_ScreenViewport.MaxDepth = 1.0f;
-
-	m_ScissorRect = { 0, 0, m_ClientWidth, m_ClientHeight };
-
-	// Release the previous resources we will be recreating.
-	for (int i = 0; i < SwapChainBufferCount; ++i)
-		m_SwapChainBuffer[i].Reset();
-	m_DepthStencilBuffer.Reset();
-
-
-	CD3DX12_CPU_DESCRIPTOR_HANDLE rtvHeapHandle(m_RtvHeap->GetCPUDescriptorHandleForHeapStart());
-	for (UINT i = 0; i < SwapChainBufferCount; i++)
-	{
-		ThrowIfFailed(mSwapChain->GetBuffer(i, IID_PPV_ARGS(&m_SwapChainBuffer[i])));
-		m_d3dDevice->CreateRenderTargetView(m_SwapChainBuffer[i].Get(), nullptr, rtvHeapHandle);
-		rtvHeapHandle.Offset(1, m_RtvDescriptorSize);
-	}
-
-	// Create the depth/stencil buffer and view.
-	D3D12_RESOURCE_DESC depthStencilDesc;
-	depthStencilDesc.Dimension = D3D12_RESOURCE_DIMENSION_TEXTURE2D;
-	depthStencilDesc.Alignment = 0;
-	depthStencilDesc.Width = m_ClientWidth;
-	depthStencilDesc.Height = m_ClientHeight;
-	depthStencilDesc.DepthOrArraySize = 1;
-	depthStencilDesc.MipLevels = 1;
-
-	// Correction 11/12/2016: SSAO chapter requires an SRV to the depth buffer to read from 
-// the depth buffer.  Therefore, because we need to create two views to the same resource:
-//   1. SRV format: DXGI_FORMAT_R24_UNORM_X8_TYPELESS
-//   2. DSV Format: DXGI_FORMAT_D24_UNORM_S8_UINT
-// we need to create the depth buffer resource with a typeless format.  
-	depthStencilDesc.Format = DXGI_FORMAT_R24G8_TYPELESS;
-
-	depthStencilDesc.SampleDesc.Count = m_4xMsaaState ? 4 : 1;
-	depthStencilDesc.SampleDesc.Quality = m_4xMsaaState ? (m_4xMsaaQuality - 1) : 0;
-	depthStencilDesc.Layout = D3D12_TEXTURE_LAYOUT_UNKNOWN;
-	depthStencilDesc.Flags = D3D12_RESOURCE_FLAG_ALLOW_DEPTH_STENCIL;
-
-
-	DXGI_FORMAT mDepthStencilFormat = DXGI_FORMAT_D24_UNORM_S8_UINT;
-
-	D3D12_CLEAR_VALUE optClear;
-	optClear.Format = mDepthStencilFormat;
-	optClear.DepthStencil.Depth = 1.0f;
-	optClear.DepthStencil.Stencil = 0;
-	ThrowIfFailed(m_d3dDevice->CreateCommittedResource(
-		&CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_DEFAULT),
-		D3D12_HEAP_FLAG_NONE,
-		&depthStencilDesc,
-		D3D12_RESOURCE_STATE_COMMON,
-		&optClear,
-		IID_PPV_ARGS(m_DepthStencilBuffer.GetAddressOf())));
-
-	// Create descriptor to mip level 0 of entire resource using the format of the resource.
-	D3D12_DEPTH_STENCIL_VIEW_DESC dsvDesc;
-	dsvDesc.Flags = D3D12_DSV_FLAG_NONE;
-	dsvDesc.ViewDimension = D3D12_DSV_DIMENSION_TEXTURE2D;
-	dsvDesc.Format = mDepthStencilFormat;
-	dsvDesc.Texture2D.MipSlice = 0;
-	m_d3dDevice->CreateDepthStencilView(m_DepthStencilBuffer.Get(), &dsvDesc, DepthStencilView());
-
-	// Transition the resource from its initial state to be used as a depth buffer.
-	m_CommandList->ResourceBarrier(1, &CD3DX12_RESOURCE_BARRIER::Transition(m_DepthStencilBuffer.Get(),
-		D3D12_RESOURCE_STATE_COMMON, D3D12_RESOURCE_STATE_DEPTH_WRITE));
-
-
+	D3D12_DESCRIPTOR_HEAP_DESC cbvHeapDesc;
+    cbvHeapDesc.NumDescriptors = 1;
+    cbvHeapDesc.Type = D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV;
+    cbvHeapDesc.Flags = D3D12_DESCRIPTOR_HEAP_FLAG_SHADER_VISIBLE;
+	cbvHeapDesc.NodeMask = 0;
+    ThrowIfFailed(m_d3dDevice->CreateDescriptorHeap(&cbvHeapDesc,
+        IID_PPV_ARGS(&mCbvHeap)));
 
 
 }
@@ -302,7 +237,7 @@ void RTE::DirectXRenderSystem::OnResize(int width, int height)
 
 }
 
-void RTE::DirectXRenderSystem::OnRender()
+void RTE::DirectXRenderSystem::OnRenderBegin()
 {
 	// Reuse the memory associated with command recording.
 	   // We can only reset when the associated command lists have finished execution on the GPU.
@@ -321,11 +256,24 @@ void RTE::DirectXRenderSystem::OnRender()
 	m_CommandList->RSSetScissorRects(1, &m_ScissorRect);
 
 	// Clear the back buffer and depth buffer.
-	m_CommandList->ClearRenderTargetView(CurrentBackBufferView(), DirectX::Colors::Red, 0, nullptr);
+	m_CommandList->ClearRenderTargetView(CurrentBackBufferView(), DirectX::Colors::Magenta, 0, nullptr);
 	m_CommandList->ClearDepthStencilView(DepthStencilView(), D3D12_CLEAR_FLAG_DEPTH | D3D12_CLEAR_FLAG_STENCIL, 1.0f, 0, 0, nullptr);
 
 	// Specify the buffers we are going to render to.
 	m_CommandList->OMSetRenderTargets(1, &CurrentBackBufferView(), true, &DepthStencilView());
+	
+	
+	ID3D12DescriptorHeap* descriptorHeaps[] = { mCbvHeap.Get() };
+	m_CommandList->SetDescriptorHeaps(_countof(descriptorHeaps), descriptorHeaps);
+
+
+
+
+
+}
+
+void RTE::DirectXRenderSystem::OnRenderEnd()
+{
 
 	// Indicate a state transition on the resource usage.
 	m_CommandList->ResourceBarrier(1, &CD3DX12_RESOURCE_BARRIER::Transition(CurrentBackBuffer(),
@@ -348,6 +296,7 @@ void RTE::DirectXRenderSystem::OnRender()
 	// so we do not have to wait per frame.
 	FlushCommandQueue();
 
+	
 }
 
 void RTE::DirectXRenderSystem::LogAdapterOutputs(IDXGIAdapter * adapter)

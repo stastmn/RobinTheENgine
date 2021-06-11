@@ -1,4 +1,3 @@
-
 #include <iostream>
 #include <RTE.h>
 
@@ -6,14 +5,22 @@
 class ExampleLayer : public RTE::Layer
 {
 public:
+	GameTimer timer;
 	ExampleLayer()
 		: Layer("Example")
 	{
+		
+	}
+
+	void OnAttach() {
+
 	}
 
 	void OnUpdate() override
 	{
-		RTE_INFO("ExampleLayer::Update");
+		timer.Reset();
+		timer.Tick();
+		RTE_INFO("ExampleLayer::Delta time {0}",timer.DeltaTime());
 	}
 
 	void OnEvent(RTE::Event& event) override
@@ -32,6 +39,7 @@ public:
 	Sandbox()
 	{
 		PushLayer(new ExampleLayer());
+		PushOverlay(new RTE::ImGuiLayer());
 
 	}
 

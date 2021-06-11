@@ -44,6 +44,7 @@ namespace RTE
 		WindowData m_Data;
 	public:
 		HWND GetHwnd() { return glfwGetWin32Window(m_Window); }
+		GLFWwindow* GetWindow() { return m_Window; }
 
 	};
 

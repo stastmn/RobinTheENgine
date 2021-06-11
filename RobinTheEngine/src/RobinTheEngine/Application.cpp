@@ -11,8 +11,12 @@ namespace RTE {
 
 #define BIND_EVENT_FN(x) std::bind(&Application::x, this, std::placeholders::_1)
 
+	Application* Application::s_Instance = nullptr;
 	RTE::Application::Application()
 	{
+		RTE_CORE_ASSERT(!s_Instance, "Application already exists!");
+		s_Instance = this;
+
 		m_Window = std::unique_ptr<Window>(Window::Create());
 		m_Window->SetEventCallback(BIND_EVENT_FN(OnEvent));
 		auto a = ((WindowsWindow*)(m_Window.get()))->GetHwnd();
@@ -31,10 +35,12 @@ namespace RTE {
 
 		while (m_Running) {
 			m_Window->OnUpdate();
-			m_RenderSystem->OnRender();
+			m_RenderSystem->OnRenderBegin();
 
 			for (Layer* layer : m_LayerStack)
 				layer->OnUpdate();
+
+			m_RenderSystem->OnRenderEnd();
 
 		}
 	}
@@ -42,11 +48,13 @@ namespace RTE {
 	void Application::PushLayer(Layer* layer)
 	{
 		m_LayerStack.PushLayer(layer);
+		layer->OnAttach();
 	}
 
 	void Application::PushOverlay(Layer* layer)
 	{
 		m_LayerStack.PushOverlay(layer);
+		layer->OnAttach();
 	}
 
 	void Application::OnEvent(Event& e)

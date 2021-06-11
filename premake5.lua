@@ -13,8 +13,10 @@
    -- Include directories relative to root folder (solution directory)
    IncludeDir = {}
    IncludeDir["GLFW"] = "RobinTheEngine/vendor/GLFW/include"
+   IncludeDir["ImGui"] = "RobinTheEngine/vendor/imgui"
 
    include "RobinTheEngine/vendor/GLFW"
+   include "RobinTheEngine/vendor/imgui"
 
 
    project "RobinTheEngine"
@@ -44,13 +46,15 @@
          "%{prj.name}/src",
          "%{prj.name}/vendor/spdlog/include",
          "%{prj.name}/vendor/DirectX12-Headers/include/directx",
-         "%{IncludeDir.GLFW}"
+         "%{IncludeDir.GLFW}",
+		 "%{IncludeDir.ImGui}"
       }
  
       links
       {
          "GLFW",
-		 "opengl32.lib"
+		 "opengl32.lib",
+		 "ImGui"
       }
 
       filter "system:windows"

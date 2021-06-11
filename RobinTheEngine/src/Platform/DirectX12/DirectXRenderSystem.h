@@ -28,8 +28,14 @@ namespace RTE {
 		~DirectXRenderSystem();
 		void Init() override;
 		void OnResize(int width, int height) override;
-		void OnRender() override;
+		void OnRenderBegin() override;
+		void OnRenderEnd() override;
 		void LogAdapters();
+
+		Microsoft::WRL::ComPtr<ID3D12Device> GetDevice() { return m_d3dDevice; }
+		ComPtr<ID3D12DescriptorHeap> mCbvHeap = nullptr;
+
+		ID3D12GraphicsCommandList* GetCmdList() { return m_CommandList.Get(); }
 	protected:
 		void CreateSwapChain();
 		D3D12_CPU_DESCRIPTOR_HANDLE CurrentBackBufferView()const;
@@ -67,8 +73,21 @@ namespace RTE {
 		DXGI_FORMAT m_BackBufferFormat = DXGI_FORMAT_R8G8B8A8_UNORM;
 		DXGI_FORMAT m_DepthStencilFormat = DXGI_FORMAT_D24_UNORM_S8_UINT;
 
+		ComPtr<ID3D12RootSignature> mRootSignature = nullptr;
 
-		// Set true to use 4X MSAA (§4.1.8).  The default is false.
+		/*	std::unique_ptr<UploadBuffer<ObjectConstants>> mObjectCB = nullptr;
+
+			std::unique_ptr<MeshGeometry> mBoxGeo = nullptr;
+
+			ComPtr<ID3DBlob> mvsByteCode = nullptr;
+			ComPtr<ID3DBlob> mpsByteCode = nullptr;
+
+			std::vector<D3D12_INPUT_ELEMENT_DESC> mInputLayout;
+
+			ComPtr<ID3D12PipelineState> mPSO = nullptr;*/
+
+
+			// Set true to use 4X MSAA (§4.1.8).  The default is false.
 		bool      m_4xMsaaState = false; // 4X MSAA enabled
 		UINT      m_4xMsaaQuality = 0;      // quality level of 4X MSAA
 

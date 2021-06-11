@@ -23,6 +23,11 @@ namespace RTE {
 		void PushLayer(Layer* layer);
 		void PushOverlay(Layer* layer);
 
+		inline Window& GetWindow() { return *m_Window; }
+		inline RenderSystem* GetRenderSystem() { return m_RenderSystem.get(); }
+		inline static Application& Get() { return *s_Instance; }
+
+
 	private:
 		bool OnWindowClose(WindowCloseEvent& e);
 		bool OnWindowResize(WindowResizeEvent& e);
@@ -30,6 +35,7 @@ namespace RTE {
 		std::unique_ptr<RenderSystem> m_RenderSystem;
 		bool m_Running = true;
 		LayerStack m_LayerStack;
+		static Application* s_Instance;
 
 	};
 

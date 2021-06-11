@@ -16,9 +16,21 @@
     <Filter Include="RobinTheEngine\Events">
       <UniqueIdentifier>{5A5F75D2-C6CB-30CD-8FBF-C82AFBEA5235}</UniqueIdentifier>
     </Filter>
+    <Filter Include="RobinTheEngine\ImGui">
+      <UniqueIdentifier>{E091848A-CC20-0E54-753F-224F61AD1EFA}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Platform\DirectX12\DirectXRenderSystem.h">
+      <Filter>Platform\DirectX12</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Platform\DirectX12\ImGuiDirectX12Renderer.h">
+      <Filter>Platform\DirectX12</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Platform\DirectX12\imgui_impl_glfw.h">
+      <Filter>Platform\DirectX12</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Platform\DirectX12\imgui_impl_win32.h">
       <Filter>Platform\DirectX12</Filter>
     </ClInclude>
     <ClInclude Include="src\Platform\Windows\WindowsWindow.h">
@@ -49,6 +61,18 @@
     <ClInclude Include="src\RobinTheEngine\Events\MouseEvent.h">
       <Filter>RobinTheEngine\Events</Filter>
     </ClInclude>
+    <ClInclude Include="src\RobinTheEngine\GameTimer.h">
+      <Filter>RobinTheEngine</Filter>
+    </ClInclude>
+    <ClInclude Include="src\RobinTheEngine\ImGui\ImGuiLayer.h">
+      <Filter>RobinTheEngine\ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="src\RobinTheEngine\Layer.h">
+      <Filter>RobinTheEngine</Filter>
+    </ClInclude>
+    <ClInclude Include="src\RobinTheEngine\LayerStack.h">
+      <Filter>RobinTheEngine</Filter>
+    </ClInclude>
     <ClInclude Include="src\RobinTheEngine\Log.h">
       <Filter>RobinTheEngine</Filter>
     </ClInclude>
@@ -62,11 +86,21 @@
       <Filter>RobinTheEngine</Filter>
     </ClInclude>
     <ClInclude Include="src\rtepch.h" />
-    <ClInclude Include="src\RobinTheEngine\Layer.h" />
-    <ClInclude Include="src\RobinTheEngine\LayerStack.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Platform\DirectX12\DirectXRenderSystem.cpp">
+      <Filter>Platform\DirectX12</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Platform\DirectX12\ImGuiDirectX12Renderer.cpp">
+      <Filter>Platform\DirectX12</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Platform\DirectX12\ImGuiHelper.cpp">
+      <Filter>Platform\DirectX12</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Platform\DirectX12\imgui_impl_glfw.cpp">
+      <Filter>Platform\DirectX12</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Platform\DirectX12\imgui_impl_win32.cpp">
       <Filter>Platform\DirectX12</Filter>
     </ClCompile>
     <ClCompile Include="src\Platform\Windows\WindowsWindow.cpp">
@@ -78,6 +112,18 @@
     <ClCompile Include="src\RobinTheEngine\Display.cpp">
       <Filter>RobinTheEngine</Filter>
     </ClCompile>
+    <ClCompile Include="src\RobinTheEngine\GameTimer.cpp">
+      <Filter>RobinTheEngine</Filter>
+    </ClCompile>
+    <ClCompile Include="src\RobinTheEngine\ImGui\ImGuiLayer.cpp">
+      <Filter>RobinTheEngine\ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="src\RobinTheEngine\Layer.cpp">
+      <Filter>RobinTheEngine</Filter>
+    </ClCompile>
+    <ClCompile Include="src\RobinTheEngine\LayerStack.cpp">
+      <Filter>RobinTheEngine</Filter>
+    </ClCompile>
     <ClCompile Include="src\RobinTheEngine\Log.cpp">
       <Filter>RobinTheEngine</Filter>
     </ClCompile>
@@ -85,7 +131,5 @@
       <Filter>RobinTheEngine</Filter>
     </ClCompile>
     <ClCompile Include="src\rtepch.cpp" />
-    <ClCompile Include="src\RobinTheEngine\Layer.cpp" />
-    <ClCompile Include="src\RobinTheEngine\LayerStack.cpp" />
   </ItemGroup>
 </Project>

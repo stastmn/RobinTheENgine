@@ -80,8 +80,8 @@
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>rtepch.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
-      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;GLFW_INCLUDE_NONE;RTE_PLATFORM_WINDOWS;RTE_BUILD_DLL;RTE_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>src;vendor\spdlog\include;vendor\DirectX12-Headers\include\directx;vendor\GLFW\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;RTE_PLATFORM_WINDOWS;RTE_BUILD_DLL;GLFW_INCLUDE_NONE;RTE_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>src;vendor\spdlog\include;vendor\DirectX12-Headers\include\directx;vendor\GLFW\include;vendor\imgui;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
       <Optimization>Disabled</Optimization>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
@@ -103,8 +103,8 @@
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>rtepch.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
-      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;GLFW_INCLUDE_NONE;RTE_PLATFORM_WINDOWS;RTE_BUILD_DLL;RTE_RELEASE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>src;vendor\spdlog\include;vendor\DirectX12-Headers\include\directx;vendor\GLFW\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;RTE_PLATFORM_WINDOWS;RTE_BUILD_DLL;GLFW_INCLUDE_NONE;RTE_RELEASE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>src;vendor\spdlog\include;vendor\DirectX12-Headers\include\directx;vendor\GLFW\include;vendor\imgui;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
@@ -130,8 +130,8 @@
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>rtepch.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
-      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;GLFW_INCLUDE_NONE;RTE_PLATFORM_WINDOWS;RTE_BUILD_DLL;RTE_DIST;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>src;vendor\spdlog\include;vendor\DirectX12-Headers\include\directx;vendor\GLFW\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;RTE_PLATFORM_WINDOWS;RTE_BUILD_DLL;GLFW_INCLUDE_NONE;RTE_DIST;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>src;vendor\spdlog\include;vendor\DirectX12-Headers\include\directx;vendor\GLFW\include;vendor\imgui;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
@@ -154,9 +154,10 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="src\Platform\DirectX12\DirectXRenderSystem.h" />
+    <ClInclude Include="src\Platform\DirectX12\ImGuiDirectX12Renderer.h" />
+    <ClInclude Include="src\Platform\DirectX12\imgui_impl_glfw.h" />
+    <ClInclude Include="src\Platform\DirectX12\imgui_impl_win32.h" />
     <ClInclude Include="src\Platform\Windows\WindowsWindow.h" />
-    <ClInclude Include="src\RobinTheEngine\Layer.h" />
-    <ClInclude Include="src\RobinTheEngine\LayerStack.h" />
     <ClInclude Include="src\RTE.h" />
     <ClInclude Include="src\RobinTheEngine\Application.h" />
     <ClInclude Include="src\RobinTheEngine\Core.h" />
@@ -166,6 +167,10 @@
     <ClInclude Include="src\RobinTheEngine\Events\Event.h" />
     <ClInclude Include="src\RobinTheEngine\Events\KeyEvent.h" />
     <ClInclude Include="src\RobinTheEngine\Events\MouseEvent.h" />
+    <ClInclude Include="src\RobinTheEngine\GameTimer.h" />
+    <ClInclude Include="src\RobinTheEngine\ImGui\ImGuiLayer.h" />
+    <ClInclude Include="src\RobinTheEngine\Layer.h" />
+    <ClInclude Include="src\RobinTheEngine\LayerStack.h" />
     <ClInclude Include="src\RobinTheEngine\Log.h" />
     <ClInclude Include="src\RobinTheEngine\RenderSystem.h" />
     <ClInclude Include="src\RobinTheEngine\Window.h" />
@@ -174,9 +179,15 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Platform\DirectX12\DirectXRenderSystem.cpp" />
+    <ClCompile Include="src\Platform\DirectX12\ImGuiDirectX12Renderer.cpp" />
+    <ClCompile Include="src\Platform\DirectX12\ImGuiHelper.cpp" />
+    <ClCompile Include="src\Platform\DirectX12\imgui_impl_glfw.cpp" />
+    <ClCompile Include="src\Platform\DirectX12\imgui_impl_win32.cpp" />
     <ClCompile Include="src\Platform\Windows\WindowsWindow.cpp" />
     <ClCompile Include="src\RobinTheEngine\Application.cpp" />
     <ClCompile Include="src\RobinTheEngine\Display.cpp" />
+    <ClCompile Include="src\RobinTheEngine\GameTimer.cpp" />
+    <ClCompile Include="src\RobinTheEngine\ImGui\ImGuiLayer.cpp" />
     <ClCompile Include="src\RobinTheEngine\Layer.cpp" />
     <ClCompile Include="src\RobinTheEngine\LayerStack.cpp" />
     <ClCompile Include="src\RobinTheEngine\Log.cpp" />
@@ -188,6 +199,9 @@
   <ItemGroup>
     <ProjectReference Include="vendor\GLFW\GLFW.vcxproj">
       <Project>{154B857C-0182-860D-AA6E-6C109684020F}</Project>
+    </ProjectReference>
+    <ProjectReference Include="vendor\imgui\ImGui.vcxproj">
+      <Project>{C0FF640D-2C14-8DBE-F595-301E616989EF}</Project>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
