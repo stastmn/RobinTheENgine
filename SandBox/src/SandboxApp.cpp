@@ -20,7 +20,7 @@ public:
 	{
 		timer.Reset();
 		timer.Tick();
-		RTE_INFO("ExampleLayer::Delta time {0}",timer.DeltaTime());
+		//RTE_INFO("ExampleLayer::Delta time {0}",timer.DeltaTime());
 	}
 
 	void OnEvent(RTE::Event& event) override

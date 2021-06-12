@@ -180,7 +180,6 @@
   <ItemGroup>
     <ClCompile Include="src\Platform\DirectX12\DirectXRenderSystem.cpp" />
     <ClCompile Include="src\Platform\DirectX12\ImGuiDirectX12Renderer.cpp" />
-    <ClCompile Include="src\Platform\DirectX12\ImGuiHelper.cpp" />
     <ClCompile Include="src\Platform\DirectX12\imgui_impl_glfw.cpp" />
     <ClCompile Include="src\Platform\DirectX12\imgui_impl_win32.cpp" />
     <ClCompile Include="src\Platform\Windows\WindowsWindow.cpp" />

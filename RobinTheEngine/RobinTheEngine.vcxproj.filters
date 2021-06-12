@@ -94,9 +94,6 @@
     <ClCompile Include="src\Platform\DirectX12\ImGuiDirectX12Renderer.cpp">
       <Filter>Platform\DirectX12</Filter>
     </ClCompile>
-    <ClCompile Include="src\Platform\DirectX12\ImGuiHelper.cpp">
-      <Filter>Platform\DirectX12</Filter>
-    </ClCompile>
     <ClCompile Include="src\Platform\DirectX12\imgui_impl_glfw.cpp">
       <Filter>Platform\DirectX12</Filter>
     </ClCompile>
