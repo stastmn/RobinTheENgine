@@ -8,6 +8,10 @@
 #include "RobinTheEngine/ImGui/ImGuiLayer.h"
 #include "RobinTheEngine/GameTimer.h"
 
+#include "RobinTheEngine/Input.h"
+#include "RobinTheEngine/KeyCodes.h"
+#include "RobinTheEngine/MouseButtonCodes.h"
+
 //--------------Entry Point--------------
 #include "RobinTheEngine/EntryPoint.h"
 //---------------------------------------

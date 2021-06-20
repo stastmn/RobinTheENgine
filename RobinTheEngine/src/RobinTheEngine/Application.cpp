@@ -4,6 +4,7 @@
 #include "Platform/DirectX12/DirectXRenderSystem.h"
 #include "Platform/Windows/WindowsWindow.h"
 #include "GLFW/glfw3.h"
+#include "RobinTheEngine/Input.h"
 
 
 
@@ -22,7 +23,7 @@ namespace RTE {
 		auto a = ((WindowsWindow*)(m_Window.get()))->GetHwnd();
 		m_RenderSystem = std::make_unique<DirectXRenderSystem>(a);
 		m_RenderSystem->Init();
-
+		m_RenderSystem->OnResize(m_Window->GetWidth(), m_Window->GetHeight());
 	}
 
 	Application::~Application()

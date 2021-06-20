@@ -142,9 +142,9 @@ void RTE::DirectXRenderSystem::OnResize(int width, int height)
 	m_ClientWidth = width;
 	m_ClientHeight = height;
 
-	RTE_ASSERT(m_d3dDevice);
-	RTE_ASSERT(mSwapChain);
-	RTE_ASSERT(m_DirectCmdListAlloc);
+	RTE_ASSERT(m_d3dDevice,"Bad device!");
+	RTE_ASSERT(mSwapChain, "Bad swapchain!");
+	RTE_ASSERT(m_DirectCmdListAlloc, "Bad CmdAlloc!");
 
 	FlushCommandQueue();
 

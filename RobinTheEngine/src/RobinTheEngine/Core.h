@@ -1,5 +1,6 @@
 #pragma once
 
+
 #ifdef RTE_PLATFORM_WINDOWS
 	#ifdef RTE_BUILD_DLL
 	#define RTE_API __declspec(dllexport)
@@ -11,10 +12,14 @@
 	#error Now only Windows support!
 #endif // RTE_PLATFORM_WINDOWS
 
+#ifdef RTE_DEBUG
+	#define RTE_ENABLE_ASSERTS
+#endif
 
 #ifdef RTE_ENABLE_ASSERTS
 	#define RTE_ASSERT(x, ...) { if(x){} else { RTE_ERROR("Assertion Failed: {0}", __VA_ARGS__); __debugbreak(); } }
-	#define RTE_CORE_ASSERT(x, ...) { if(x){} else { RTE_CORE_ERROR("Assertion Failed: {0}", __VA_ARGS__); __debugbreak(); } }
+	#define RTE_CORE_ASSERT(x, ...) { if(x){} else { RTE_CORE_ERROR("Assertion Failed: {0}", __VA_ARGS__); __debugbreak(); }}
+
 
 	#define _ASSERT_GLUE(a, b)  a ## b
 	#define ASSERT_GLUE(a, b)   _ASSERT_GLUE(a, b)

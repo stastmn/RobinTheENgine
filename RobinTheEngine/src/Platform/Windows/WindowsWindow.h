@@ -45,6 +45,7 @@ namespace RTE
 	public:
 		HWND GetHwnd() { return glfwGetWin32Window(m_Window); }
 		GLFWwindow* GetWindow() { return m_Window; }
+		inline virtual void* GetNativeWindow() const { return m_Window; }
 
 	};
 

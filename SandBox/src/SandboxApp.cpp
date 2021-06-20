@@ -9,7 +9,7 @@ public:
 	ExampleLayer()
 		: Layer("Example")
 	{
-		
+
 	}
 
 	void OnAttach() {
@@ -21,13 +21,16 @@ public:
 		timer.Reset();
 		timer.Tick();
 		//RTE_INFO("ExampleLayer::Delta time {0}",timer.DeltaTime());
+		if (RTE::Input::IsKeyPressed(RTE_KEY_TAB))
+			RTE_TRACE("Tab key is pressed (poll)!");
 	}
 
 	void OnEvent(RTE::Event& event) override
 	{
 		RTE_TRACE("{0}", event);
 		RTE::EventDispatcher dispatcher(event);
-	
+		//RTE_ASSERT(false, "Its false!");
+
 	}
 
 

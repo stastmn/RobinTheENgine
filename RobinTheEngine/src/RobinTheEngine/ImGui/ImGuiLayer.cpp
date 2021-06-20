@@ -40,6 +40,7 @@ namespace RTE {
 			DXGI_FORMAT_R8G8B8A8_UNORM, ren->mCbvHeap.Get(),
 			ren->mCbvHeap->GetCPUDescriptorHandleForHeapStart(),
 			ren->mCbvHeap->GetGPUDescriptorHandleForHeapStart());
+
 	}
 
 	void ImGuiLayer::OnDetach()
@@ -58,11 +59,11 @@ namespace RTE {
 		ImGui_ImplWin32_NewFrame();
 		ImGui::NewFrame();
 
-	
+
 		// 1. Show the big demo window (Most of the sample code is in ImGui::ShowDemoWindow()! You can browse its code to learn more about Dear ImGui!).
 		if (show_demo_window)
 			ImGui::ShowDemoWindow(&show_demo_window);
-		
+
 		{
 			static float f = 0.0f;
 			static int counter = 0;

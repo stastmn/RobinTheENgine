@@ -1,6 +1,7 @@
    workspace "RobinTheEngine"
       architecture "x64"
-
+      startproject "Sandbox"
+   
       configurations
       {
          "Debug",
@@ -8,7 +9,7 @@
          "Dist"
       }
 
-   startproject "Sandbox"
+
    outputdir = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
  
    -- Include directories relative to root folder (solution directory)
@@ -16,14 +17,16 @@
    IncludeDir["GLFW"] = "RobinTheEngine/vendor/GLFW/include"
    IncludeDir["ImGui"] = "RobinTheEngine/vendor/imgui"
 
+   group "Dependencies"
    include "RobinTheEngine/vendor/GLFW"
    include "RobinTheEngine/vendor/imgui"
-
+   group ""
 
    project "RobinTheEngine"
       location "RobinTheEngine"
       kind "SharedLib"
       language "C++"
+	  staticruntime "off"
 
       targetdir ("bin/" .. outputdir .. "/%{prj.name}")
       objdir ("bin-int/" .. outputdir .. "/%{prj.name}")
@@ -60,7 +63,6 @@
 
       filter "system:windows"
          cppdialect "C++17"
-         staticruntime "On"
          systemversion "latest"
 
          defines
@@ -72,29 +74,30 @@
 
          postbuildcommands
          {
-            ("{COPY} %{cfg.buildtarget.relpath} ../bin/" .. outputdir .. "/Sandbox")
+            ("{COPY} %{cfg.buildtarget.relpath} \"../bin/" .. outputdir .. "/Sandbox/\"")
          }
 
       filter "configurations:Debug"
          defines "RTE_DEBUG"
          symbols "On"
-		 buildoptions "/MDd"
+		 runtime "Debug"
 
       filter "configurations:Release"
          defines "RTE_RELEASE"
          optimize "On"
-		 buildoptions "/MD"
+		 runtime "Release"
 
       filter "configurations:Dist"
          defines "RTE_DIST"
          optimize "On"
-		 buildoptions "/MD"
+		 runtime "Release"
 
 
    project "Sandbox"
       location "Sandbox"
       kind "ConsoleApp"
       language "C++"
+	  staticruntime "off"
 
       targetdir ("bin/" .. outputdir .. "/%{prj.name}")
       objdir ("bin-int/" .. outputdir .. "/%{prj.name}")
@@ -118,7 +121,6 @@
 
       filter "system:windows"
          cppdialect "C++17"
-         staticruntime "On"
          systemversion "latest"
 
          defines
@@ -129,17 +131,17 @@
       filter "configurations:Debug"
          defines "RTE_DEBUG"
          symbols "On"
-		 buildoptions "/MDd"
+		 runtime "Debug"
 
       filter "configurations:Release"
          defines "RTE_RELEASE"
          optimize "On"
-		 buildoptions "/MD"
+		 runtime "Release"
 
       filter "configurations:Dist"
          defines "RTE_DIST"
          optimize "On"
-		 buildoptions "/MD"	
+		 runtime "Release"	
 
 
 
