@@ -1,5 +1,7 @@
 #include <iostream>
 #include <RTE.h>
+#include "imgui/imgui.h"
+
 
 
 class ExampleLayer : public RTE::Layer
@@ -25,6 +27,13 @@ public:
 			RTE_TRACE("Tab key is pressed (poll)!");
 	}
 
+	virtual void OnImGuiRender() override
+	{
+		ImGui::Begin("Test");
+		ImGui::Text("Hello World");
+		ImGui::End();
+	}
+
 	void OnEvent(RTE::Event& event) override
 	{
 		RTE_TRACE("{0}", event);
@@ -42,7 +51,6 @@ public:
 	Sandbox()
 	{
 		PushLayer(new ExampleLayer());
-		PushOverlay(new RTE::ImGuiLayer());
 
 	}
 

@@ -24,9 +24,10 @@
 
    project "RobinTheEngine"
       location "RobinTheEngine"
-      kind "SharedLib"
+      kind "StaticLib"
       language "C++"
-	  staticruntime "off"
+	  cppdialect "C++17"
+	  staticruntime "on"
 
       targetdir ("bin/" .. outputdir .. "/%{prj.name}")
       objdir ("bin-int/" .. outputdir .. "/%{prj.name}")
@@ -62,7 +63,6 @@
       }
 
       filter "system:windows"
-         cppdialect "C++17"
          systemversion "latest"
 
          defines
@@ -72,24 +72,20 @@
 			"GLFW_INCLUDE_NONE"
          }
 
-         postbuildcommands
-         {
-            ("{COPY} %{cfg.buildtarget.relpath} \"../bin/" .. outputdir .. "/Sandbox/\"")
-         }
 
       filter "configurations:Debug"
          defines "RTE_DEBUG"
-         symbols "On"
+         symbols "on"
 		 runtime "Debug"
 
       filter "configurations:Release"
          defines "RTE_RELEASE"
-         optimize "On"
+         optimize "on"
 		 runtime "Release"
 
       filter "configurations:Dist"
          defines "RTE_DIST"
-         optimize "On"
+         optimize "on"
 		 runtime "Release"
 
 
@@ -97,7 +93,8 @@
       location "Sandbox"
       kind "ConsoleApp"
       language "C++"
-	  staticruntime "off"
+	  cppdialect "C++17"
+	  staticruntime "on"
 
       targetdir ("bin/" .. outputdir .. "/%{prj.name}")
       objdir ("bin-int/" .. outputdir .. "/%{prj.name}")
@@ -111,7 +108,9 @@
       includedirs
       {
          "RobinTheEngine/vendor/spdlog/include",
-         "RobinTheEngine/src"
+         "RobinTheEngine/src",
+		 "RobinTheEngine/vendor"
+		 
       }
 
       links
@@ -120,7 +119,6 @@
       }
 
       filter "system:windows"
-         cppdialect "C++17"
          systemversion "latest"
 
          defines
@@ -130,17 +128,17 @@
 
       filter "configurations:Debug"
          defines "RTE_DEBUG"
-         symbols "On"
+         symbols "on"
 		 runtime "Debug"
 
       filter "configurations:Release"
          defines "RTE_RELEASE"
-         optimize "On"
+         optimize "on"
 		 runtime "Release"
 
       filter "configurations:Dist"
          defines "RTE_DIST"
-         optimize "On"
+         optimize "on"
 		 runtime "Release"	
 
 

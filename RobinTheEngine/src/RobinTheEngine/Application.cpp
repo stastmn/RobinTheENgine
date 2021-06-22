@@ -24,6 +24,10 @@ namespace RTE {
 		m_RenderSystem = std::make_unique<DirectXRenderSystem>(a);
 		m_RenderSystem->Init();
 		m_RenderSystem->OnResize(m_Window->GetWidth(), m_Window->GetHeight());
+
+
+		m_ImGuiLayer = new ImGuiLayer();
+		PushOverlay(m_ImGuiLayer);
 	}
 
 	Application::~Application()
@@ -40,6 +44,12 @@ namespace RTE {
 
 			for (Layer* layer : m_LayerStack)
 				layer->OnUpdate();
+
+			m_ImGuiLayer->Begin();
+			for (Layer* layer : m_LayerStack)
+				layer->OnImGuiRender();
+			m_ImGuiLayer->End();
+
 
 			m_RenderSystem->OnRenderEnd();
 
@@ -65,7 +75,7 @@ namespace RTE {
 		dispatcher.Dispatch<WindowCloseEvent>(BIND_EVENT_FN(OnWindowClose));
 		dispatcher.Dispatch<WindowResizeEvent>(BIND_EVENT_FN(OnWindowResize));
 
-		
+
 		for (auto it = m_LayerStack.end(); it != m_LayerStack.begin(); )
 		{
 			(*--it)->OnEvent(e);
@@ -73,7 +83,7 @@ namespace RTE {
 				break;
 		}
 
-	}	
+	}
 
 	bool Application::OnWindowClose(WindowCloseEvent& e)
 	{

@@ -24,14 +24,8 @@
     <ClInclude Include="src\Platform\DirectX12\DirectXRenderSystem.h">
       <Filter>Platform\DirectX12</Filter>
     </ClInclude>
-    <ClInclude Include="src\Platform\DirectX12\ImGuiDirectX12Renderer.h">
-      <Filter>Platform\DirectX12</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Platform\DirectX12\imgui_impl_glfw.h">
-      <Filter>Platform\DirectX12</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Platform\DirectX12\imgui_impl_win32.h">
-      <Filter>Platform\DirectX12</Filter>
+    <ClInclude Include="src\Platform\Windows\WindowsInput.h">
+      <Filter>Platform\Windows</Filter>
     </ClInclude>
     <ClInclude Include="src\Platform\Windows\WindowsWindow.h">
       <Filter>Platform\Windows</Filter>
@@ -67,6 +61,12 @@
     <ClInclude Include="src\RobinTheEngine\ImGui\ImGuiLayer.h">
       <Filter>RobinTheEngine\ImGui</Filter>
     </ClInclude>
+    <ClInclude Include="src\RobinTheEngine\Input.h">
+      <Filter>RobinTheEngine</Filter>
+    </ClInclude>
+    <ClInclude Include="src\RobinTheEngine\KeyCodes.h">
+      <Filter>RobinTheEngine</Filter>
+    </ClInclude>
     <ClInclude Include="src\RobinTheEngine\Layer.h">
       <Filter>RobinTheEngine</Filter>
     </ClInclude>
@@ -74,6 +74,9 @@
       <Filter>RobinTheEngine</Filter>
     </ClInclude>
     <ClInclude Include="src\RobinTheEngine\Log.h">
+      <Filter>RobinTheEngine</Filter>
+    </ClInclude>
+    <ClInclude Include="src\RobinTheEngine\MouseButtonCodes.h">
       <Filter>RobinTheEngine</Filter>
     </ClInclude>
     <ClInclude Include="src\RobinTheEngine\RenderSystem.h">
@@ -86,27 +89,13 @@
       <Filter>RobinTheEngine</Filter>
     </ClInclude>
     <ClInclude Include="src\rtepch.h" />
-    <ClInclude Include="src\RobinTheEngine\Input.h">
-      <Filter>RobinTheEngine</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Platform\Windows\WindowsInput.h">
-      <Filter>Platform\Windows</Filter>
-    </ClInclude>
-    <ClInclude Include="src\RobinTheEngine\KeyCodes.h" />
-    <ClInclude Include="src\RobinTheEngine\MouseButtonCodes.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Platform\DirectX12\DirectXRenderSystem.cpp">
       <Filter>Platform\DirectX12</Filter>
     </ClCompile>
-    <ClCompile Include="src\Platform\DirectX12\ImGuiDirectX12Renderer.cpp">
-      <Filter>Platform\DirectX12</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Platform\DirectX12\imgui_impl_glfw.cpp">
-      <Filter>Platform\DirectX12</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Platform\DirectX12\imgui_impl_win32.cpp">
-      <Filter>Platform\DirectX12</Filter>
+    <ClCompile Include="src\Platform\Windows\WindowsInput.cpp">
+      <Filter>Platform\Windows</Filter>
     </ClCompile>
     <ClCompile Include="src\Platform\Windows\WindowsWindow.cpp">
       <Filter>Platform\Windows</Filter>
@@ -119,6 +108,9 @@
     </ClCompile>
     <ClCompile Include="src\RobinTheEngine\GameTimer.cpp">
       <Filter>RobinTheEngine</Filter>
+    </ClCompile>
+    <ClCompile Include="src\RobinTheEngine\ImGui\ImGuiBuild.cpp">
+      <Filter>RobinTheEngine\ImGui</Filter>
     </ClCompile>
     <ClCompile Include="src\RobinTheEngine\ImGui\ImGuiLayer.cpp">
       <Filter>RobinTheEngine\ImGui</Filter>
@@ -136,8 +128,5 @@
       <Filter>RobinTheEngine</Filter>
     </ClCompile>
     <ClCompile Include="src\rtepch.cpp" />
-    <ClCompile Include="src\Platform\Windows\WindowsInput.cpp">
-      <Filter>Platform\Windows</Filter>
-    </ClCompile>
   </ItemGroup>
 </Project>

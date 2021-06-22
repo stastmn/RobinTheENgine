@@ -7,6 +7,7 @@
 #include "RobinTheEngine/LayerStack.h"
 #include "RobinTheEngine/Events/Event.h"
 #include "RobinTheEngine/Events/ApplicationEvent.h"
+#include "RobinTheEngine/ImGui/ImGuiLayer.h"
 
 
 namespace RTE {
@@ -33,10 +34,12 @@ namespace RTE {
 		bool OnWindowResize(WindowResizeEvent& e);
 		std::unique_ptr<Window> m_Window;
 		std::unique_ptr<RenderSystem> m_RenderSystem;
+		ImGuiLayer* m_ImGuiLayer;
 		bool m_Running = true;
 		LayerStack m_LayerStack;
 		static Application* s_Instance;
 
+		
 	};
 
 	Application* CreateApplication();
