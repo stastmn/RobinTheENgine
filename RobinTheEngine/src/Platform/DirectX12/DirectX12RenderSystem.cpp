@@ -1,19 +1,19 @@
 #include "rtepch.h"
-#include "DirectXRenderSystem.h"
+#include "DirectX12RenderSystem.h"
 #include "DirectXColors.h"
 #include "RobinTheEngine/Core.h"
 
 
-RTE::DirectXRenderSystem::DirectXRenderSystem(HWND hwnd) :m_hMainWnd(hwnd)
+RTE::DirectX12RenderSystem::DirectX12RenderSystem(HWND hwnd) :m_hMainWnd(hwnd)
 {
 }
 
-RTE::DirectXRenderSystem::~DirectXRenderSystem()
+RTE::DirectX12RenderSystem::~DirectX12RenderSystem()
 {
 	FlushCommandQueue();
 }
 
-void RTE::DirectXRenderSystem::Init()
+void RTE::DirectX12RenderSystem::Init()
 {
 	//Create device
 #if defined(DEBUG) || defined(_DEBUG) 
@@ -137,7 +137,7 @@ void RTE::DirectXRenderSystem::Init()
 
 }
 
-void RTE::DirectXRenderSystem::OnResize(int width, int height)
+void RTE::DirectX12RenderSystem::OnResize(int width, int height)
 {
 	m_ClientWidth = width;
 	m_ClientHeight = height;
@@ -237,7 +237,7 @@ void RTE::DirectXRenderSystem::OnResize(int width, int height)
 
 }
 
-void RTE::DirectXRenderSystem::OnRenderBegin()
+void RTE::DirectX12RenderSystem::OnRenderBegin()
 {
 	// Reuse the memory associated with command recording.
 	   // We can only reset when the associated command lists have finished execution on the GPU.
@@ -272,7 +272,7 @@ void RTE::DirectXRenderSystem::OnRenderBegin()
 
 }
 
-void RTE::DirectXRenderSystem::OnRenderEnd()
+void RTE::DirectX12RenderSystem::OnRenderEnd()
 {
 
 	// Indicate a state transition on the resource usage.
@@ -299,7 +299,7 @@ void RTE::DirectXRenderSystem::OnRenderEnd()
 	
 }
 
-void RTE::DirectXRenderSystem::LogAdapterOutputs(IDXGIAdapter * adapter)
+void RTE::DirectX12RenderSystem::LogAdapterOutputs(IDXGIAdapter * adapter)
 {
 	UINT i = 0;
 	IDXGIOutput* output = nullptr;
@@ -321,7 +321,7 @@ void RTE::DirectXRenderSystem::LogAdapterOutputs(IDXGIAdapter * adapter)
 	}
 }
 
-void RTE::DirectXRenderSystem::LogAdapters()
+void RTE::DirectX12RenderSystem::LogAdapters()
 {
 	UINT i = 0;
 	IDXGIAdapter* adapter = nullptr;
@@ -344,7 +344,7 @@ void RTE::DirectXRenderSystem::LogAdapters()
 }
 
 
-void RTE::DirectXRenderSystem::LogOutputDisplayModes(IDXGIOutput * output, DXGI_FORMAT format)
+void RTE::DirectX12RenderSystem::LogOutputDisplayModes(IDXGIOutput * output, DXGI_FORMAT format)
 {
 	UINT count = 0;
 	UINT flags = 0;
@@ -369,7 +369,7 @@ void RTE::DirectXRenderSystem::LogOutputDisplayModes(IDXGIOutput * output, DXGI_
 	}
 }
 
-void RTE::DirectXRenderSystem::CreateSwapChain()
+void RTE::DirectX12RenderSystem::CreateSwapChain()
 {
 	// Release the previous swapchain we will be recreating.
 	mSwapChain.Reset();
@@ -399,7 +399,7 @@ void RTE::DirectXRenderSystem::CreateSwapChain()
 
 }
 
-D3D12_CPU_DESCRIPTOR_HANDLE RTE::DirectXRenderSystem::CurrentBackBufferView() const
+D3D12_CPU_DESCRIPTOR_HANDLE RTE::DirectX12RenderSystem::CurrentBackBufferView() const
 {
 	return CD3DX12_CPU_DESCRIPTOR_HANDLE(
 		m_RtvHeap->GetCPUDescriptorHandleForHeapStart(),
@@ -408,19 +408,19 @@ D3D12_CPU_DESCRIPTOR_HANDLE RTE::DirectXRenderSystem::CurrentBackBufferView() co
 
 }
 
-D3D12_CPU_DESCRIPTOR_HANDLE RTE::DirectXRenderSystem::DepthStencilView() const
+D3D12_CPU_DESCRIPTOR_HANDLE RTE::DirectX12RenderSystem::DepthStencilView() const
 {
 	return m_DsvHeap->GetCPUDescriptorHandleForHeapStart();
 
 }
 
-ID3D12Resource* RTE::DirectXRenderSystem::CurrentBackBuffer() const
+ID3D12Resource* RTE::DirectX12RenderSystem::CurrentBackBuffer() const
 {
 	return m_SwapChainBuffer[mCurrBackBuffer].Get();
 
 }
 
-void RTE::DirectXRenderSystem::FlushCommandQueue()
+void RTE::DirectX12RenderSystem::FlushCommandQueue()
 {
 	// Advance the fence value to mark commands up to this fence point.
 	m_CurrentFence++;

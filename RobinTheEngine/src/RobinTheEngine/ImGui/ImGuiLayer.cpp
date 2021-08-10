@@ -5,22 +5,24 @@
 #include "examples/imgui_impl_dx12.h"
 #include "examples/imgui_impl_win32.h"
 #include "examples/imgui_impl_glfw.h"
+#include "examples/imgui_impl_dx11.h"
 #include "GLFW/glfw3.h"
 #include "Platform/Windows/WindowsWindow.h"
+#include "Platform/DirectX11/DirectX11RenderSystem.h"
 
 #include "RobinTheEngine/Application.h"
 
 namespace RTE {
 
 	RTE::WindowsWindow* win;
-	RTE::DirectXRenderSystem* ren;
+	RTE::DirectX12RenderSystem* ren;
 	ImGuiIO* io;
 
 	ImGuiLayer::ImGuiLayer()
 		: Layer("ImGuiLayer")
 	{
 		win = (WindowsWindow*) &(Application::Get().GetWindow());
-		ren = (DirectXRenderSystem*)(Application::Get().GetRenderSystem());
+		ren = (DirectX12RenderSystem*)(Application::Get().GetRenderSystem());
 
 	}
 
@@ -48,19 +50,21 @@ namespace RTE {
 		}
 
 		RTE::WindowsWindow* win = static_cast<WindowsWindow*>(&Application::Get().GetWindow());
-		RTE::DirectXRenderSystem* ren = static_cast<DirectXRenderSystem*> (Application::Get().GetRenderSystem());
+		RTE::DirectX11RenderSystem* ren = static_cast<DirectX11RenderSystem*> (Application::Get().GetRenderSystem());
 
 		ImGui_ImplGlfw_InitForVulkan((GLFWwindow*)win->GetNativeWindow(), true);
-		ImGui_ImplDX12_Init(ren->GetDevice().Get(), 3,
-			DXGI_FORMAT_R8G8B8A8_UNORM, ren->mCbvHeap.Get(),
-			ren->mCbvHeap->GetCPUDescriptorHandleForHeapStart(),
-			ren->mCbvHeap->GetGPUDescriptorHandleForHeapStart());
+		ImGui_ImplDX11_Init(ren->GetDevice().Get(), ren->GetContext().Get());
+		/*	ImGui_ImplDX12_Init(ren->GetDevice().Get(), 3,
+				DXGI_FORMAT_R8G8B8A8_UNORM, ren->mCbvHeap.Get(),
+				ren->mCbvHeap->GetCPUDescriptorHandleForHeapStart(),
+				ren->mCbvHeap->GetGPUDescriptorHandleForHeapStart());*/
 
 	}
 
 	void ImGuiLayer::OnDetach()
 	{
-		ImGui_ImplDX12_Shutdown();
+		//ImGui_ImplDX12_Shutdown();
+		ImGui_ImplDX11_Shutdown();
 		ImGui_ImplGlfw_Shutdown();
 		ImGui::DestroyContext();
 
@@ -69,7 +73,8 @@ namespace RTE {
 	void ImGuiLayer::Begin()
 	{
 		// Start the Dear ImGui frame
-		ImGui_ImplDX12_NewFrame();
+		//ImGui_ImplDX12_NewFrame();
+		ImGui_ImplDX11_NewFrame();
 		ImGui_ImplGlfw_NewFrame();
 		ImGui::NewFrame();
 
@@ -80,8 +85,8 @@ namespace RTE {
 	{
 		ImGuiIO& io = ImGui::GetIO();
 		ImGui::Render();
-		ImGui_ImplDX12_RenderDrawData(ImGui::GetDrawData(), ren->GetCmdList());
-
+		//ImGui_ImplDX12_RenderDrawData(ImGui::GetDrawData(), ren->GetCmdList());
+		ImGui_ImplDX11_RenderDrawData(ImGui::GetDrawData());
 		// Update and Render additional Platform Windows
 		if (io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
 		{

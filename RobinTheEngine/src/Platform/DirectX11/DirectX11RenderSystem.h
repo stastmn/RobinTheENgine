@@ -1,19 +1,20 @@
-#pragma once
-#include <D3Dcompiler.h>
+//#pragma once
+//#include <D3Dcompiler.h>
 #include <DirectXMath.h>
-#include <DirectXPackedVector.h>
-#include <DirectXColors.h>
-#include <DirectXCollision.h>
+//#include <DirectXPackedVector.h>
+//#include <DirectXColors.h>
+//#include <DirectXCollision.h>
 #include <wrl.h>
-#include <dxgi1_4.h>
-#include <d3d12.h>
+//#include <dxgi1_4.h>
+#include <d3d11.h>
 
 #include "RobinTheEngine/RenderSystem.h"
 #include "RobinTheEngine/d3dUtils.h"
 
 
 #pragma comment(lib,"d3dcompiler.lib")
-#pragma comment(lib, "D3D12.lib")
+#pragma comment(lib, "d3d11.lib")
+//#pragma comment(lib, "DirectXTK.lib")
 #pragma comment(lib, "dxgi.lib")
 
 using Microsoft::WRL::ComPtr;
@@ -21,21 +22,24 @@ using namespace D3DUtils;
 
 namespace RTE {
 
-	class DirectXRenderSystem : public RTE::RenderSystem
+	class DirectX11RenderSystem : public RTE::RenderSystem
 	{
 	public:
-		DirectXRenderSystem(HWND hwnd);
-		~DirectXRenderSystem();
+		DirectX11RenderSystem(HWND hwnd);
+		~DirectX11RenderSystem();
 		void Init() override;
 		void OnResize(int width, int height) override;
 		void OnRenderBegin() override;
 		void OnRenderEnd() override;
 		void LogAdapters();
+		/*auto  GetCommandList() const noexcept { return m_CommandList.Get(); }*/
 
-		Microsoft::WRL::ComPtr<ID3D12Device> GetDevice() { return m_d3dDevice; }
+
+		Microsoft::WRL::ComPtr<ID3D11Device> GetDevice() { return m_d3dDevice; }
+		Microsoft::WRL::ComPtr<ID3D11DeviceContext> GetContext() { return m_DeviceContext; }
 		ComPtr<ID3D12DescriptorHeap> mCbvHeap = nullptr;
 
-		ID3D12GraphicsCommandList* GetCmdList() { return m_CommandList.Get(); }
+		/*ID3D12GraphicsCommandList* GetCmdList() { return m_CommandList.Get(); }*/
 	protected:
 		void CreateSwapChain();
 		D3D12_CPU_DESCRIPTOR_HANDLE CurrentBackBufferView()const;
@@ -47,13 +51,20 @@ namespace RTE {
 		void LogAdapterOutputs(IDXGIAdapter* adapter);
 		void LogOutputDisplayModes(IDXGIOutput* output, DXGI_FORMAT format);
 
-		Microsoft::WRL::ComPtr<IDXGIFactory4> m_dxgiFactory;
-		Microsoft::WRL::ComPtr<ID3D12Device> m_d3dDevice;
-		Microsoft::WRL::ComPtr<ID3D12Fence> m_Fence;
-		Microsoft::WRL::ComPtr<ID3D12CommandQueue> m_CommandQueue;
-		Microsoft::WRL::ComPtr<ID3D12CommandAllocator> m_DirectCmdListAlloc;
-		Microsoft::WRL::ComPtr<ID3D12GraphicsCommandList> m_CommandList;
+		Microsoft::WRL::ComPtr<IDXGIFactory> m_dxgiFactory;
+		Microsoft::WRL::ComPtr<ID3D11Device> m_d3dDevice;
+		Microsoft::WRL::ComPtr<ID3D11DeviceContext> m_DeviceContext;
+		/*	Microsoft::WRL::ComPtr<ID3D12Fence> m_Fence;
+			Microsoft::WRL::ComPtr<ID3D12CommandQueue> m_CommandQueue;
+			Microsoft::WRL::ComPtr<ID3D12CommandAllocator> m_DirectCmdListAlloc;
+			Microsoft::WRL::ComPtr<ID3D12GraphicsCommandList> m_CommandList;*/
+		static const int SwapChainBufferCount = 1;
 		Microsoft::WRL::ComPtr<IDXGISwapChain> mSwapChain;
+		Microsoft::WRL::ComPtr<ID3D11RenderTargetView> m_RenderTargetView;
+		Microsoft::WRL::ComPtr<ID3D11DepthStencilView> m_DepthStencilView;
+
+		Microsoft::WRL::ComPtr<ID3D11Resource> m_SwapChainBuffer[SwapChainBufferCount];
+
 
 
 		UINT64 m_CurrentFence = 0;
@@ -65,9 +76,6 @@ namespace RTE {
 		Microsoft::WRL::ComPtr<ID3D12DescriptorHeap> m_RtvHeap;
 		Microsoft::WRL::ComPtr<ID3D12DescriptorHeap> m_DsvHeap;
 
-		static const int SwapChainBufferCount = 2;
-		Microsoft::WRL::ComPtr<ID3D12Resource> m_SwapChainBuffer[SwapChainBufferCount];
-		Microsoft::WRL::ComPtr<ID3D12Resource> m_DepthStencilBuffer;
 
 
 		DXGI_FORMAT m_BackBufferFormat = DXGI_FORMAT_R8G8B8A8_UNORM;
@@ -96,8 +104,10 @@ namespace RTE {
 		int m_ClientWidth = 800;
 		int m_ClientHeight = 600;
 
-		D3D12_VIEWPORT m_ScreenViewport;
-		D3D12_RECT m_ScissorRect;
+		D3D11_VIEWPORT m_ScreenViewport;
+		D3D11_RECT m_ScissorRect;
+
+		std::vector<IDXGIAdapter*> adapterList;
 
 	};
 }

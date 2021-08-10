@@ -1,4 +1,5 @@
 #pragma once
+#include "DeviceResources.h"
 namespace RTE {
 
 	class RenderSystem
@@ -8,7 +9,8 @@ namespace RTE {
 		virtual void OnResize(int width, int height) = 0;
 		virtual void OnRenderBegin() = 0;
 		virtual void OnRenderEnd() = 0;
-		virtual ~RenderSystem() = default;
+		virtual ~RenderSystem() {};
+
 
 	};
 

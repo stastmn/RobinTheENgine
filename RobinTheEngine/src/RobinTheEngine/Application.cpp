@@ -1,10 +1,12 @@
 #include "rtepch.h"
 #include "Application.h"
 #include "Display.h"
-#include "Platform/DirectX12/DirectXRenderSystem.h"
+#include "Platform/DirectX12/DirectX12RenderSystem.h"
+#include "Platform/DirectX11/DirectX11RenderSystem.h"
 #include "Platform/Windows/WindowsWindow.h"
 #include "GLFW/glfw3.h"
 #include "RobinTheEngine/Input.h"
+#include "Model.h"
 
 
 
@@ -21,14 +23,16 @@ namespace RTE {
 		m_Window = std::unique_ptr<Window>(Window::Create());
 		m_Window->SetEventCallback(BIND_EVENT_FN(OnEvent));
 		auto a = ((WindowsWindow*)(m_Window.get()))->GetHwnd();
-		m_RenderSystem = std::make_unique<DirectXRenderSystem>(a);
+		m_RenderSystem = std::make_unique<DirectX11RenderSystem>(a);
 		m_RenderSystem->Init();
 		m_RenderSystem->OnResize(m_Window->GetWidth(), m_Window->GetHeight());
-
+		
 
 		m_ImGuiLayer = new ImGuiLayer();
 		PushOverlay(m_ImGuiLayer);
+
 	}
+
 
 	Application::~Application()
 	{
@@ -50,6 +54,9 @@ namespace RTE {
 				layer->OnImGuiRender();
 			m_ImGuiLayer->End();
 
+
+			for (Layer* layer : m_LayerStack)
+				layer->OnRender();
 
 			m_RenderSystem->OnRenderEnd();
 
@@ -93,7 +100,7 @@ namespace RTE {
 
 	bool Application::OnWindowResize(WindowResizeEvent& e) {
 		m_RenderSystem->OnResize(e.GetWidth(), e.GetHeight());
-		//m_RenderSystem->OnResize(800,800);
+		m_RenderSystem->OnResize(800, 800);
 
 		return true;
 	}

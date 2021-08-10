@@ -2,7 +2,7 @@
 #include <RTE.h>
 #include "imgui/imgui.h"
 
-
+using namespace DirectX;
 
 class ExampleLayer : public RTE::Layer
 {
@@ -15,7 +15,7 @@ public:
 	}
 
 	void OnAttach() {
-
+		
 	}
 
 	void OnUpdate() override
@@ -43,6 +43,10 @@ public:
 	}
 
 
+	void OnRender()override
+	{
+
+		}
 };
 
 class Sandbox : public RTE::Application

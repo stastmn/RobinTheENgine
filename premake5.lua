@@ -16,11 +16,15 @@
    IncludeDir = {}
    IncludeDir["GLFW"] = "RobinTheEngine/vendor/GLFW/include"
    IncludeDir["ImGui"] = "RobinTheEngine/vendor/imgui"
+   IncludeDir["DirectXTK12"] = "RobinTheEngine/vendor/DirectXTK12"
+   IncludeDir["DirectXTK"] = "RobinTheEngine/vendor/DirectXTK12"
 
    group "Dependencies"
    include "RobinTheEngine/vendor/GLFW"
    include "RobinTheEngine/vendor/imgui"
+   --include "RobinTheEngine/vendor/DirectXTK12"
    group ""
+
 
    project "RobinTheEngine"
       location "RobinTheEngine"
@@ -28,6 +32,7 @@
       language "C++"
 	  cppdialect "C++17"
 	  staticruntime "on"
+	  libdirs { "%{prj.name}/../vendor/bin/DirectXTK/Debug/" }
 
       targetdir ("bin/" .. outputdir .. "/%{prj.name}")
       objdir ("bin-int/" .. outputdir .. "/%{prj.name}")
@@ -52,15 +57,21 @@
          "%{prj.name}/vendor/spdlog/include",
          "%{prj.name}/vendor/DirectX12-Headers/include/directx",
          "%{IncludeDir.GLFW}",
-		 "%{IncludeDir.ImGui}"
+		 "%{IncludeDir.ImGui}",
+		 "%{IncludeDir.DirectXTK12}/Inc",
+		 "%{IncludeDir.DirectXTK}/Inc",
+		 
       }
- 
+      
       links
       {
          "GLFW",
 		 "opengl32.lib",
 		 "ImGui"
+
       }
+	  
+
 
       filter "system:windows"
          systemversion "latest"
@@ -77,16 +88,19 @@
          defines "RTE_DEBUG"
          symbols "on"
 		 runtime "Debug"
+		 libdirs { "vendor/bin/DirectXTK/Debug/" }
 
       filter "configurations:Release"
          defines "RTE_RELEASE"
          optimize "on"
 		 runtime "Release"
+		 libdirs { "vendor/bin/DirectXTK/Release/" }
 
       filter "configurations:Dist"
          defines "RTE_DIST"
          optimize "on"
 		 runtime "Release"
+		 libdirs { "vendor/bin/DirectXTK/Release/" }
 
 
    project "Sandbox"
@@ -139,7 +153,7 @@
       filter "configurations:Dist"
          defines "RTE_DIST"
          optimize "on"
-		 runtime "Release"	
+		 runtime "Release"
 
 
 

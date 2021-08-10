@@ -4,6 +4,9 @@
     <Filter Include="Platform">
       <UniqueIdentifier>{2AC788B4-1694-E3BF-3FAD-D1672BD9184E}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Platform\DirectX11">
+      <UniqueIdentifier>{6EE5EAC0-5AC9-AB16-C329-A669AF2C9698}</UniqueIdentifier>
+    </Filter>
     <Filter Include="Platform\DirectX12">
       <UniqueIdentifier>{6FE5EAC0-5BC9-AB16-C429-A669B02C9698}</UniqueIdentifier>
     </Filter>
@@ -21,7 +24,13 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\Platform\DirectX12\DirectXRenderSystem.h">
+    <ClInclude Include="src\Platform\DirectX11\DirectX11DeviceResources.h">
+      <Filter>Platform\DirectX11</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Platform\DirectX11\DirectX11RenderSystem.h">
+      <Filter>Platform\DirectX11</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Platform\DirectX12\DirectX12RenderSystem.h">
       <Filter>Platform\DirectX12</Filter>
     </ClInclude>
     <ClInclude Include="src\Platform\Windows\WindowsInput.h">
@@ -35,6 +44,9 @@
       <Filter>RobinTheEngine</Filter>
     </ClInclude>
     <ClInclude Include="src\RobinTheEngine\Core.h">
+      <Filter>RobinTheEngine</Filter>
+    </ClInclude>
+    <ClInclude Include="src\RobinTheEngine\DeviceResources.h">
       <Filter>RobinTheEngine</Filter>
     </ClInclude>
     <ClInclude Include="src\RobinTheEngine\Display.h">
@@ -89,9 +101,17 @@
       <Filter>RobinTheEngine</Filter>
     </ClInclude>
     <ClInclude Include="src\rtepch.h" />
+    <ClInclude Include="src\Platform\DirectX11\Buffer.h" />
+    <ClInclude Include="src\Platform\DirectX11\Shaders.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\Platform\DirectX12\DirectXRenderSystem.cpp">
+    <ClCompile Include="src\Platform\DirectX11\DirectX11DeviceResources.cpp">
+      <Filter>Platform\DirectX11</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Platform\DirectX11\DirectX11RenderSystem.cpp">
+      <Filter>Platform\DirectX11</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Platform\DirectX12\DirectX12RenderSystem.cpp">
       <Filter>Platform\DirectX12</Filter>
     </ClCompile>
     <ClCompile Include="src\Platform\Windows\WindowsInput.cpp">
@@ -128,5 +148,7 @@
       <Filter>RobinTheEngine</Filter>
     </ClCompile>
     <ClCompile Include="src\rtepch.cpp" />
+    <ClCompile Include="src\Platform\DirectX11\Buffer.cpp" />
+    <ClCompile Include="src\Platform\DirectX11\Shaders.cpp" />
   </ItemGroup>
 </Project>
