@@ -8,6 +8,8 @@
 #include "RobinTheEngine/Input.h"
 #include "Model.h"
 
+#include "Platform/DirectX11/Buffer.h"
+#include "Platform/DirectX11/Shaders.h"
 
 
 namespace RTE {
@@ -26,10 +28,11 @@ namespace RTE {
 		m_RenderSystem = std::make_unique<DirectX11RenderSystem>(a);
 		m_RenderSystem->Init();
 		m_RenderSystem->OnResize(m_Window->GetWidth(), m_Window->GetHeight());
-		
+
 
 		m_ImGuiLayer = new ImGuiLayer();
 		PushOverlay(m_ImGuiLayer);
+
 
 	}
 
@@ -42,6 +45,25 @@ namespace RTE {
 	void Application::Run()
 	{
 
+		float vertexArray[] = {
+
+			-0.5f,	-0.5f,	0,		1, 0, 0, 1, //red
+			-0.5f,	0.5f,	0,		0, 1, 0, 1, //green
+			0.5f,	0.5f,	0,	0, 0, 1, 1, //blue
+			0.5f,	-0.5f,	0,		1, 1, 1, 1, //white
+		};
+
+		DWORD indecies[] = {
+			0, 1, 2,
+			2, 3, 0
+		};
+
+		Buffer vertexbuffer((char*)vertexArray, sizeof(float)*7, ARRAYSIZE(vertexArray));
+		IndexBuffer IndexBuffer(indecies, ARRAYSIZE(indecies));
+
+		vertexShader vs(L"shaders\\VS.hlsl");
+		pixelShader ps(L"shaders\\PS.hlsl");
+
 		while (m_Running) {
 			m_Window->OnUpdate();
 			m_RenderSystem->OnRenderBegin();
@@ -49,14 +71,27 @@ namespace RTE {
 			for (Layer* layer : m_LayerStack)
 				layer->OnUpdate();
 
-			m_ImGuiLayer->Begin();
-			for (Layer* layer : m_LayerStack)
-				layer->OnImGuiRender();
-			m_ImGuiLayer->End();
+			/*	m_ImGuiLayer->Begin();
+				for (Layer* layer : m_LayerStack)
+					layer->OnImGuiRender();
+				m_ImGuiLayer->End();*/
 
 
 			for (Layer* layer : m_LayerStack)
 				layer->OnRender();
+
+
+			auto context = static_cast<DirectX11RenderSystem*>(m_RenderSystem.get())->GetContext();
+			context->IASetInputLayout(vs.GetInputLayout());
+			context->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY::D3D10_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+			context->VSSetShader(vs.GetShader(), 0,0);
+			context->PSSetShader(ps.GetShader(), 0, 0);
+			UINT offset = 0;
+			context->IASetVertexBuffers(0, 1, vertexbuffer.GetAdressOf(), vertexbuffer.StridePtr(), &offset);
+			context->IASetIndexBuffer(IndexBuffer.Get(), DXGI_FORMAT_R32_UINT, 0);
+
+			context->DrawIndexed(IndexBuffer.ElementCount(), 0, 0);
+			//context->Draw(3, 0);
 
 			m_RenderSystem->OnRenderEnd();
 

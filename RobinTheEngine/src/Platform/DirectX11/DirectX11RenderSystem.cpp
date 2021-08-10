@@ -29,9 +29,9 @@ void RTE::DirectX11RenderSystem::Init()
 
 	ThrowIfFailed(CreateDXGIFactory(IID_PPV_ARGS(&m_dxgiFactory)));
 
-#ifdef _DEBUG
+
 	LogAdapters();
-#endif
+
 
 	DXGI_SWAP_CHAIN_DESC sd;
 	sd.BufferDesc.Width = m_ClientWidth;
@@ -50,10 +50,16 @@ void RTE::DirectX11RenderSystem::Init()
 	sd.SwapEffect = DXGI_SWAP_EFFECT_DISCARD;
 	sd.Flags = DXGI_SWAP_CHAIN_FLAG_ALLOW_MODE_SWITCH;
 
+
+	UINT flags = 0;
+#ifdef DEBUG
+	flags |= D3D11_CREATE_DEVICE_DEBUG;
+#endif // DEBUG
+
 	HRESULT hr = D3D11CreateDeviceAndSwapChain(adapterList[0],
 		D3D_DRIVER_TYPE_UNKNOWN,
 		NULL,//software driver type
-		NULL,//flags%
+		flags,//flags%
 		NULL,//feature levels array
 		0, //Feature levels count
 		D3D11_SDK_VERSION,
@@ -294,7 +300,7 @@ void RTE::DirectX11RenderSystem::OnRenderEnd()
 	//
 	//
 	//	// swap the back and front buffers
-	mSwapChain->Present(1, 0);
+	ThrowIfFailed( mSwapChain->Present(1, 0));
 	//	ThrowIfFailed(mSwapChain->Present(0, 0));
 	//	mCurrBackBuffer = (mCurrBackBuffer + 1) % SwapChainBufferCount;
 	//
@@ -345,11 +351,13 @@ void RTE::DirectX11RenderSystem::LogAdapters()
 		RTE_CORE_INFO(text);
 		adapterList.push_back(adapter);    ++i;
 	}
+#ifdef DEBUG
 	for (size_t i = 0; i < adapterList.size(); ++i) {
 
 		LogAdapterOutputs(adapterList[i]);
 		//ReleaseCom(adapterList[i]);
 	}
+	#endif // DEBUG
 }
 
 

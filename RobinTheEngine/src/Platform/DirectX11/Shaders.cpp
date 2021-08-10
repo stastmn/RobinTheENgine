@@ -36,12 +36,21 @@ RTE::vertexShader::vertexShader(std::wstring filePath) :path(filePath)
 	DirectX11RenderSystem* rs = static_cast<DirectX11RenderSystem*>(Application::Get().GetRenderSystem());
 	ThrowIfFailed(rs->GetDevice()->CreateVertexShader(shaderBuffer->GetBufferPointer(), shaderBuffer->GetBufferSize(), NULL, shader.GetAddressOf()));
 
+	const D3D11_INPUT_ELEMENT_DESC layout[] =
+	{
+		D3D11_INPUT_ELEMENT_DESC {"POSITION",0,DXGI_FORMAT::DXGI_FORMAT_R32G32B32_FLOAT,0,0,D3D11_INPUT_CLASSIFICATION::D3D11_INPUT_PER_VERTEX_DATA, 0 },
+		D3D11_INPUT_ELEMENT_DESC {"COLOR", 0,DXGI_FORMAT::DXGI_FORMAT_R32G32B32A32_FLOAT,0,D3D11_APPEND_ALIGNED_ELEMENT,D3D11_INPUT_CLASSIFICATION::D3D11_INPUT_PER_VERTEX_DATA, 0}
+	};
+
+	UINT numElements = ARRAYSIZE(layout);
+	ThrowIfFailed(rs->GetDevice()->CreateInputLayout(layout, numElements, shaderBuffer->GetBufferPointer(), shaderBuffer->GetBufferSize(), inputLayout.GetAddressOf()));
+
 }
 
 RTE::vertexShader::~vertexShader()
 {
-	shader->Release();
-	shaderBuffer->Release();
+	/*shader->Release();
+	shaderBuffer->Release();*/
 }
 
 ID3D11VertexShader * RTE::vertexShader::GetShader()
@@ -54,6 +63,11 @@ ID3DBlob * RTE::vertexShader::GetBuffer()
 	return shaderBuffer.Get();
 }
 
+ID3D11InputLayout* RTE::vertexShader::GetInputLayout()
+{
+	return inputLayout.Get();
+}
+
 RTE::pixelShader::pixelShader(std::wstring filePath) :path(filePath)
 {
 	Microsoft::WRL::ComPtr<ID3DBlob> errorMessage;
@@ -61,7 +75,7 @@ RTE::pixelShader::pixelShader(std::wstring filePath) :path(filePath)
 		NULL, //macro
 		NULL,//include
 		"main",//entrypoint
-		"vs_5_0",
+		"ps_5_0",
 		D3DCOMPILE_DEBUG | D3DCOMPILE_SKIP_OPTIMIZATION,
 		0,
 		shaderBuffer.GetAddressOf(),
@@ -89,8 +103,8 @@ RTE::pixelShader::pixelShader(std::wstring filePath) :path(filePath)
 
 RTE::pixelShader::~pixelShader()
 {
-	shader->Release();
-	shaderBuffer->Release();
+	/*shader->Release();
+	shaderBuffer->Release();*/
 }
 
 ID3D11PixelShader * RTE::pixelShader::GetShader()

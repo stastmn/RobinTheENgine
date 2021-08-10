@@ -30,7 +30,7 @@ namespace RTE {
 	};
 
 	class IndexBuffer {
-
+	public:
 		IndexBuffer(DWORD* data, int arraySize);
 		~IndexBuffer();
 

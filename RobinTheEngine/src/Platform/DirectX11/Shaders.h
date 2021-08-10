@@ -16,11 +16,13 @@ namespace RTE {
 
 		ID3D11VertexShader* GetShader();
 		ID3DBlob* GetBuffer();
+		ID3D11InputLayout* GetInputLayout();
 
 	private:
 		std::wstring path;
 		Microsoft::WRL::ComPtr<ID3D11VertexShader> shader;
 		Microsoft::WRL::ComPtr<ID3DBlob> shaderBuffer;
+		Microsoft::WRL::ComPtr<ID3D11InputLayout> inputLayout;
 
 	};
 
