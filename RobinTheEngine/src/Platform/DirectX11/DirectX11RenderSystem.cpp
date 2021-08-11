@@ -132,8 +132,14 @@ void RTE::DirectX11RenderSystem::Init()
 
 	OnResize(m_ClientWidth, m_ClientHeight);
 
+	D3D11_RASTERIZER_DESC rasterizerDesc;
+	ZeroMemory(&rasterizerDesc, sizeof(rasterizerDesc));
 
+	rasterizerDesc.FillMode = D3D11_FILL_MODE::D3D11_FILL_WIREFRAME;
+	rasterizerDesc.CullMode = D3D11_CULL_MODE::D3D11_CULL_BACK;
 
+	ThrowIfFailed( m_d3dDevice->CreateRasterizerState(&rasterizerDesc, m_RasterizerState.GetAddressOf()));
+	m_DeviceContext->RSSetState(m_RasterizerState.Get());
 }
 
 void RTE::DirectX11RenderSystem::OnResize(int width, int height)
