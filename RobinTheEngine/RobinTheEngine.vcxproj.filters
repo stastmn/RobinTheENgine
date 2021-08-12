@@ -103,6 +103,7 @@
     <ClInclude Include="src\rtepch.h" />
     <ClInclude Include="src\Platform\DirectX11\Buffer.h" />
     <ClInclude Include="src\Platform\DirectX11\Shaders.h" />
+    <ClInclude Include="src\Platform\DirectX11\ConstantBuffer.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Platform\DirectX11\DirectX11DeviceResources.cpp">
@@ -150,5 +151,6 @@
     <ClCompile Include="src\rtepch.cpp" />
     <ClCompile Include="src\Platform\DirectX11\Buffer.cpp" />
     <ClCompile Include="src\Platform\DirectX11\Shaders.cpp" />
+    <ClCompile Include="src\Platform\DirectX11\ConstantBuffer.cpp" />
   </ItemGroup>
 </Project>

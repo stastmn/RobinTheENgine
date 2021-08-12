@@ -54,6 +54,7 @@ namespace RTE {
 		Microsoft::WRL::ComPtr<IDXGIFactory> m_dxgiFactory;
 		Microsoft::WRL::ComPtr<ID3D11Device> m_d3dDevice;
 		Microsoft::WRL::ComPtr<ID3D11DeviceContext> m_DeviceContext;
+		Microsoft::WRL::ComPtr<ID3D11DepthStencilState> m_DepthStencilState;
 		Microsoft::WRL::ComPtr<ID3D11RasterizerState> m_RasterizerState;
 		/*	Microsoft::WRL::ComPtr<ID3D12Fence> m_Fence;
 			Microsoft::WRL::ComPtr<ID3D12CommandQueue> m_CommandQueue;
