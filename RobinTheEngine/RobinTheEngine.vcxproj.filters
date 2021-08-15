@@ -104,6 +104,7 @@
     <ClInclude Include="src\Platform\DirectX11\Buffer.h" />
     <ClInclude Include="src\Platform\DirectX11\Shaders.h" />
     <ClInclude Include="src\Platform\DirectX11\ConstantBuffer.h" />
+    <ClInclude Include="src\Platform\DirectX11\Vertex.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Platform\DirectX11\DirectX11DeviceResources.cpp">

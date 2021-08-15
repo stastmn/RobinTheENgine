@@ -4,41 +4,14 @@
 #include "DirectX11RenderSystem.h"
 #include "RobinTheEngine/Application.h"
 
-RTE::Buffer::Buffer(char* data, int vertexSize, int vertexCount)
-{
-	DirectX11RenderSystem* rs = static_cast<DirectX11RenderSystem*>(Application::Get().GetRenderSystem());
 
-	this->bufferSize = vertexCount * vertexSize;
-	this->stride = std::make_unique<UINT>(vertexSize);
-
-	D3D11_BUFFER_DESC desk;
-	ZeroMemory(&desk, sizeof(desk));
-
-	desk.Usage = D3D11_USAGE_DEFAULT;
-	desk.ByteWidth = vertexSize * vertexCount;
-	desk.BindFlags = D3D11_BIND_VERTEX_BUFFER;
-	desk.CPUAccessFlags = 0;
-	desk.MiscFlags = 0;
-
-	D3D11_SUBRESOURCE_DATA bufferData;
-	ZeroMemory(&bufferData, sizeof(bufferData));
-	bufferData.pSysMem = data;
-
-	ThrowIfFailed(rs->GetDevice()->CreateBuffer(&desk, &bufferData, buffer.GetAddressOf()));
-
-}
-
-RTE::Buffer::~Buffer()
-{
-	/*buffer->Release();*/
-}
 
 RTE::IndexBuffer::IndexBuffer(DWORD* data, int arraySize)
 {
 	DirectX11RenderSystem* rs = static_cast<DirectX11RenderSystem*>(Application::Get().GetRenderSystem());
 
 	elementCount = arraySize;
-	
+
 	D3D11_BUFFER_DESC desk;
 	ZeroMemory(&desk, sizeof(desk));
 

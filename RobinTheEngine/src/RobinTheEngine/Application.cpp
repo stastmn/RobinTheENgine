@@ -11,6 +11,7 @@
 #include "Platform/DirectX11/Buffer.h"
 #include "Platform/DirectX11/Shaders.h"
 #include "Platform/DirectX11/ConstantBuffer.h"
+#include "Platform/DirectX11/Vertex.h"
 
 
 namespace RTE {
@@ -46,12 +47,12 @@ namespace RTE {
 	void Application::Run()
 	{
 
-		float vertexArray[] = {
+		vertex_POS_COLLOR vertexArray[] = {
 
-			-0.5f,	-0.5f,	0,		1, 0, 0, 1, //red
-			-0.5f,	0.5f,	0,		0, 1, 0, 1, //green
-			0.5f,	0.5f,	0,	0, 0, 1, 1, //blue
-			0.5f,	-0.5f,	0,		0, 0, 0, 1 //black
+			vertex_POS_COLLOR{ -0.5f, -0.5f, 0, 1.f, 0.f, 0.f, 1.f}, //red
+			vertex_POS_COLLOR{ -0.5f, 0.5f,	0, 0, 1, 0, 1} , //green
+			vertex_POS_COLLOR{ 0.5f, 0.5f, 0, 0, 0, 1, 1}, //blue
+			vertex_POS_COLLOR{ 0.5f, -0.5f, 0, 0, 0, 0, 1 } //black
 		};
 
 		DWORD indecies[] = {
@@ -59,7 +60,7 @@ namespace RTE {
 			2, 3, 0
 		};
 
-		Buffer vertexbuffer((char*)vertexArray, sizeof(float) * 7, ARRAYSIZE(vertexArray));
+		vertexBuffer<vertex_POS_COLLOR> vertexbuffer(vertexArray, 4);
 		IndexBuffer IndexBuffer(indecies, ARRAYSIZE(indecies));
 
 		vertexShader vs(L"shaders\\VS.hlsl");
@@ -87,7 +88,7 @@ namespace RTE {
 			context->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY::D3D10_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 			context->VSSetShader(vs.GetShader(), 0, 0);
 			context->PSSetShader(ps.GetShader(), 0, 0);
-			
+
 			i += 0.05f;
 			context->VSSetConstantBuffers(0, 1, cbuffer.GetAddressOf());
 			DirectX::XMStoreFloat4x4(&rotation.matrix, DirectX::XMMatrixRotationZ(i));
@@ -96,7 +97,7 @@ namespace RTE {
 			UINT offset = 0;
 			context->IASetVertexBuffers(0, 1, vertexbuffer.GetAdressOf(), vertexbuffer.StridePtr(), &offset);
 			context->IASetIndexBuffer(IndexBuffer.Get(), DXGI_FORMAT_R32_UINT, 0);
-			
+
 			context->DrawIndexed(IndexBuffer.ElementCount(), 0, 0);
 			//context->Draw(3, 0);
 
@@ -109,47 +110,47 @@ namespace RTE {
 			m_RenderSystem->OnRenderEnd();
 
 		}
-	}
-
-	void Application::PushLayer(Layer* layer)
-	{
-		m_LayerStack.PushLayer(layer);
-		layer->OnAttach();
-	}
-
-	void Application::PushOverlay(Layer* layer)
-	{
-		m_LayerStack.PushOverlay(layer);
-		layer->OnAttach();
-	}
-
-	void Application::OnEvent(Event& e)
-	{
-
-		EventDispatcher dispatcher(e);
-		dispatcher.Dispatch<WindowCloseEvent>(BIND_EVENT_FN(OnWindowClose));
-		dispatcher.Dispatch<WindowResizeEvent>(BIND_EVENT_FN(OnWindowResize));
-
-
-		for (auto it = m_LayerStack.end(); it != m_LayerStack.begin(); )
-		{
-			(*--it)->OnEvent(e);
-			if (e.Handled)
-				break;
 		}
 
-	}
+			void Application::PushLayer(Layer* layer)
+		{
+			m_LayerStack.PushLayer(layer);
+			layer->OnAttach();
+		}
 
-	bool Application::OnWindowClose(WindowCloseEvent& e)
-	{
-		m_Running = false;
-		return true;
-	}
+		void Application::PushOverlay(Layer* layer)
+		{
+			m_LayerStack.PushOverlay(layer);
+			layer->OnAttach();
+		}
 
-	bool Application::OnWindowResize(WindowResizeEvent& e) {
-		m_RenderSystem->OnResize(e.GetWidth(), e.GetHeight());
-		m_RenderSystem->OnResize(800, 800);
+		void Application::OnEvent(Event& e)
+		{
 
-		return true;
+			EventDispatcher dispatcher(e);
+			dispatcher.Dispatch<WindowCloseEvent>(BIND_EVENT_FN(OnWindowClose));
+			dispatcher.Dispatch<WindowResizeEvent>(BIND_EVENT_FN(OnWindowResize));
+
+
+			for (auto it = m_LayerStack.end(); it != m_LayerStack.begin(); )
+			{
+				(*--it)->OnEvent(e);
+				if (e.Handled)
+					break;
+			}
+
+		}
+
+		bool Application::OnWindowClose(WindowCloseEvent& e)
+		{
+			m_Running = false;
+			return true;
+		}
+
+		bool Application::OnWindowResize(WindowResizeEvent& e) {
+			m_RenderSystem->OnResize(e.GetWidth(), e.GetHeight());
+			m_RenderSystem->OnResize(800, 800);
+
+			return true;
+		}
 	}
-}

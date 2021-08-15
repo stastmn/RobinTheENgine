@@ -4,22 +4,42 @@
 
 namespace RTE {
 
-
-	class Buffer {
+	template<class T>
+	class vertexBuffer {
 
 	public:
-		Buffer(char* data, int elementSize, int arraySize);
-		~Buffer();
+		vertexBuffer(T* data, int numOfElements) {
+			DirectX11RenderSystem* rs = static_cast<DirectX11RenderSystem*>(Application::Get().GetRenderSystem());
+
+			this->bufferSize = numOfElements * sizeof(T);
+				this->stride = std::make_unique<UINT>(sizeof(T));
+
+			D3D11_BUFFER_DESC desk;
+			ZeroMemory(&desk, sizeof(desk));
+
+			desk.Usage = D3D11_USAGE_DEFAULT;
+			desk.ByteWidth = sizeof(T) * numOfElements;
+			desk.BindFlags = D3D11_BIND_VERTEX_BUFFER;
+			desk.CPUAccessFlags = 0;
+			desk.MiscFlags = 0;
+
+			D3D11_SUBRESOURCE_DATA bufferData;
+			ZeroMemory(&bufferData, sizeof(bufferData));
+			bufferData.pSysMem = data;
+
+			ThrowIfFailed(rs->GetDevice()->CreateBuffer(&desk, &bufferData, buffer.GetAddressOf()));
+		}
+		~vertexBuffer() {};
 
 	private:
 		Microsoft::WRL::ComPtr<ID3D11Buffer> buffer;
 		std::unique_ptr<UINT> stride;
 		UINT bufferSize;
 
-		Buffer(Buffer& rhs) = delete;
-		Buffer(Buffer&& rhs) = delete;
-		Buffer& operator=(Buffer& rhs) = delete;
-		Buffer& operator=(Buffer&& rhs) = delete;
+		vertexBuffer(vertexBuffer& rhs) = delete;
+		vertexBuffer(vertexBuffer&& rhs) = delete;
+		vertexBuffer& operator=(vertexBuffer& rhs) = delete;
+		vertexBuffer& operator=(vertexBuffer&& rhs) = delete;
 
 	public:
 		ID3D11Buffer* Get() { return buffer.Get(); }

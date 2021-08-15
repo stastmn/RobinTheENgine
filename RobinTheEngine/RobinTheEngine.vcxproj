@@ -152,6 +152,7 @@
     <ClInclude Include="src\Platform\DirectX11\DirectX11DeviceResources.h" />
     <ClInclude Include="src\Platform\DirectX11\DirectX11RenderSystem.h" />
     <ClInclude Include="src\Platform\DirectX11\Shaders.h" />
+    <ClInclude Include="src\Platform\DirectX11\Vertex.h" />
     <ClInclude Include="src\Platform\DirectX12\DirectX12RenderSystem.h" />
     <ClInclude Include="src\Platform\Windows\WindowsInput.h" />
     <ClInclude Include="src\Platform\Windows\WindowsWindow.h" />
