@@ -12,6 +12,7 @@
 #include "Platform/DirectX11/Shaders.h"
 #include "Platform/DirectX11/ConstantBuffer.h"
 #include "Platform/DirectX11/Vertex.h"
+#include "Platform/DirectX11/Camera.h"
 
 
 namespace RTE {
@@ -68,6 +69,7 @@ namespace RTE {
 
 		CB_VS_MATRIX4x4 rotation;
 		ConstantBuffer<CB_VS_MATRIX4x4> cbuffer;
+		Camera camera;
 		float i = 0;
 		while (m_Running) {
 			m_Window->OnUpdate();
@@ -90,8 +92,11 @@ namespace RTE {
 			context->PSSetShader(ps.GetShader(), 0, 0);
 
 			i += 0.05f;
+			camera.AdjustRotation(XMFLOAT3(0, 0.008, 0));
+			camera.SetPosition(XMFLOAT3(0, 0, -5));
+			camera.SetProjectionProperties(150, static_cast<float>(m_Window->GetWidth()) / static_cast<float>(m_Window->GetHeight()), 0.05, 1000);
 			context->VSSetConstantBuffers(0, 1, cbuffer.GetAddressOf());
-			DirectX::XMStoreFloat4x4(&rotation.matrix, DirectX::XMMatrixRotationZ(i));
+			DirectX::XMStoreFloat4x4(&rotation.matrix, DirectX::XMMatrixRotationZ(i)*  camera.GetViewMatrix()* camera.GetProjectionMatrix());
 			cbuffer.WirteBuffer(rotation);
 
 			UINT offset = 0;

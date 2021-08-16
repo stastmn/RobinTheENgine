@@ -105,6 +105,7 @@
     <ClInclude Include="src\Platform\DirectX11\Shaders.h" />
     <ClInclude Include="src\Platform\DirectX11\ConstantBuffer.h" />
     <ClInclude Include="src\Platform\DirectX11\Vertex.h" />
+    <ClInclude Include="src\Platform\DirectX11\Camera.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Platform\DirectX11\DirectX11DeviceResources.cpp">
@@ -153,5 +154,6 @@
     <ClCompile Include="src\Platform\DirectX11\Buffer.cpp" />
     <ClCompile Include="src\Platform\DirectX11\Shaders.cpp" />
     <ClCompile Include="src\Platform\DirectX11\ConstantBuffer.cpp" />
+    <ClCompile Include="src\Platform\DirectX11\Camera.cpp" />
   </ItemGroup>
 </Project>

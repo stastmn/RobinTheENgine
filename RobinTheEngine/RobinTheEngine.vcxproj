@@ -148,6 +148,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="src\Platform\DirectX11\Buffer.h" />
+    <ClInclude Include="src\Platform\DirectX11\Camera.h" />
     <ClInclude Include="src\Platform\DirectX11\ConstantBuffer.h" />
     <ClInclude Include="src\Platform\DirectX11\DirectX11DeviceResources.h" />
     <ClInclude Include="src\Platform\DirectX11\DirectX11RenderSystem.h" />
@@ -181,6 +182,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Platform\DirectX11\Buffer.cpp" />
+    <ClCompile Include="src\Platform\DirectX11\Camera.cpp" />
     <ClCompile Include="src\Platform\DirectX11\ConstantBuffer.cpp" />
     <ClCompile Include="src\Platform\DirectX11\DirectX11DeviceResources.cpp" />
     <ClCompile Include="src\Platform\DirectX11\DirectX11RenderSystem.cpp" />
