@@ -105,6 +105,26 @@ void RTE::Camera::AdjustRotation(const XMFLOAT3 & vec)
 	UpdateViewMatrix();
 }
 
+const XMVECTOR & RTE::Camera::GetForwardVector()
+{
+	return vec_forward;
+}
+
+const XMVECTOR & RTE::Camera::GetBackwardVector()
+{
+	return vec_backward;
+}
+
+const XMVECTOR & RTE::Camera::GetRightVector()
+{
+	return vec_right;
+}
+
+const XMVECTOR & RTE::Camera::GetLeftVector()
+{
+	return vec_left;
+}
+
 void RTE::Camera::UpdateViewMatrix()
 {
 	XMMATRIX rotation = XMMatrixRotationRollPitchYawFromVector(m_rotVec);
@@ -113,5 +133,12 @@ void RTE::Camera::UpdateViewMatrix()
 	XMVECTOR upDir = XMVector3TransformCoord(DEFAULT_UP_VECTOR, rotation);
 
 	m_viewMatrix = XMMatrixLookAtLH(m_posVec, target, upDir);
+
+	XMMATRIX vecRotationMat = XMMatrixRotationRollPitchYaw(0.f, m_rot.y, 0.f);
+
+	vec_forward = XMVector3TransformCoord(DEFAULT_FORWARD_VECTOR, vecRotationMat);
+	vec_backward = XMVector3TransformCoord(DEFAULT_BACKWARD_VECTOR, vecRotationMat);
+	vec_left = XMVector3TransformCoord(DEFAULT_LEFT_VECTOR, vecRotationMat);
+	vec_right = XMVector3TransformCoord(DEFAULT_RIGHT_VECTOR, vecRotationMat);
 
 }

@@ -8,6 +8,7 @@
 #include "RobinTheEngine/Events/Event.h"
 #include "RobinTheEngine/Events/ApplicationEvent.h"
 #include "RobinTheEngine/ImGui/ImGuiLayer.h"
+#include "Platform/DirectX11/Camera.h"
 
 
 namespace RTE {
@@ -15,6 +16,8 @@ namespace RTE {
 	class RTE_API Application
 	{
 	public:
+		//TEMP camera for testing
+		Camera camera;
 		Application();
 		virtual ~Application();
 

@@ -50,18 +50,27 @@ namespace RTE {
 
 		vertex_POS_COLLOR vertexArray[] = {
 
-			vertex_POS_COLLOR{ -0.5f, -0.5f, 0, 1.f, 0.f, 0.f, 1.f}, //red
-			vertex_POS_COLLOR{ -0.5f, 0.5f,	0, 0, 1, 0, 1} , //green
-			vertex_POS_COLLOR{ 0.5f, 0.5f, 0, 0, 0, 1, 1}, //blue
-			vertex_POS_COLLOR{ 0.5f, -0.5f, 0, 0, 0, 0, 1 } //black
+			vertex_POS_COLLOR{ -1.f, -1.f, -1.f, 1.f, 1.f, 1.f, 1.f}, //red
+			vertex_POS_COLLOR{ 1.f, -1.f,	-1.f, 1, 0, 0, 1} , //green
+			vertex_POS_COLLOR{ -1.f, 1.f, -1.f, 0, 0, 1, 1}, //blue
+			vertex_POS_COLLOR{ 1.f, 1.f, -1.f, 0, 1, 0, 1 }, //black
+
+			vertex_POS_COLLOR{ -1.f, -1.f, 1.f, 0.f, 0.f, 0.f, 1.f}, //red
+			vertex_POS_COLLOR{ 1.f, -1.f,	1.f, 0, 1, 1, 1} , //green
+			vertex_POS_COLLOR{ -1.f, 1.f, 1.f, 1, 1, 0, 1}, //blue
+			vertex_POS_COLLOR{ 1.f, 1.f, 1.f, 1, 0, 1, 1 } //black
 		};
 
 		DWORD indecies[] = {
-			0, 1, 2,
-			2, 3, 0
+			0,2,1,2,3,1,
+			1,3,5,3,7,5,
+			2,6,3,3,6,7,
+			4,5,7,4,7,6,
+			0,4,2,2,4,6,
+			0,1,4,1,5,4
 		};
 
-		vertexBuffer<vertex_POS_COLLOR> vertexbuffer(vertexArray, 4);
+		vertexBuffer<vertex_POS_COLLOR> vertexbuffer(vertexArray, ARRAYSIZE(vertexArray));
 		IndexBuffer IndexBuffer(indecies, ARRAYSIZE(indecies));
 
 		vertexShader vs(L"shaders\\VS.hlsl");
@@ -69,14 +78,14 @@ namespace RTE {
 
 		CB_VS_MATRIX4x4 rotation;
 		ConstantBuffer<CB_VS_MATRIX4x4> cbuffer;
-		Camera camera;
-		float i = 0;
+		float i = 5;
 		while (m_Running) {
 			m_Window->OnUpdate();
 			m_RenderSystem->OnRenderBegin();
 
 			for (Layer* layer : m_LayerStack)
 				layer->OnUpdate();
+
 
 
 
@@ -91,12 +100,12 @@ namespace RTE {
 			context->VSSetShader(vs.GetShader(), 0, 0);
 			context->PSSetShader(ps.GetShader(), 0, 0);
 
-			i += 0.05f;
-			camera.AdjustRotation(XMFLOAT3(0, 0.008, 0));
-			camera.SetPosition(XMFLOAT3(0, 0, -5));
-			camera.SetProjectionProperties(150, static_cast<float>(m_Window->GetWidth()) / static_cast<float>(m_Window->GetHeight()), 0.05, 1000);
+			i += 0.0005f;
+			//camera.AdjustRotation(XMFLOAT3(0, 0.008, 0));
+			//camera.SetPosition(XMFLOAT3(0, 0, -5));
+			//camera.SetProjectionProperties(150, static_cast<float>(m_Window->GetWidth()) / static_cast<float>(m_Window->GetHeight()), 0.05, 1000);
 			context->VSSetConstantBuffers(0, 1, cbuffer.GetAddressOf());
-			DirectX::XMStoreFloat4x4(&rotation.matrix, DirectX::XMMatrixRotationZ(i)*  camera.GetViewMatrix()* camera.GetProjectionMatrix());
+			DirectX::XMStoreFloat4x4(&rotation.matrix, DirectX::XMMatrixRotationZ(i)* DirectX::XMMatrixRotationY(i) *camera.GetViewMatrix()* camera.GetProjectionMatrix());
 			cbuffer.WirteBuffer(rotation);
 
 			UINT offset = 0;
@@ -107,55 +116,55 @@ namespace RTE {
 			//context->Draw(3, 0);
 
 
-				/*m_ImGuiLayer->Begin();
-				for (Layer* layer : m_LayerStack)
-					layer->OnImGuiRender();
-				m_ImGuiLayer->End();*/
+			m_ImGuiLayer->Begin();
+			for (Layer* layer : m_LayerStack)
+				layer->OnImGuiRender();
+			m_ImGuiLayer->End();
 
 			m_RenderSystem->OnRenderEnd();
 
 		}
-		}
-
-			void Application::PushLayer(Layer* layer)
-		{
-			m_LayerStack.PushLayer(layer);
-			layer->OnAttach();
-		}
-
-		void Application::PushOverlay(Layer* layer)
-		{
-			m_LayerStack.PushOverlay(layer);
-			layer->OnAttach();
-		}
-
-		void Application::OnEvent(Event& e)
-		{
-
-			EventDispatcher dispatcher(e);
-			dispatcher.Dispatch<WindowCloseEvent>(BIND_EVENT_FN(OnWindowClose));
-			dispatcher.Dispatch<WindowResizeEvent>(BIND_EVENT_FN(OnWindowResize));
-
-
-			for (auto it = m_LayerStack.end(); it != m_LayerStack.begin(); )
-			{
-				(*--it)->OnEvent(e);
-				if (e.Handled)
-					break;
-			}
-
-		}
-
-		bool Application::OnWindowClose(WindowCloseEvent& e)
-		{
-			m_Running = false;
-			return true;
-		}
-
-		bool Application::OnWindowResize(WindowResizeEvent& e) {
-			m_RenderSystem->OnResize(e.GetWidth(), e.GetHeight());
-			m_RenderSystem->OnResize(800, 800);
-
-			return true;
-		}
 	}
+
+	void Application::PushLayer(Layer* layer)
+	{
+		m_LayerStack.PushLayer(layer);
+		layer->OnAttach();
+	}
+
+	void Application::PushOverlay(Layer* layer)
+	{
+		m_LayerStack.PushOverlay(layer);
+		layer->OnAttach();
+	}
+
+	void Application::OnEvent(Event& e)
+	{
+
+		EventDispatcher dispatcher(e);
+		dispatcher.Dispatch<WindowCloseEvent>(BIND_EVENT_FN(OnWindowClose));
+		dispatcher.Dispatch<WindowResizeEvent>(BIND_EVENT_FN(OnWindowResize));
+
+
+		for (auto it = m_LayerStack.end(); it != m_LayerStack.begin(); )
+		{
+			(*--it)->OnEvent(e);
+			if (e.Handled)
+				break;
+		}
+
+	}
+
+	bool Application::OnWindowClose(WindowCloseEvent& e)
+	{
+		m_Running = false;
+		return true;
+	}
+
+	bool Application::OnWindowResize(WindowResizeEvent& e) {
+		m_RenderSystem->OnResize(e.GetWidth(), e.GetHeight());
+		m_RenderSystem->OnResize(800, 800);
+
+		return true;
+	}
+}

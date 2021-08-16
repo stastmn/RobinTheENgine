@@ -8,6 +8,8 @@
 #include "RobinTheEngine/ImGui/ImGuiLayer.h"
 #include "RobinTheEngine/GameTimer.h"
 
+#include "Platform/DirectX11/Camera.h"
+
 #include "RobinTheEngine/Input.h"
 #include "RobinTheEngine/KeyCodes.h"
 #include "RobinTheEngine/MouseButtonCodes.h"

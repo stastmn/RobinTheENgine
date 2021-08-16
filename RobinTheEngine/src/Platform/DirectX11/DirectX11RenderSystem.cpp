@@ -280,7 +280,7 @@ void RTE::DirectX11RenderSystem::OnRenderEnd()
 {
 
 	//	// swap the back and front buffers
-	ThrowIfFailed( mSwapChain->Present(1, 0));
+	ThrowIfFailed( mSwapChain->Present(0, 0));
 
 
 }

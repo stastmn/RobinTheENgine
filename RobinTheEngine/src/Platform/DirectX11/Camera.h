@@ -1,12 +1,13 @@
 #pragma once
 #include <DirectXMath.h>
+#include "RobinTheEngine/Core.h"
 using namespace DirectX;
 
 
 
 namespace RTE {
 
-	class Camera {
+	class RTE_API Camera {
 
 	public:
 		Camera();
@@ -29,6 +30,11 @@ namespace RTE {
 		void AdjustRotation(const XMVECTOR& vec);
 		void AdjustRotation(const XMFLOAT3& vec);
 
+		const XMVECTOR & GetForwardVector();
+		const XMVECTOR & GetBackwardVector();
+		const XMVECTOR & GetRightVector();
+		const XMVECTOR & GetLeftVector();
+
 	private:
 		void UpdateViewMatrix();
 		XMVECTOR m_posVec;
@@ -41,7 +47,16 @@ namespace RTE {
 
 		const XMVECTOR DEFAULT_FORWARD_VECTOR = XMVectorSet(0, 0, 1, 0);
 		const XMVECTOR DEFAULT_UP_VECTOR = XMVectorSet(0, 1, 0, 0);
-
+		const XMVECTOR DEFAULT_BACKWARD_VECTOR = XMVectorSet(0, 0, -1, 0);
+		const XMVECTOR DEFAULT_LEFT_VECTOR = XMVectorSet(-1, 0, 0, 0);
+		const XMVECTOR DEFAULT_RIGHT_VECTOR = XMVectorSet(1, 0, 1, 0);
+		const XMVECTOR DEFAULT_DOWN_VECTOR = XMVectorSet(0, 1, 0, 0);
+		
+		XMVECTOR vec_left;
+		XMVECTOR vec_right;
+		XMVECTOR vec_forward;
+		XMVECTOR vec_backward;
+		
 
 	};
 
