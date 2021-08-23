@@ -59,21 +59,18 @@
     <IntDir>..\bin-int\Debug-windows-x86_64\RobinTheEngine\</IntDir>
     <TargetName>RobinTheEngine</TargetName>
     <TargetExt>.lib</TargetExt>
-    <LibraryPath>F:\RTE\RobinTheEngine\vendor\bin\DirectXTK\Debug;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <OutDir>..\bin\Release-windows-x86_64\RobinTheEngine\</OutDir>
     <IntDir>..\bin-int\Release-windows-x86_64\RobinTheEngine\</IntDir>
     <TargetName>RobinTheEngine</TargetName>
     <TargetExt>.lib</TargetExt>
-    <LibraryPath>F:\RTE\RobinTheEngine\vendor\bin\DirectXTK\Debug;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Dist|x64'">
     <OutDir>..\bin\Dist-windows-x86_64\RobinTheEngine\</OutDir>
     <IntDir>..\bin-int\Dist-windows-x86_64\RobinTheEngine\</IntDir>
     <TargetName>RobinTheEngine</TargetName>
     <TargetExt>.lib</TargetExt>
-    <LibraryPath>F:\RTE\RobinTheEngine\vendor\bin\DirectXTK\Debug;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
@@ -81,7 +78,7 @@
       <PrecompiledHeaderFile>rtepch.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;RTE_PLATFORM_WINDOWS;RTE_BUILD_DLL;GLFW_INCLUDE_NONE;RTE_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>src;vendor\spdlog\include;vendor\DirectX12-Headers\include\directx;vendor\GLFW\include;vendor\imgui;vendor\DirectXTK12\Inc;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>src;vendor\spdlog\include;vendor\DirectX12-Headers\include\directx;vendor\GLFW\include;vendor\imgui;vendor\DirectXTK12\Inc;vendor\assimp\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
       <Optimization>Disabled</Optimization>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
@@ -102,7 +99,7 @@
       <PrecompiledHeaderFile>rtepch.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;RTE_PLATFORM_WINDOWS;RTE_BUILD_DLL;GLFW_INCLUDE_NONE;RTE_RELEASE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>src;vendor\spdlog\include;vendor\DirectX12-Headers\include\directx;vendor\GLFW\include;vendor\imgui;vendor\DirectXTK12\Inc;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>src;vendor\spdlog\include;vendor\DirectX12-Headers\include\directx;vendor\GLFW\include;vendor\imgui;vendor\DirectXTK12\Inc;vendor\assimp\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
@@ -127,7 +124,7 @@
       <PrecompiledHeaderFile>rtepch.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;RTE_PLATFORM_WINDOWS;RTE_BUILD_DLL;GLFW_INCLUDE_NONE;RTE_DIST;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>src;vendor\spdlog\include;vendor\DirectX12-Headers\include\directx;vendor\GLFW\include;vendor\imgui;vendor\DirectXTK12\Inc;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>src;vendor\spdlog\include;vendor\DirectX12-Headers\include\directx;vendor\GLFW\include;vendor\imgui;vendor\DirectXTK12\Inc;vendor\assimp\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
@@ -152,6 +149,8 @@
     <ClInclude Include="src\Platform\DirectX11\ConstantBuffer.h" />
     <ClInclude Include="src\Platform\DirectX11\DirectX11DeviceResources.h" />
     <ClInclude Include="src\Platform\DirectX11\DirectX11RenderSystem.h" />
+    <ClInclude Include="src\Platform\DirectX11\Mesh.h" />
+    <ClInclude Include="src\Platform\DirectX11\Model.h" />
     <ClInclude Include="src\Platform\DirectX11\Shaders.h" />
     <ClInclude Include="src\Platform\DirectX11\Vertex.h" />
     <ClInclude Include="src\Platform\DirectX12\DirectX12RenderSystem.h" />
@@ -186,6 +185,8 @@
     <ClCompile Include="src\Platform\DirectX11\ConstantBuffer.cpp" />
     <ClCompile Include="src\Platform\DirectX11\DirectX11DeviceResources.cpp" />
     <ClCompile Include="src\Platform\DirectX11\DirectX11RenderSystem.cpp" />
+    <ClCompile Include="src\Platform\DirectX11\Mesh.cpp" />
+    <ClCompile Include="src\Platform\DirectX11\Model.cpp" />
     <ClCompile Include="src\Platform\DirectX11\Shaders.cpp" />
     <ClCompile Include="src\Platform\DirectX12\DirectX12RenderSystem.cpp" />
     <ClCompile Include="src\Platform\Windows\WindowsInput.cpp" />
@@ -209,6 +210,9 @@
     </ProjectReference>
     <ProjectReference Include="vendor\imgui\ImGui.vcxproj">
       <Project>{C0FF640D-2C14-8DBE-F595-301E616989EF}</Project>
+    </ProjectReference>
+    <ProjectReference Include="vendor\assimp\assimp.vcxproj">
+      <Project>{724885F2-5EEA-AFC8-47A5-C31C33E63619}</Project>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

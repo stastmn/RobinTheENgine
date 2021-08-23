@@ -2,7 +2,6 @@
 
 struct PS_INPUT
 {
-	float4 outPos : SV_POSITION;
 	float4 outColor : COLOR;
 };
 

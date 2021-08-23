@@ -16,3 +16,7 @@
 [submodule "RobinTheEngine/vendor/DirectXTK"]
 	path = RobinTheEngine/vendor/DirectXTK
 	url = https://github.com/stastmn/DirectXTK
+
+[submodule "RobinTheEngine/vendor/assimp"]
+	path = RobinTheEngine/vendor/assimp
+	url = https://github.com/AminAliari/assimp

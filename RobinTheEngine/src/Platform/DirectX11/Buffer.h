@@ -8,11 +8,12 @@ namespace RTE {
 	class vertexBuffer {
 
 	public:
+		vertexBuffer() {};
 		vertexBuffer(T* data, int numOfElements) {
 			DirectX11RenderSystem* rs = static_cast<DirectX11RenderSystem*>(Application::Get().GetRenderSystem());
 
 			this->bufferSize = numOfElements * sizeof(T);
-				this->stride = std::make_unique<UINT>(sizeof(T));
+			this->stride = std::make_unique<UINT>(sizeof(T));
 
 			D3D11_BUFFER_DESC desk;
 			ZeroMemory(&desk, sizeof(desk));
@@ -29,6 +30,29 @@ namespace RTE {
 
 			ThrowIfFailed(rs->GetDevice()->CreateBuffer(&desk, &bufferData, buffer.GetAddressOf()));
 		}
+		HRESULT Init(T* data, int numOfElements) {
+			DirectX11RenderSystem* rs = static_cast<DirectX11RenderSystem*>(Application::Get().GetRenderSystem());
+
+			this->bufferSize = numOfElements * sizeof(T);
+			this->stride = std::make_unique<UINT>(sizeof(T));
+
+			D3D11_BUFFER_DESC desk;
+			ZeroMemory(&desk, sizeof(desk));
+
+			desk.Usage = D3D11_USAGE_DEFAULT;
+			desk.ByteWidth = sizeof(T) * numOfElements;
+			desk.BindFlags = D3D11_BIND_VERTEX_BUFFER;
+			desk.CPUAccessFlags = 0;
+			desk.MiscFlags = 0;
+
+			D3D11_SUBRESOURCE_DATA bufferData;
+			ZeroMemory(&bufferData, sizeof(bufferData));
+			bufferData.pSysMem = data;
+
+			return rs->GetDevice()->CreateBuffer(&desk, &bufferData, buffer.GetAddressOf());
+		}
+
+
 		~vertexBuffer() {};
 
 	private:
@@ -43,7 +67,7 @@ namespace RTE {
 
 	public:
 		ID3D11Buffer* Get() { return buffer.Get(); }
-		ID3D11Buffer* const* GetAdressOf() { return buffer.GetAddressOf(); }
+		ID3D11Buffer* const* GetAddressOf() { return buffer.GetAddressOf(); }
 		UINT BufferSize() { return bufferSize; }
 		UINT * StridePtr() { return stride.get(); }
 
@@ -52,7 +76,10 @@ namespace RTE {
 	class IndexBuffer {
 	public:
 		IndexBuffer(DWORD* data, int arraySize);
+		IndexBuffer() {};
 		~IndexBuffer();
+		HRESULT Init(DWORD* data, int arraySize);
+
 
 
 	private:

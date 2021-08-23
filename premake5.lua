@@ -18,11 +18,13 @@
    IncludeDir["ImGui"] = "RobinTheEngine/vendor/imgui"
    IncludeDir["DirectXTK12"] = "RobinTheEngine/vendor/DirectXTK12"
    IncludeDir["DirectXTK"] = "RobinTheEngine/vendor/DirectXTK12"
+   IncludeDir["assimp"] = "RobinTheEngine/vendor/assimp"
 
    group "Dependencies"
    include "RobinTheEngine/vendor/GLFW"
    include "RobinTheEngine/vendor/imgui"
    --include "RobinTheEngine/vendor/DirectXTK12"
+   include "RobinTheEngine/vendor/assimp"
    group ""
 
 
@@ -60,6 +62,7 @@
 		 "%{IncludeDir.ImGui}",
 		 "%{IncludeDir.DirectXTK12}/Inc",
 		 "%{IncludeDir.DirectXTK}/Inc",
+		 "%{IncludeDir.assimp}/include",
 		 
       }
       
@@ -67,7 +70,8 @@
       {
          "GLFW",
 		 "opengl32.lib",
-		 "ImGui"
+		 "ImGui",
+		 "assimp"
 
       }
 	  

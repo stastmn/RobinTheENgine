@@ -13,6 +13,7 @@
 #include "Platform/DirectX11/ConstantBuffer.h"
 #include "Platform/DirectX11/Vertex.h"
 #include "Platform/DirectX11/Camera.h"
+#include "Platform/DirectX11/Model.h"
 
 
 namespace RTE {
@@ -48,36 +49,15 @@ namespace RTE {
 	void Application::Run()
 	{
 
-		vertex_POS_COLLOR vertexArray[] = {
 
-			vertex_POS_COLLOR{ -1.f, -1.f, -1.f, 1.f, 1.f, 1.f, 1.f}, //red
-			vertex_POS_COLLOR{ 1.f, -1.f,	-1.f, 1, 0, 0, 1} , //green
-			vertex_POS_COLLOR{ -1.f, 1.f, -1.f, 0, 0, 1, 1}, //blue
-			vertex_POS_COLLOR{ 1.f, 1.f, -1.f, 0, 1, 0, 1 }, //black
-
-			vertex_POS_COLLOR{ -1.f, -1.f, 1.f, 0.f, 0.f, 0.f, 1.f}, //red
-			vertex_POS_COLLOR{ 1.f, -1.f,	1.f, 0, 1, 1, 1} , //green
-			vertex_POS_COLLOR{ -1.f, 1.f, 1.f, 1, 1, 0, 1}, //blue
-			vertex_POS_COLLOR{ 1.f, 1.f, 1.f, 1, 0, 1, 1 } //black
-		};
-
-		DWORD indecies[] = {
-			0,2,1,2,3,1,
-			1,3,5,3,7,5,
-			2,6,3,3,6,7,
-			4,5,7,4,7,6,
-			0,4,2,2,4,6,
-			0,1,4,1,5,4
-		};
-
-		vertexBuffer<vertex_POS_COLLOR> vertexbuffer(vertexArray, ARRAYSIZE(vertexArray));
-		IndexBuffer IndexBuffer(indecies, ARRAYSIZE(indecies));
+		Model model;
 
 		vertexShader vs(L"shaders\\VS.hlsl");
 		pixelShader ps(L"shaders\\PS.hlsl");
 
 		CB_VS_MATRIX4x4 rotation;
 		ConstantBuffer<CB_VS_MATRIX4x4> cbuffer;
+		model.Initialize(cbuffer);
 		float i = 5;
 		while (m_Running) {
 			m_Window->OnUpdate();
@@ -109,11 +89,8 @@ namespace RTE {
 			cbuffer.WirteBuffer(rotation);
 
 			UINT offset = 0;
-			context->IASetVertexBuffers(0, 1, vertexbuffer.GetAdressOf(), vertexbuffer.StridePtr(), &offset);
-			context->IASetIndexBuffer(IndexBuffer.Get(), DXGI_FORMAT_R32_UINT, 0);
 
-			context->DrawIndexed(IndexBuffer.ElementCount(), 0, 0);
-			//context->Draw(3, 0);
+			model.Draw(XMLoadFloat4x4(&rotation.matrix));
 
 
 			m_ImGuiLayer->Begin();

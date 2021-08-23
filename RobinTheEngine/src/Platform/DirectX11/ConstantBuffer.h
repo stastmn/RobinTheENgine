@@ -2,6 +2,7 @@
 #include "d3d11.h"
 #include <wrl.h>
 #include <DirectXMath.h> 
+#include "RobinTheEngine/d3dUtils.h"
 
 namespace RTE {
 
