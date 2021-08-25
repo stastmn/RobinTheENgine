@@ -51,13 +51,15 @@ namespace RTE {
 
 
 		Model model;
+		Model model2;
 
 		vertexShader vs(L"shaders\\VS.hlsl");
 		pixelShader ps(L"shaders\\PS.hlsl");
 
 		CB_VS_MATRIX4x4 rotation;
 		ConstantBuffer<CB_VS_MATRIX4x4> cbuffer;
-		model.Initialize(cbuffer);
+		model.Initialize("objects\\teapot.obj", cbuffer);
+		model2.Initialize("objects\\teapot.obj", cbuffer);
 		float i = 5;
 		while (m_Running) {
 			m_Window->OnUpdate();
@@ -65,10 +67,6 @@ namespace RTE {
 
 			for (Layer* layer : m_LayerStack)
 				layer->OnUpdate();
-
-
-
-
 
 			for (Layer* layer : m_LayerStack)
 				layer->OnRender();
@@ -80,18 +78,15 @@ namespace RTE {
 			context->VSSetShader(vs.GetShader(), 0, 0);
 			context->PSSetShader(ps.GetShader(), 0, 0);
 
-			i += 0.0005f;
-			//camera.AdjustRotation(XMFLOAT3(0, 0.008, 0));
-			//camera.SetPosition(XMFLOAT3(0, 0, -5));
-			//camera.SetProjectionProperties(150, static_cast<float>(m_Window->GetWidth()) / static_cast<float>(m_Window->GetHeight()), 0.05, 1000);
+			i += 0.05f;
 			context->VSSetConstantBuffers(0, 1, cbuffer.GetAddressOf());
-			DirectX::XMStoreFloat4x4(&rotation.matrix, DirectX::XMMatrixRotationZ(i)* DirectX::XMMatrixRotationY(i) *camera.GetViewMatrix()* camera.GetProjectionMatrix());
+			DirectX::XMStoreFloat4x4(&rotation.matrix, camera.GetViewMatrix()* camera.GetProjectionMatrix());
 			cbuffer.WirteBuffer(rotation);
 
-			UINT offset = 0;
-
+			model.AdjustRotation(0, 0.02 , 0);
 			model.Draw(XMLoadFloat4x4(&rotation.matrix));
-
+			model2.SetPosition(sin(i) + 2, cos(i) + 2, 0);
+			model2.Draw(XMLoadFloat4x4(&rotation.matrix));
 
 			m_ImGuiLayer->Begin();
 			for (Layer* layer : m_LayerStack)

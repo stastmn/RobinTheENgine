@@ -127,7 +127,8 @@
       {
          "RobinTheEngine/vendor/spdlog/include",
          "RobinTheEngine/src",
-		 "RobinTheEngine/vendor"
+		 "RobinTheEngine/vendor",
+		 "RobinTheEngine/vendor/assimp/include",
 		 
       }
 

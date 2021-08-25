@@ -39,6 +39,12 @@
     <ClInclude Include="src\Platform\DirectX11\DirectX11RenderSystem.h">
       <Filter>Platform\DirectX11</Filter>
     </ClInclude>
+    <ClInclude Include="src\Platform\DirectX11\Mesh.h">
+      <Filter>Platform\DirectX11</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Platform\DirectX11\Model.h">
+      <Filter>Platform\DirectX11</Filter>
+    </ClInclude>
     <ClInclude Include="src\Platform\DirectX11\Shaders.h">
       <Filter>Platform\DirectX11</Filter>
     </ClInclude>
@@ -116,8 +122,7 @@
       <Filter>RobinTheEngine</Filter>
     </ClInclude>
     <ClInclude Include="src\rtepch.h" />
-    <ClInclude Include="src\Platform\DirectX11\Mesh.h" />
-    <ClInclude Include="src\Platform\DirectX11\Model.h" />
+    <ClInclude Include="src\Platform\DirectX11\GameObject.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Platform\DirectX11\Buffer.cpp">
@@ -133,6 +138,12 @@
       <Filter>Platform\DirectX11</Filter>
     </ClCompile>
     <ClCompile Include="src\Platform\DirectX11\DirectX11RenderSystem.cpp">
+      <Filter>Platform\DirectX11</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Platform\DirectX11\Mesh.cpp">
+      <Filter>Platform\DirectX11</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Platform\DirectX11\Model.cpp">
       <Filter>Platform\DirectX11</Filter>
     </ClCompile>
     <ClCompile Include="src\Platform\DirectX11\Shaders.cpp">
@@ -175,7 +186,6 @@
       <Filter>RobinTheEngine</Filter>
     </ClCompile>
     <ClCompile Include="src\rtepch.cpp" />
-    <ClCompile Include="src\Platform\DirectX11\Mesh.cpp" />
-    <ClCompile Include="src\Platform\DirectX11\Model.cpp" />
+    <ClCompile Include="src\Platform\DirectX11\GameObject.cpp" />
   </ItemGroup>
 </Project>

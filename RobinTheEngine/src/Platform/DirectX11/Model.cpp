@@ -6,7 +6,7 @@
 
 using namespace D3DUtils;
 
-bool RTE::Model::Initialize(ConstantBuffer<CB_VS_MATRIX4x4>& cb_vs_vertexshader)
+bool RTE::Model::Initialize(const std::string& path, ConstantBuffer<CB_VS_MATRIX4x4>& cb_vs_vertexshader)
 {
 	DirectX11RenderSystem* rs = static_cast<DirectX11RenderSystem*> (Application::Get().GetRenderSystem());
 
@@ -14,82 +14,14 @@ bool RTE::Model::Initialize(ConstantBuffer<CB_VS_MATRIX4x4>& cb_vs_vertexshader)
 	this->deviceContext = rs->GetContext().Get();
 	this->cb_vs_vertexshader = &cb_vs_vertexshader;
 
-	//Textured Square
-	vertex_POS_COLLOR  v[] =
-	{
-		vertex_POS_COLLOR(1.f, 1.f, 1.f,		0.0f ,1.0f, 0.0f, 0.0f), //[2]
-		vertex_POS_COLLOR(-1.f, 1.f, -1.f,		0.0f, 1.0f, 0.0f, 0.0f), //[4] 1
-		vertex_POS_COLLOR(1.f, 1.f, -1.f,		0.0f, 1.0f, 0.0f, 0.0f), //[0]
 
-		vertex_POS_COLLOR(-1.f, -1.f, 1.f,		0.0f, 0.0f, 1.0f, 0.0f), //[7]
-		vertex_POS_COLLOR(1.f, 1.f, 1.f,		0.0f ,0.0f, 1.0f, 0.0f), //[2] 2
-		vertex_POS_COLLOR(1.f, -1.f, 1.f,		0.0f, 0.0f, 1.0f, 0.0f), //[3]
+	if (!this->LoadModel(path))
+		return false;
 
-		vertex_POS_COLLOR(-1.f, -1.f, -1.f,		-1.0f, 0.0f, 0.0f, 0.0f), //[5]
-		vertex_POS_COLLOR(-1.f, 1.f, 1.f,		-1.0f, 0.0f, 0.0f, 0.0f), //[6] 3
-		vertex_POS_COLLOR(-1.f, -1.f, 1.f,		-1.0f, 0.0f, 0.0f, 0.0f), //[7]
 
-		vertex_POS_COLLOR(-1.f, -1.f, 1.f,		0.0f, -1.0f, 0.0f, 0.0f), //[7]
-		vertex_POS_COLLOR(1.f, -1.f, -1.f,		0.0f, -1.0f, 0.0f, 0.0f), //[1] 4
-		vertex_POS_COLLOR(-1.f, -1.f, -1.f,		0.0f, -1.0f, 0.0f, 0.0f), //[5]
 
-		vertex_POS_COLLOR(1.f, -1.f, 1.f,		1.0f, 0.0f, 0.0f, 0.0f), //[3]
-		vertex_POS_COLLOR(1.f, 1.f, -1.f,		1.0f, 0.0f, 0.0f, 0.0f), //[0] 5
-		vertex_POS_COLLOR(1.f, -1.f, -1.f,		1.0f, 0.0f, 0.0f, 0.0f), //[1]
-
-		vertex_POS_COLLOR(1.f, -1.f, -1.f,		0.0f, 0.0f, -1.0f, 0.0f), //[1]
-		vertex_POS_COLLOR(-1.f, 1.f, -1.f,		0.0f, 0.0f, -1.0f, 0.0f), //[4] 6
-		vertex_POS_COLLOR(-1.f, -1.f, -1.f,		0.0f, 0.0f, -1.0f, 0.0f), //[5]
-
-		vertex_POS_COLLOR(-1.f, 1.f, 1.f,		0.0f, 1.0f, 0.0f, 0.0f), //[6] 
-		vertex_POS_COLLOR(-1.f, 1.f, -1.f,		0.0f, 1.0f, 0.0f, 0.0f), //[4] 1
-		vertex_POS_COLLOR(1.f, 1.f, 1.f,		0.0f ,1.0f, 0.0f, 0.0f), //[2]
-
-		vertex_POS_COLLOR(-1.f, 1.f, 1.f,		0.0f, 0.0f, 1.0f, 0.0f), //[6] 
-		vertex_POS_COLLOR(1.f, 1.f, 1.f,		0.0f ,0.0f, 1.0f, 0.0f), //[2] 2
-		vertex_POS_COLLOR(-1.f, -1.f, 1.f,		0.0f, 0.0f, 1.0f, 0.0f), //[7]
-
-		vertex_POS_COLLOR(-1.f, 1.f, -1.f,		-1.0f, 0.0f, 0.0f, 0.0f), //[4] 
-		vertex_POS_COLLOR(-1.f, 1.f, 1.f,		-1.0f, 0.0f, 0.0f, 0.0f), //[6] 3
-		vertex_POS_COLLOR(-1.f, -1.f, -1.f,		-1.0f, 0.0f, 0.0f, 0.0f), //[5]
-
-		vertex_POS_COLLOR(1.f, -1.f, 1.f,		0.0f, -1.0f, 0.0f, 0.0f), //[3]
-		vertex_POS_COLLOR(1.f, -1.f, -1.f,		0.0f, -1.0f, 0.0f, 0.0f), //[1] 4
-		vertex_POS_COLLOR(-1.f, -1.f, 1.f,		0.0f, -1.0f, 0.0f, 0.0f), //[7]
-
-		vertex_POS_COLLOR(1.f, 1.f, 1.f,		1.0f ,0.0f, 0.0f, 0.0f), //[2] 
-		vertex_POS_COLLOR(1.f, 1.f, -1.f,		1.0f, 0.0f, 0.0f, 0.0f), //[0] 5
-		vertex_POS_COLLOR(1.f, -1.f, 1.f,		1.0f, 0.0f, 0.0f, 0.0f), //[3]
-
-		vertex_POS_COLLOR(1.f, 1.f, -1.f,		0.0f, 0.0f, -1.0f, 0.0f), //[0]
-		vertex_POS_COLLOR(-1.f, 1.f, -1.f,		0.0f, 0.0f, -1.0f, 0.0f), //[4] 6
-		vertex_POS_COLLOR(1.f, -1.f, -1.f,		0.0f, 0.0f, -1.0f, 0.0f), //[1]
-
-	};
-
-	//Load Vertex Data
-	ThrowIfFailed(vertexBuffer.Init(v, ARRAYSIZE(v)));
-
-	DWORD indices[] =
-	{
-		0,1,2,
-		3,4,5,
-		6,7,8,
-		9,10,11,
-		12,13,14,
-		15,16,17,
-		18,19,20,
-		21,22,23,
-		24,25,26,
-		27,28,29,
-		30,31,32,
-		33,34,35,
-
-	};
-
-	//Load Index Data
-	ThrowIfFailed(indexBuffer.Init(indices, ARRAYSIZE(indices)));
-
+	SetPosition(0.0f, 0.0f, 0.0f);
+	SetRotation(0.0f, 0.0f, 0.0f);
 	UpdateWorldMatrix();
 	return true;
 }
@@ -106,14 +38,253 @@ void RTE::Model::Draw(const XMMATRIX & viewProjectionMatrix)
 	cb_vs_vertexshader->WriteBuffer();
 	this->deviceContext->VSSetConstantBuffers(0, 1, this->cb_vs_vertexshader->GetAddressOf());
 
-	this->deviceContext->PSSetShaderResources(0, 1, &this->texture); //Set Texture
-	this->deviceContext->IASetIndexBuffer(this->indexBuffer.Get(), DXGI_FORMAT::DXGI_FORMAT_R32_UINT, 0);
-	UINT offset = 0;
-	this->deviceContext->IASetVertexBuffers(0, 1, this->vertexBuffer.GetAddressOf(), this->vertexBuffer.StridePtr(), &offset);
-	this->deviceContext->DrawIndexed(this->indexBuffer.ElementCount(), 0, 0); //Draw
+	// draw submeshes
+	for (int i = 0; i < meshes.size(); i++)
+	{
+		meshes[i].Draw();
+	}
+}
+
+
+bool RTE::Model::LoadModel(const std::string & filePath)
+{
+	Assimp::Importer importer;
+
+	const aiScene* pScene = importer.ReadFile(filePath,
+		aiProcess_Triangulate |
+		aiProcess_ConvertToLeftHanded);
+
+	if (pScene == NULL)
+		return false;
+
+
+	this->ProcessNode(pScene->mRootNode, pScene);
+	return true;
+}
+
+void RTE::Model::ProcessNode(aiNode * node, const aiScene * scene)
+{
+	for (UINT i = 0; i < node->mNumMeshes; i++)
+	{
+		aiMesh* mesh = scene->mMeshes[node->mMeshes[i]];
+		meshes.push_back(this->ProcessMesh(mesh, scene));
+	}
+
+	for (UINT i = 0; i < node->mNumChildren; i++)
+	{
+		this->ProcessNode(node->mChildren[i], scene);
+	}
+}
+
+RTE::Mesh RTE::Model::ProcessMesh(aiMesh * mesh, const aiScene * scene)
+{
+	// Data to fill
+	std::vector<vertex_Gouraud_shading> vertices;
+	std::vector<DWORD> indices;
+
+	//Get vertices
+	for (UINT i = 0; i < mesh->mNumVertices; i++)
+	{
+		vertex_Gouraud_shading vertex;
+
+		vertex.pos.x = mesh->mVertices[i].x;
+		vertex.pos.y = mesh->mVertices[i].y;
+		vertex.pos.z = mesh->mVertices[i].z;
+
+		if (mesh->mTextureCoords[0])
+		{
+			vertex.texCoord.x = (float)mesh->mTextureCoords[0][i].x;
+			vertex.texCoord.y = (float)mesh->mTextureCoords[0][i].y;
+		}
+
+		//if ( mesh->mNormals[0] ) {
+		//	vertex.normalCoord.x = (float)mesh->mNormals[i].x;
+		//	vertex.normalCoord.y = (float)mesh->mNormals[i].y;
+
+		//}
+
+		vertices.push_back(vertex);
+	}
+
+	//Get indices
+	for (UINT i = 0; i < mesh->mNumFaces; i++)
+	{
+		aiFace face = mesh->mFaces[i];
+
+		for (UINT j = 0; j < face.mNumIndices; j++)
+			indices.push_back(face.mIndices[j]);
+	}
+
+	return Mesh( vertices, indices);
 }
 
 void RTE::Model::UpdateWorldMatrix()
 {
-	this->worldMatrix = XMMatrixIdentity();
+	this->worldMatrix = XMMatrixRotationRollPitchYaw(this->rot.x, this->rot.y, this->rot.z) * XMMatrixTranslation(this->pos.x, this->pos.y, this->pos.z);
+	XMMATRIX vecRotationMatrix = XMMatrixRotationRollPitchYaw(0.0f, this->rot.y, 0.0f);
+	this->vec_forward = XMVector3TransformCoord(this->DEFAULT_FORWARD_VECTOR, vecRotationMatrix);
+	this->vec_backward = XMVector3TransformCoord(this->DEFAULT_BACKWARD_VECTOR, vecRotationMatrix);
+	this->vec_left = XMVector3TransformCoord(this->DEFAULT_LEFT_VECTOR, vecRotationMatrix);
+	this->vec_right = XMVector3TransformCoord(this->DEFAULT_RIGHT_VECTOR, vecRotationMatrix);
+}
+
+
+
+const XMVECTOR & RTE::Model::GetPositionVector() const
+{
+	return this->posVector;
+}
+
+const XMFLOAT3 & RTE::Model::GetPositionFloat3() const
+{
+	return this->pos;
+}
+
+const XMVECTOR & RTE::Model::GetRotationVector() const
+{
+	return this->rotVector;
+}
+
+const XMFLOAT3 & RTE::Model::GetRotationFloat3() const
+{
+	return this->rot;
+}
+
+void RTE::Model::SetPosition(const XMVECTOR & pos)
+{
+	XMStoreFloat3(&this->pos, pos);
+	this->posVector = pos;
+	this->UpdateWorldMatrix();
+}
+
+void RTE::Model::SetPosition(const XMFLOAT3 & pos)
+{
+	this->pos = pos;
+	this->posVector = XMLoadFloat3(&this->pos);
+	this->UpdateWorldMatrix();
+}
+
+void RTE::Model::SetPosition(float x, float y, float z)
+{
+	this->pos = XMFLOAT3(x, y, z);
+	this->posVector = XMLoadFloat3(&this->pos);
+	this->UpdateWorldMatrix();
+}
+
+void RTE::Model::AdjustPosition(const XMVECTOR & pos)
+{
+	this->posVector += pos;
+	XMStoreFloat3(&this->pos, this->posVector);
+	this->UpdateWorldMatrix();
+}
+
+void RTE::Model::AdjustPosition(const XMFLOAT3 & pos)
+{
+	this->pos.x += pos.y;
+	this->pos.y += pos.y;
+	this->pos.z += pos.z;
+	this->posVector = XMLoadFloat3(&this->pos);
+	this->UpdateWorldMatrix();
+}
+
+void RTE::Model::AdjustPosition(float x, float y, float z)
+{
+	this->pos.x += x;
+	this->pos.y += y;
+	this->pos.z += z;
+	this->posVector = XMLoadFloat3(&this->pos);
+	this->UpdateWorldMatrix();
+}
+
+void RTE::Model::SetRotation(const XMVECTOR & rot)
+{
+	this->rotVector = rot;
+	XMStoreFloat3(&this->rot, rot);
+	this->UpdateWorldMatrix();
+}
+
+void RTE::Model::SetRotation(const XMFLOAT3 & rot)
+{
+	this->rot = rot;
+	this->rotVector = XMLoadFloat3(&this->rot);
+	this->UpdateWorldMatrix();
+}
+
+void RTE::Model::SetRotation(float x, float y, float z)
+{
+	this->rot = XMFLOAT3(x, y, z);
+	this->rotVector = XMLoadFloat3(&this->rot);
+	this->UpdateWorldMatrix();
+}
+
+void RTE::Model::AdjustRotation(const XMVECTOR & rot)
+{
+	this->rotVector += rot;
+	XMStoreFloat3(&this->rot, this->rotVector);
+	this->UpdateWorldMatrix();
+}
+
+void RTE::Model::AdjustRotation(const XMFLOAT3 & rot)
+{
+	this->rot.x += rot.x;
+	this->rot.y += rot.y;
+	this->rot.z += rot.z;
+	this->rotVector = XMLoadFloat3(&this->rot);
+	this->UpdateWorldMatrix();
+}
+
+void RTE::Model::AdjustRotation(float x, float y, float z)
+{
+	this->rot.x += x;
+	this->rot.y += y;
+	this->rot.z += z;
+	this->rotVector = XMLoadFloat3(&this->rot);
+	this->UpdateWorldMatrix();
+}
+
+void RTE::Model::SetLookAtPos(XMFLOAT3 lookAtPos)
+{
+	if (lookAtPos.x == this->pos.x && lookAtPos.y == this->pos.y && lookAtPos.z == this->pos.z)
+		return;
+
+	lookAtPos.x = this->pos.x - lookAtPos.x;
+	lookAtPos.y = this->pos.y - lookAtPos.y;
+	lookAtPos.z = this->pos.z - lookAtPos.z;
+
+	float pitch = 0.0f;
+	if (lookAtPos.y != 0.0f)
+	{
+		const float distance = sqrt(lookAtPos.x * lookAtPos.x + lookAtPos.z * lookAtPos.z);
+		pitch = atan(lookAtPos.y / distance);
+	}
+
+	float yaw = 0.0f;
+	if (lookAtPos.x != 0.0f)
+	{
+		yaw = atan(lookAtPos.x / lookAtPos.z);
+	}
+	if (lookAtPos.z > 0)
+		yaw += XM_PI;
+
+	this->SetRotation(pitch, yaw, 0.0f);
+}
+
+const XMVECTOR & RTE::Model::GetForwardVector()
+{
+	return this->vec_forward;
+}
+
+const XMVECTOR & RTE::Model::GetRightVector()
+{
+	return this->vec_right;
+}
+
+const XMVECTOR & RTE::Model::GetBackwardVector()
+{
+	return this->vec_backward;
+}
+
+const XMVECTOR & RTE::Model::GetLeftVector()
+{
+	return this->vec_left;
 }

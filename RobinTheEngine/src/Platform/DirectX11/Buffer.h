@@ -10,10 +10,11 @@ namespace RTE {
 	public:
 		vertexBuffer() {};
 		vertexBuffer(T* data, int numOfElements) {
+			//TODO: reuse init function for construction
 			DirectX11RenderSystem* rs = static_cast<DirectX11RenderSystem*>(Application::Get().GetRenderSystem());
 
 			this->bufferSize = numOfElements * sizeof(T);
-			this->stride = std::make_unique<UINT>(sizeof(T));
+			stride = sizeof(T);
 
 			D3D11_BUFFER_DESC desk;
 			ZeroMemory(&desk, sizeof(desk));
@@ -31,10 +32,11 @@ namespace RTE {
 			ThrowIfFailed(rs->GetDevice()->CreateBuffer(&desk, &bufferData, buffer.GetAddressOf()));
 		}
 		HRESULT Init(T* data, int numOfElements) {
+			//TODO: check is buffer initialized 
 			DirectX11RenderSystem* rs = static_cast<DirectX11RenderSystem*>(Application::Get().GetRenderSystem());
 
 			this->bufferSize = numOfElements * sizeof(T);
-			this->stride = std::make_unique<UINT>(sizeof(T));
+			stride = sizeof(T);
 
 			D3D11_BUFFER_DESC desk;
 			ZeroMemory(&desk, sizeof(desk));
@@ -51,25 +53,36 @@ namespace RTE {
 
 			return rs->GetDevice()->CreateBuffer(&desk, &bufferData, buffer.GetAddressOf());
 		}
-
+		vertexBuffer(const vertexBuffer<T>& rhs)
+		{
+			this->buffer = rhs.buffer;
+			this->bufferSize = rhs.bufferSize;
+			this->stride = rhs.stride;
+		}
+		vertexBuffer<T> & operator=(const vertexBuffer<T>& a)
+		{
+			this->buffer = a.buffer;
+			this->bufferSize = a.bufferSize;
+			this->stride = a.stride;
+			return *this;
+		}
 
 		~vertexBuffer() {};
 
 	private:
 		Microsoft::WRL::ComPtr<ID3D11Buffer> buffer;
-		std::unique_ptr<UINT> stride;
+		UINT stride;
 		UINT bufferSize;
 
 		vertexBuffer(vertexBuffer& rhs) = delete;
 		vertexBuffer(vertexBuffer&& rhs) = delete;
-		vertexBuffer& operator=(vertexBuffer& rhs) = delete;
-		vertexBuffer& operator=(vertexBuffer&& rhs) = delete;
 
 	public:
 		ID3D11Buffer* Get() { return buffer.Get(); }
 		ID3D11Buffer* const* GetAddressOf() { return buffer.GetAddressOf(); }
 		UINT BufferSize() { return bufferSize; }
-		UINT * StridePtr() { return stride.get(); }
+		UINT * StridePtr() { return &stride; }
+		UINT Stride() { return stride; }
 
 	};
 
@@ -85,12 +98,7 @@ namespace RTE {
 	private:
 		Microsoft::WRL::ComPtr<ID3D11Buffer> buffer;
 		UINT elementCount;
-
-		IndexBuffer(IndexBuffer& rhs) = delete;
-		IndexBuffer(IndexBuffer&& rhs) = delete;
-		IndexBuffer& operator=(IndexBuffer& rhs) = delete;
-		IndexBuffer& operator=(IndexBuffer&& rhs) = delete;
-
+	
 	public:
 		ID3D11Buffer* Get() { return buffer.Get(); }
 		ID3D11Buffer* const* GetAdressOf() { return buffer.GetAddressOf(); }

@@ -15,6 +15,7 @@ public:
 	float posX, posY;
 	float cameraSpeed;
 
+
 	ExampleLayer()
 		: Layer("Example")
 	{
@@ -29,6 +30,7 @@ public:
 		window = &RTE::Application::Get().GetWindow();
 		cameraSensitivity = 40;
 		cameraSpeed = 1500;
+
 	}
 
 	void OnUpdate() override
@@ -66,7 +68,6 @@ public:
 
 	void OnRender()override
 	{
-
 	}
 
 	void UpdateCamera() {
@@ -137,7 +138,6 @@ public:
 	Sandbox()
 	{
 		PushLayer(new ExampleLayer());
-
 	}
 
 	~Sandbox()

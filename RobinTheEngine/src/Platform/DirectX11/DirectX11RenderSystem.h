@@ -1,4 +1,4 @@
-//#pragma once
+#pragma once
 //#include <D3Dcompiler.h>
 #include <DirectXMath.h>
 //#include <DirectXPackedVector.h>

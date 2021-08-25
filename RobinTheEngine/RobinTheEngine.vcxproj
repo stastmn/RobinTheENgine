@@ -149,6 +149,7 @@
     <ClInclude Include="src\Platform\DirectX11\ConstantBuffer.h" />
     <ClInclude Include="src\Platform\DirectX11\DirectX11DeviceResources.h" />
     <ClInclude Include="src\Platform\DirectX11\DirectX11RenderSystem.h" />
+    <ClInclude Include="src\Platform\DirectX11\GameObject.h" />
     <ClInclude Include="src\Platform\DirectX11\Mesh.h" />
     <ClInclude Include="src\Platform\DirectX11\Model.h" />
     <ClInclude Include="src\Platform\DirectX11\Shaders.h" />
@@ -185,6 +186,7 @@
     <ClCompile Include="src\Platform\DirectX11\ConstantBuffer.cpp" />
     <ClCompile Include="src\Platform\DirectX11\DirectX11DeviceResources.cpp" />
     <ClCompile Include="src\Platform\DirectX11\DirectX11RenderSystem.cpp" />
+    <ClCompile Include="src\Platform\DirectX11\GameObject.cpp" />
     <ClCompile Include="src\Platform\DirectX11\Mesh.cpp" />
     <ClCompile Include="src\Platform\DirectX11\Model.cpp" />
     <ClCompile Include="src\Platform\DirectX11\Shaders.cpp" />
