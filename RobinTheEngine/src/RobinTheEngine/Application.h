@@ -9,6 +9,8 @@
 #include "RobinTheEngine/Events/ApplicationEvent.h"
 #include "RobinTheEngine/ImGui/ImGuiLayer.h"
 #include "Platform/DirectX11/Camera.h"
+#include "Platform/DirectX11/ConstantBuffer.h"
+#include <memory>
 
 
 namespace RTE {
@@ -30,6 +32,10 @@ namespace RTE {
 		inline Window& GetWindow() { return *m_Window; }
 		inline RenderSystem* GetRenderSystem() { return m_RenderSystem.get(); }
 		inline static Application& Get() { return *s_Instance; }
+
+		//Temp cbuffer. TODO: remove this to the materials
+		std::unique_ptr<ConstantBuffer<CB_VS_MATRIX4x4>> cbuffer;
+		std::unique_ptr<ConstantBuffer<CB_PS_LIGHT>> lightCbuffer;
 
 
 	private:

@@ -17,7 +17,7 @@ namespace RTE {
 		//TODO: should we use XMVECTOR instead of XMFLOAT's ?
 
 		DirectX::XMFLOAT2 texCoord;
-		DirectX::XMFLOAT2 normalCoord;
+		DirectX::XMFLOAT3 normal;
 		DirectX::XMFLOAT3 pos;
 
 

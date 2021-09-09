@@ -3,6 +3,7 @@
 #include <wrl.h>
 #include <DirectXMath.h> 
 #include "RobinTheEngine/d3dUtils.h"
+#include "Platform/DirectX11/DirectX11RenderSystem.h"
 
 namespace RTE {
 
@@ -32,17 +33,17 @@ namespace RTE {
 
 		Microsoft::WRL::ComPtr<ID3D11Buffer> buffer;
 
-		ConstantBuffer(ConstantBuffer<T>& rhs) = delete;
-		ConstantBuffer(ConstantBuffer<T>&& rhs) = delete;
-		ConstantBuffer& operator=(ConstantBuffer<T>& rhs) = delete;
-		ConstantBuffer& operator=(ConstantBuffer<T>&& rhs) = delete;
+		//ConstantBuffer(ConstantBuffer<T>& rhs) = delete;
+		//ConstantBuffer(ConstantBuffer<T>&& rhs) = delete;
+		//ConstantBuffer& operator=(ConstantBuffer<T>& rhs) = delete;
+		//ConstantBuffer& operator=(ConstantBuffer<T>&& rhs) = delete;
 
 	public:
 		ID3D11Buffer* Get() { return buffer.Get(); }
 		ID3D11Buffer* const* GetAddressOf() { return buffer.GetAddressOf(); }
 		void WriteBuffer() {
 
-			DirectX11RenderSystem* rs = static_cast<DirectX11RenderSystem*>(Application::Get().GetRenderSystem());
+			RTE::DirectX11RenderSystem* rs = static_cast<RTE::DirectX11RenderSystem*>(Application::Get().GetRenderSystem());
 			D3D11_MAPPED_SUBRESOURCE subres;
 			ThrowIfFailed(rs->GetContext()->Map(buffer.Get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &subres));
 			CopyMemory(subres.pData, &data, sizeof(T));
@@ -59,12 +60,27 @@ namespace RTE {
 	//Constant buffer types
 	struct CB_VS_MATRIX4x4
 	{
-		DirectX::XMFLOAT4X4 matrix;
+		DirectX::XMFLOAT4X4 mvpMatrix;
+		DirectX::XMFLOAT4X4 worldMatrix;
 	};
 
 	struct CB_VS_VEC4F
 	{
 		DirectX::XMFLOAT4 vec;
+	};
+
+	struct CB_PS_LIGHT
+	{
+		DirectX::XMFLOAT3 ambientLightColor;
+		float ambientStrength;
+
+		DirectX::XMFLOAT3 diffuseCollor;
+		float diffuseStrenght;
+
+		DirectX::XMFLOAT3 lightPosition;
+
+		DirectX::XMFLOAT3 viewPosition;
+		float specularStrength;
 	};
 
 

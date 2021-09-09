@@ -10,6 +10,7 @@
 
 #include "Platform/DirectX11/Camera.h"
 #include "Platform/DirectX11/Model.h"
+#include "Platform/DirectX11/GameObject.h"
 
 #include "RobinTheEngine/Input.h"
 #include "RobinTheEngine/KeyCodes.h"

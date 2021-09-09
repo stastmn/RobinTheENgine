@@ -6,7 +6,6 @@
 #include "Platform/Windows/WindowsWindow.h"
 #include "GLFW/glfw3.h"
 #include "RobinTheEngine/Input.h"
-#include "Model.h"
 
 #include "Platform/DirectX11/Buffer.h"
 #include "Platform/DirectX11/Shaders.h"
@@ -14,6 +13,7 @@
 #include "Platform/DirectX11/Vertex.h"
 #include "Platform/DirectX11/Camera.h"
 #include "Platform/DirectX11/Model.h"
+#include "Platform/DirectX11/GameObject.h"
 
 
 namespace RTE {
@@ -32,7 +32,8 @@ namespace RTE {
 		m_RenderSystem = std::make_unique<DirectX11RenderSystem>(a);
 		m_RenderSystem->Init();
 		m_RenderSystem->OnResize(m_Window->GetWidth(), m_Window->GetHeight());
-
+		cbuffer = std::make_unique<ConstantBuffer<CB_VS_MATRIX4x4>>();
+		lightCbuffer = std::make_unique<ConstantBuffer<CB_PS_LIGHT>>();
 
 		m_ImGuiLayer = new ImGuiLayer();
 		PushOverlay(m_ImGuiLayer);
@@ -48,18 +49,21 @@ namespace RTE {
 
 	void Application::Run()
 	{
-
-
-		Model model;
-		Model model2;
-
+		
 		vertexShader vs(L"shaders\\VS.hlsl");
 		pixelShader ps(L"shaders\\PS.hlsl");
 
 		CB_VS_MATRIX4x4 rotation;
-		ConstantBuffer<CB_VS_MATRIX4x4> cbuffer;
-		model.Initialize("objects\\teapot.obj", cbuffer);
-		model2.Initialize("objects\\teapot.obj", cbuffer);
+
+		//Create sampler description for sampler state
+		CD3D11_SAMPLER_DESC sampDesc(D3D11_DEFAULT);
+		sampDesc.AddressU = D3D11_TEXTURE_ADDRESS_WRAP;
+		sampDesc.AddressV = D3D11_TEXTURE_ADDRESS_WRAP;
+		sampDesc.AddressW = D3D11_TEXTURE_ADDRESS_WRAP;
+		auto rs = ((DirectX11RenderSystem*)m_RenderSystem.get());
+		ComPtr<ID3D11SamplerState> samplerState;
+		ThrowIfFailed(rs->GetDevice()->CreateSamplerState(&sampDesc, samplerState.GetAddressOf())); //Create sampler state
+
 		float i = 5;
 		while (m_Running) {
 			m_Window->OnUpdate();
@@ -77,16 +81,12 @@ namespace RTE {
 			context->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY::D3D10_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 			context->VSSetShader(vs.GetShader(), 0, 0);
 			context->PSSetShader(ps.GetShader(), 0, 0);
-
-			i += 0.05f;
-			context->VSSetConstantBuffers(0, 1, cbuffer.GetAddressOf());
-			DirectX::XMStoreFloat4x4(&rotation.matrix, camera.GetViewMatrix()* camera.GetProjectionMatrix());
-			cbuffer.WirteBuffer(rotation);
-
-			model.AdjustRotation(0, 0.02 , 0);
-			model.Draw(XMLoadFloat4x4(&rotation.matrix));
-			model2.SetPosition(sin(i) + 2, cos(i) + 2, 0);
-			model2.Draw(XMLoadFloat4x4(&rotation.matrix));
+			context->CSSetSamplers(0, 1, samplerState.GetAddressOf());
+			context->PSSetConstantBuffers(0, 1, lightCbuffer->GetAddressOf());
+			//i += 0.05f;
+			//context->VSSetConstantBuffers(0, 1, cbuffer.GetAddressOf());
+			//DirectX::XMStoreFloat4x4(&rotation.matrix, camera.GetViewMatrix()* camera.GetProjectionMatrix());
+			//cbuffer.WirteBuffer(rotation);
 
 			m_ImGuiLayer->Begin();
 			for (Layer* layer : m_LayerStack)

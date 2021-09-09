@@ -33,10 +33,10 @@
     <ClInclude Include="src\Platform\DirectX11\ConstantBuffer.h">
       <Filter>Platform\DirectX11</Filter>
     </ClInclude>
-    <ClInclude Include="src\Platform\DirectX11\DirectX11DeviceResources.h">
+    <ClInclude Include="src\Platform\DirectX11\DirectX11RenderSystem.h">
       <Filter>Platform\DirectX11</Filter>
     </ClInclude>
-    <ClInclude Include="src\Platform\DirectX11\DirectX11RenderSystem.h">
+    <ClInclude Include="src\Platform\DirectX11\GameObject.h">
       <Filter>Platform\DirectX11</Filter>
     </ClInclude>
     <ClInclude Include="src\Platform\DirectX11\Mesh.h">
@@ -46,6 +46,9 @@
       <Filter>Platform\DirectX11</Filter>
     </ClInclude>
     <ClInclude Include="src\Platform\DirectX11\Shaders.h">
+      <Filter>Platform\DirectX11</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Platform\DirectX11\Texture.h">
       <Filter>Platform\DirectX11</Filter>
     </ClInclude>
     <ClInclude Include="src\Platform\DirectX11\Vertex.h">
@@ -122,7 +125,6 @@
       <Filter>RobinTheEngine</Filter>
     </ClInclude>
     <ClInclude Include="src\rtepch.h" />
-    <ClInclude Include="src\Platform\DirectX11\GameObject.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Platform\DirectX11\Buffer.cpp">
@@ -134,10 +136,10 @@
     <ClCompile Include="src\Platform\DirectX11\ConstantBuffer.cpp">
       <Filter>Platform\DirectX11</Filter>
     </ClCompile>
-    <ClCompile Include="src\Platform\DirectX11\DirectX11DeviceResources.cpp">
+    <ClCompile Include="src\Platform\DirectX11\DirectX11RenderSystem.cpp">
       <Filter>Platform\DirectX11</Filter>
     </ClCompile>
-    <ClCompile Include="src\Platform\DirectX11\DirectX11RenderSystem.cpp">
+    <ClCompile Include="src\Platform\DirectX11\GameObject.cpp">
       <Filter>Platform\DirectX11</Filter>
     </ClCompile>
     <ClCompile Include="src\Platform\DirectX11\Mesh.cpp">
@@ -147,6 +149,9 @@
       <Filter>Platform\DirectX11</Filter>
     </ClCompile>
     <ClCompile Include="src\Platform\DirectX11\Shaders.cpp">
+      <Filter>Platform\DirectX11</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Platform\DirectX11\Texture.cpp">
       <Filter>Platform\DirectX11</Filter>
     </ClCompile>
     <ClCompile Include="src\Platform\DirectX12\DirectX12RenderSystem.cpp">
@@ -186,6 +191,5 @@
       <Filter>RobinTheEngine</Filter>
     </ClCompile>
     <ClCompile Include="src\rtepch.cpp" />
-    <ClCompile Include="src\Platform\DirectX11\GameObject.cpp" />
   </ItemGroup>
 </Project>

@@ -13,16 +13,14 @@ bool RTE::Model::Initialize(const std::string& path, ConstantBuffer<CB_VS_MATRIX
 	this->device = rs->GetDevice().Get();
 	this->deviceContext = rs->GetContext().Get();
 	this->cb_vs_vertexshader = &cb_vs_vertexshader;
+	GetDirectoryFromPath(path);
 
-
-	if (!this->LoadModel(path))
+	if (!this->LoadModel(path)) {
+		std::string warn = "Cant load model with path: " + path;
+		RTE_CORE_WARN(warn);
 		return false;
+	}
 
-
-
-	SetPosition(0.0f, 0.0f, 0.0f);
-	SetRotation(0.0f, 0.0f, 0.0f);
-	UpdateWorldMatrix();
 	return true;
 }
 
@@ -31,14 +29,16 @@ void RTE::Model::SetTexture(ID3D11ShaderResourceView * texture)
 	this->texture = texture;
 }
 
-void RTE::Model::Draw(const XMMATRIX & viewProjectionMatrix)
+void RTE::Model::Draw(const XMMATRIX& worldMatrix, const XMMATRIX & viewProjectionMatrix)
 {
 	//Update Constant buffer with WVP Matrix
-	XMStoreFloat4x4(&cb_vs_vertexshader->data.matrix, XMMatrixTranspose(this->worldMatrix * viewProjectionMatrix)); //Calculate World-View-Projection Matrix
+	XMStoreFloat4x4(&cb_vs_vertexshader->data.mvpMatrix, XMMatrixTranspose(worldMatrix * viewProjectionMatrix)); //Calculate World-View-Projection Matrix
+	XMStoreFloat4x4(&cb_vs_vertexshader->data.worldMatrix, XMMatrixTranspose(worldMatrix)); 
+
 	cb_vs_vertexshader->WriteBuffer();
 	this->deviceContext->VSSetConstantBuffers(0, 1, this->cb_vs_vertexshader->GetAddressOf());
 
-	// draw submeshes
+	// draw sub meshes
 	for (int i = 0; i < meshes.size(); i++)
 	{
 		meshes[i].Draw();
@@ -91,6 +91,10 @@ RTE::Mesh RTE::Model::ProcessMesh(aiMesh * mesh, const aiScene * scene)
 		vertex.pos.y = mesh->mVertices[i].y;
 		vertex.pos.z = mesh->mVertices[i].z;
 
+		vertex.normal.x = mesh->mNormals[i].x;
+		vertex.normal.y = mesh->mNormals[i].y;
+		vertex.normal.z = mesh->mNormals[i].z;
+
 		if (mesh->mTextureCoords[0])
 		{
 			vertex.texCoord.x = (float)mesh->mTextureCoords[0][i].x;
@@ -115,176 +119,79 @@ RTE::Mesh RTE::Model::ProcessMesh(aiMesh * mesh, const aiScene * scene)
 			indices.push_back(face.mIndices[j]);
 	}
 
-	return Mesh( vertices, indices);
+	assert(mesh->mMaterialIndex >= 0);
+	std::vector<Texture> textures;
+	aiMaterial* material = scene->mMaterials[mesh->mMaterialIndex];
+	std::vector<Texture> diffuseTextures = LoadMaterialTextures(material, aiTextureType::aiTextureType_DIFFUSE, scene);
+	textures.insert(textures.end(), diffuseTextures.begin(), diffuseTextures.end());
+
+	return Mesh(vertices, indices, textures);
+
 }
 
-void RTE::Model::UpdateWorldMatrix()
+void RTE::Model::GetDirectoryFromPath(const std::string & path)
 {
-	this->worldMatrix = XMMatrixRotationRollPitchYaw(this->rot.x, this->rot.y, this->rot.z) * XMMatrixTranslation(this->pos.x, this->pos.y, this->pos.z);
-	XMMATRIX vecRotationMatrix = XMMatrixRotationRollPitchYaw(0.0f, this->rot.y, 0.0f);
-	this->vec_forward = XMVector3TransformCoord(this->DEFAULT_FORWARD_VECTOR, vecRotationMatrix);
-	this->vec_backward = XMVector3TransformCoord(this->DEFAULT_BACKWARD_VECTOR, vecRotationMatrix);
-	this->vec_left = XMVector3TransformCoord(this->DEFAULT_LEFT_VECTOR, vecRotationMatrix);
-	this->vec_right = XMVector3TransformCoord(this->DEFAULT_RIGHT_VECTOR, vecRotationMatrix);
-}
-
-
-
-const XMVECTOR & RTE::Model::GetPositionVector() const
-{
-	return this->posVector;
-}
-
-const XMFLOAT3 & RTE::Model::GetPositionFloat3() const
-{
-	return this->pos;
-}
-
-const XMVECTOR & RTE::Model::GetRotationVector() const
-{
-	return this->rotVector;
-}
-
-const XMFLOAT3 & RTE::Model::GetRotationFloat3() const
-{
-	return this->rot;
-}
-
-void RTE::Model::SetPosition(const XMVECTOR & pos)
-{
-	XMStoreFloat3(&this->pos, pos);
-	this->posVector = pos;
-	this->UpdateWorldMatrix();
-}
-
-void RTE::Model::SetPosition(const XMFLOAT3 & pos)
-{
-	this->pos = pos;
-	this->posVector = XMLoadFloat3(&this->pos);
-	this->UpdateWorldMatrix();
-}
-
-void RTE::Model::SetPosition(float x, float y, float z)
-{
-	this->pos = XMFLOAT3(x, y, z);
-	this->posVector = XMLoadFloat3(&this->pos);
-	this->UpdateWorldMatrix();
-}
-
-void RTE::Model::AdjustPosition(const XMVECTOR & pos)
-{
-	this->posVector += pos;
-	XMStoreFloat3(&this->pos, this->posVector);
-	this->UpdateWorldMatrix();
-}
-
-void RTE::Model::AdjustPosition(const XMFLOAT3 & pos)
-{
-	this->pos.x += pos.y;
-	this->pos.y += pos.y;
-	this->pos.z += pos.z;
-	this->posVector = XMLoadFloat3(&this->pos);
-	this->UpdateWorldMatrix();
-}
-
-void RTE::Model::AdjustPosition(float x, float y, float z)
-{
-	this->pos.x += x;
-	this->pos.y += y;
-	this->pos.z += z;
-	this->posVector = XMLoadFloat3(&this->pos);
-	this->UpdateWorldMatrix();
-}
-
-void RTE::Model::SetRotation(const XMVECTOR & rot)
-{
-	this->rotVector = rot;
-	XMStoreFloat3(&this->rot, rot);
-	this->UpdateWorldMatrix();
-}
-
-void RTE::Model::SetRotation(const XMFLOAT3 & rot)
-{
-	this->rot = rot;
-	this->rotVector = XMLoadFloat3(&this->rot);
-	this->UpdateWorldMatrix();
-}
-
-void RTE::Model::SetRotation(float x, float y, float z)
-{
-	this->rot = XMFLOAT3(x, y, z);
-	this->rotVector = XMLoadFloat3(&this->rot);
-	this->UpdateWorldMatrix();
-}
-
-void RTE::Model::AdjustRotation(const XMVECTOR & rot)
-{
-	this->rotVector += rot;
-	XMStoreFloat3(&this->rot, this->rotVector);
-	this->UpdateWorldMatrix();
-}
-
-void RTE::Model::AdjustRotation(const XMFLOAT3 & rot)
-{
-	this->rot.x += rot.x;
-	this->rot.y += rot.y;
-	this->rot.z += rot.z;
-	this->rotVector = XMLoadFloat3(&this->rot);
-	this->UpdateWorldMatrix();
-}
-
-void RTE::Model::AdjustRotation(float x, float y, float z)
-{
-	this->rot.x += x;
-	this->rot.y += y;
-	this->rot.z += z;
-	this->rotVector = XMLoadFloat3(&this->rot);
-	this->UpdateWorldMatrix();
-}
-
-void RTE::Model::SetLookAtPos(XMFLOAT3 lookAtPos)
-{
-	if (lookAtPos.x == this->pos.x && lookAtPos.y == this->pos.y && lookAtPos.z == this->pos.z)
+	size_t off1 = path.find_last_of('\\');
+	size_t off2 = path.find_last_of('/');
+	if (off1 == std::string::npos && off2 == std::string::npos) //If no slash or backslash in path?
+	{
+		this->directory = "";
 		return;
-
-	lookAtPos.x = this->pos.x - lookAtPos.x;
-	lookAtPos.y = this->pos.y - lookAtPos.y;
-	lookAtPos.z = this->pos.z - lookAtPos.z;
-
-	float pitch = 0.0f;
-	if (lookAtPos.y != 0.0f)
+	}
+	if (off1 == std::string::npos)
 	{
-		const float distance = sqrt(lookAtPos.x * lookAtPos.x + lookAtPos.z * lookAtPos.z);
-		pitch = atan(lookAtPos.y / distance);
+		this->directory = path.substr(0, off2 - 1);
+		return;
+	}
+	if (off2 == std::string::npos)
+	{
+		this->directory = path.substr(0, off1 - 1);
+		return;
+	}
+	//If both exists, need to use the greater offset
+	this->directory = path.substr(0, std::max(off1, off2) - 1);
+}
+
+
+int RTE::Model::GetTextureIndex(aiString * pStr)
+{
+	assert(pStr->length >= 2);
+	return atoi(&pStr->C_Str()[1]);
+}
+
+
+std::vector<RTE::Texture> RTE::Model::LoadMaterialTextures(aiMaterial* pMaterial, aiTextureType textureType, const aiScene* pScene)
+{
+	std::vector<Texture> materialTextures;
+	unsigned int textureCount = pMaterial->GetTextureCount(textureType);
+
+	if (textureCount == 0) //If there are no textures
+	{
+		switch (textureType)
+		{
+		case aiTextureType_DIFFUSE:
+			materialTextures.push_back(RTE::Texture("Bad path", textureType));
+			return materialTextures;
+		}
+	}
+	else //If there are textures, 
+	{
+		for (UINT i = 0; i < textureCount; i++)
+		{
+			aiString path;
+			pMaterial->GetTexture(textureType, i, &path);
+
+			std::string filename = this->directory + '\\' + path.C_Str();
+			Texture diskTexture(filename, textureType);
+			materialTextures.push_back(diskTexture);
+			break;
+
+		}
 	}
 
-	float yaw = 0.0f;
-	if (lookAtPos.x != 0.0f)
-	{
-		yaw = atan(lookAtPos.x / lookAtPos.z);
-	}
-	if (lookAtPos.z > 0)
-		yaw += XM_PI;
 
-	this->SetRotation(pitch, yaw, 0.0f);
+	assert(materialTextures.size() != 0);
+
+	return materialTextures;
 }
 
-const XMVECTOR & RTE::Model::GetForwardVector()
-{
-	return this->vec_forward;
-}
-
-const XMVECTOR & RTE::Model::GetRightVector()
-{
-	return this->vec_right;
-}
-
-const XMVECTOR & RTE::Model::GetBackwardVector()
-{
-	return this->vec_backward;
-}
-
-const XMVECTOR & RTE::Model::GetLeftVector()
-{
-	return this->vec_left;
-}

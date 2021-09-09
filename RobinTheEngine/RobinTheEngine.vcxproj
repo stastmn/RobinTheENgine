@@ -65,6 +65,7 @@
     <IntDir>..\bin-int\Release-windows-x86_64\RobinTheEngine\</IntDir>
     <TargetName>RobinTheEngine</TargetName>
     <TargetExt>.lib</TargetExt>
+    <LibraryPath>F:\RTE\RobinTheEngine\vendor\bin\DirectXTK\Debug;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Dist|x64'">
     <OutDir>..\bin\Dist-windows-x86_64\RobinTheEngine\</OutDir>
@@ -78,7 +79,7 @@
       <PrecompiledHeaderFile>rtepch.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;RTE_PLATFORM_WINDOWS;RTE_BUILD_DLL;GLFW_INCLUDE_NONE;RTE_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>src;vendor\spdlog\include;vendor\DirectX12-Headers\include\directx;vendor\GLFW\include;vendor\imgui;vendor\DirectXTK12\Inc;vendor\assimp\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>src;vendor\spdlog\include;vendor\stb;vendor\DirectX12-Headers\include\directx;vendor\GLFW\include;vendor\imgui;vendor\DirectXTK\Inc;vendor\assimp\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
       <Optimization>Disabled</Optimization>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
@@ -99,7 +100,7 @@
       <PrecompiledHeaderFile>rtepch.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;RTE_PLATFORM_WINDOWS;RTE_BUILD_DLL;GLFW_INCLUDE_NONE;RTE_RELEASE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>src;vendor\spdlog\include;vendor\DirectX12-Headers\include\directx;vendor\GLFW\include;vendor\imgui;vendor\DirectXTK12\Inc;vendor\assimp\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>src;vendor\spdlog\include;vendor\stb;vendor\DirectX12-Headers\include\directx;vendor\GLFW\include;vendor\imgui;vendor\DirectXTK\Inc;vendor\assimp\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
@@ -114,7 +115,7 @@
       <OptimizeReferences>true</OptimizeReferences>
     </Link>
     <Lib>
-      <AdditionalDependencies>opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>opengl32.lib;DirectXTK.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>..\vendor\bin\DirectXTK\Debug;..\vendor\bin\DirectXTK\Release;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Lib>
   </ItemDefinitionGroup>
@@ -124,7 +125,7 @@
       <PrecompiledHeaderFile>rtepch.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;RTE_PLATFORM_WINDOWS;RTE_BUILD_DLL;GLFW_INCLUDE_NONE;RTE_DIST;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>src;vendor\spdlog\include;vendor\DirectX12-Headers\include\directx;vendor\GLFW\include;vendor\imgui;vendor\DirectXTK12\Inc;vendor\assimp\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>src;vendor\spdlog\include;vendor\stb;vendor\DirectX12-Headers\include\directx;vendor\GLFW\include;vendor\imgui;vendor\DirectXTK\Inc;vendor\assimp\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
@@ -147,12 +148,12 @@
     <ClInclude Include="src\Platform\DirectX11\Buffer.h" />
     <ClInclude Include="src\Platform\DirectX11\Camera.h" />
     <ClInclude Include="src\Platform\DirectX11\ConstantBuffer.h" />
-    <ClInclude Include="src\Platform\DirectX11\DirectX11DeviceResources.h" />
     <ClInclude Include="src\Platform\DirectX11\DirectX11RenderSystem.h" />
     <ClInclude Include="src\Platform\DirectX11\GameObject.h" />
     <ClInclude Include="src\Platform\DirectX11\Mesh.h" />
     <ClInclude Include="src\Platform\DirectX11\Model.h" />
     <ClInclude Include="src\Platform\DirectX11\Shaders.h" />
+    <ClInclude Include="src\Platform\DirectX11\Texture.h" />
     <ClInclude Include="src\Platform\DirectX11\Vertex.h" />
     <ClInclude Include="src\Platform\DirectX12\DirectX12RenderSystem.h" />
     <ClInclude Include="src\Platform\Windows\WindowsInput.h" />
@@ -184,12 +185,12 @@
     <ClCompile Include="src\Platform\DirectX11\Buffer.cpp" />
     <ClCompile Include="src\Platform\DirectX11\Camera.cpp" />
     <ClCompile Include="src\Platform\DirectX11\ConstantBuffer.cpp" />
-    <ClCompile Include="src\Platform\DirectX11\DirectX11DeviceResources.cpp" />
     <ClCompile Include="src\Platform\DirectX11\DirectX11RenderSystem.cpp" />
     <ClCompile Include="src\Platform\DirectX11\GameObject.cpp" />
     <ClCompile Include="src\Platform\DirectX11\Mesh.cpp" />
     <ClCompile Include="src\Platform\DirectX11\Model.cpp" />
     <ClCompile Include="src\Platform\DirectX11\Shaders.cpp" />
+    <ClCompile Include="src\Platform\DirectX11\Texture.cpp" />
     <ClCompile Include="src\Platform\DirectX12\DirectX12RenderSystem.cpp" />
     <ClCompile Include="src\Platform\Windows\WindowsInput.cpp" />
     <ClCompile Include="src\Platform\Windows\WindowsWindow.cpp" />

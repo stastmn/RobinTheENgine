@@ -17,7 +17,7 @@
    IncludeDir["GLFW"] = "RobinTheEngine/vendor/GLFW/include"
    IncludeDir["ImGui"] = "RobinTheEngine/vendor/imgui"
    IncludeDir["DirectXTK12"] = "RobinTheEngine/vendor/DirectXTK12"
-   IncludeDir["DirectXTK"] = "RobinTheEngine/vendor/DirectXTK12"
+   IncludeDir["DirectXTK"] = "RobinTheEngine/vendor/DirectXTK"
    IncludeDir["assimp"] = "RobinTheEngine/vendor/assimp"
 
    group "Dependencies"
@@ -57,10 +57,11 @@
       {
          "%{prj.name}/src",
          "%{prj.name}/vendor/spdlog/include",
+		 "%{prj.name}/vendor/stb",
          "%{prj.name}/vendor/DirectX12-Headers/include/directx",
          "%{IncludeDir.GLFW}",
 		 "%{IncludeDir.ImGui}",
-		 "%{IncludeDir.DirectXTK12}/Inc",
+		 --"%{IncludeDir.DirectXTK12}/Inc",
 		 "%{IncludeDir.DirectXTK}/Inc",
 		 "%{IncludeDir.assimp}/include",
 		 
