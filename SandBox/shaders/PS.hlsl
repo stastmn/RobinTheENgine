@@ -1,5 +1,4 @@
 
-
 cbuffer cByffer : register(b0)
 {
     float3 ambientColor;
@@ -27,9 +26,12 @@ Texture2D text : TEXTURE : register(t0);
 
 float4 main(PS_INPUT input) : SV_Target
 {
+    //texture
     float3 textureColor = text.Sample(samplerState, input.inTexCoord);
+    //ambient
     float3 ambient = ambientColor * ambientStrength;
     
+    //diffuse
     float3 normal = normalize(input.inNormal);
     float3 lightDir = normalize(lightPosition - input.inWorldPos);
     float intensity = max(dot(normal, lightDir), 0.0f);
@@ -37,9 +39,10 @@ float4 main(PS_INPUT input) : SV_Target
     
     float3 viewDir = normalize(viewPositon - input.inWorldPos);
     float3 reflectionDir = reflect(-lightDir, normal);
-    float spec = pow(max(dot(viewDir, reflectionDir), 0.f), 32.f);
-    float3 specular = specularStrength * spec * diffuseColor;
+    float spec = pow(max(dot(viewDir, reflectionDir), 0.f), 8);
+    float3 specular = diffuseColor * spec * specularStrength;
     
-    float3 color = textureColor * (ambient + diffuse + specular);
+    float3 color = textureColor;
+    color *= ambient + diffuse + specular;
     return float4(color, 1);
 }

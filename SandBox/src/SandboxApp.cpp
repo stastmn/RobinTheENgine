@@ -16,7 +16,16 @@ public:
 	float cameraSpeed;
 	//RTE::GameObject spot;
 	RTE::GameObject ogre;
+	RTE::GameObject ogre1;
 	//RTE::GameObject blub;
+	RTE::GameObject ball;
+	RTE::GameObject ball1;
+	RTE::GameObject ball2;
+	RTE::GameObject ball3;
+	RTE::GameObject amogus;
+	RTE::GameObject amogus1;
+	RTE::GameObject amogus2;
+	RTE::DirectX11RenderSystem* rs = static_cast<RTE::DirectX11RenderSystem*>(RTE::Application::Get().GetRenderSystem());
 
 	float ambientStrength = 1;
 	DirectX::XMFLOAT3 ambientColor = DirectX::XMFLOAT3(1, 1, 1);
@@ -26,7 +35,9 @@ public:
 
 	DirectX::XMFLOAT3 lightPos = DirectX::XMFLOAT3(0, 0, 0);
 
-	float specularStrength = 0;
+	float specularStrength = 1;
+
+	float simulationSpeed = 1;
 	ExampleLayer()
 		: Layer("Example")
 	{
@@ -39,8 +50,8 @@ public:
 		camera->SetPosition(XMFLOAT3(0, 0, -10));
 		camera->SetProjectionProperties(90, static_cast<float>(RTE::Application::Get().GetWindow().GetWidth()) / static_cast<float>(RTE::Application::Get().GetWindow().GetWidth()), 0.05, 1000);
 		window = &RTE::Application::Get().GetWindow();
-		cameraSensitivity = 40;
-		cameraSpeed = 1500;
+		cameraSensitivity = 5000;
+		cameraSpeed = 15000;
 
 		//spot.Initialize("objects\\spot\\spot.obj", *RTE::Application::Get().cbuffer);
 		//spot.SetTexturePath(0, 0, "objects\\spot\\spot_texture.png");
@@ -51,13 +62,57 @@ public:
 		ogre.Initialize("objects\\ogre\\bs_rest.obj", *RTE::Application::Get().cbuffer);
 		ogre.SetTexturePath(0, 0, "objects\\ogre\\diffuse.png");
 
+		ogre1.Initialize("objects\\ogre\\bs_rest.obj", *RTE::Application::Get().cbuffer);
+		ogre1.SetTexturePath(0, 0, "objects\\ogre\\diffuse.png");
+		
+
 		/*	blub.Initialize("objects\\blub\\blub_triangulated.obj", *RTE::Application::Get().cbuffer);
 			blub.SetTexturePath(0, 0, "objects\\blub\\blub_texture.png");
 			blub.AdjustPosition(5, 0, 0);*/
 
+			ball.Initialize("objects\\PokemonBall.obj", *RTE::Application::Get().cbuffer);
+			ball.SetTexturePath(0, 0, "objects\\green.png");
+			ball.SetTexturePath(1, 0, "objects\\green.png");
+			ball.SetTexturePath(2, 0, "objects\\green.png");
+			ball.SetScale(0.01f, 0.01f, 0.01f);
+			ball.AdjustPosition(2, 0, 0);
 
+			ball1.Initialize("objects\\PokemonBall.obj", *RTE::Application::Get().cbuffer);
+			ball1.SetTexturePath(0, 0, "objects\\spot\\spot_texture.png");
+			ball1.SetTexturePath(1, 0, "objects\\spot\\spot_texture.png");
+			ball1.SetTexturePath(2, 0, "objects\\spot\\spot_texture.png");
+			ball1.SetScale(0.01f, 0.01f, 0.01f);
+
+			ball2.Initialize("objects\\PokemonBall.obj", *RTE::Application::Get().cbuffer);
+			ball2.SetTexturePath(0, 0, "objects\\blub\\blub_texture.png");
+			ball2.SetTexturePath(1, 0, "objects\\blub\\blub_texture.png");
+			ball2.SetTexturePath(2, 0, "objects\\blub\\blub_texture.png");
+			ball2.SetScale(0.01f, 0.01f, 0.01f);
+
+			ball3.Initialize("objects\\PokemonBall.obj", *RTE::Application::Get().cbuffer);
+			ball3.SetTexturePath(0, 0, "objects\\black.png");
+			ball3.SetTexturePath(1, 0, "objects\\black.png");
+			ball3.SetTexturePath(2, 0, "objects\\black.png");
+			ball3.SetScale(0.01f, 0.01f, 0.01f);
+			ball3.AdjustPosition(-2, 0, 0);
+
+
+			amogus.Initialize("objects\\amogus\\amogus.obj", *RTE::Application::Get().cbuffer);
+			amogus.SetTexturePath(0, 0, "objects\\amogus\\amogusDiffuse.jpg");
+			amogus.SetScale(0.01, 0.01, 0.01);
+			amogus.AdjustPosition(-2, 0, 0);
+
+			amogus1.Initialize("objects\\amogus\\amogus.obj", *RTE::Application::Get().cbuffer);
+			amogus1.SetTexturePath(0, 0, "objects\\amogus\\amogusNormal.jpg");
+			amogus1.SetScale(0.005, 0.005, 0.005);
+			amogus1.AdjustPosition(0, 1, 0);
+
+			amogus2.Initialize("objects\\amogus\\amogus.obj", *RTE::Application::Get().cbuffer);
+			amogus2.SetTexturePath(0, 0, "objects\\amogus\\amogusDiffuse.jpg");
+			amogus2.SetScale(0.01, 0.01, 0.01);
 	}
 
+	float angle = 0;
 	void OnUpdate() override
 	{
 		timer.Reset();
@@ -67,10 +122,35 @@ public:
 		UpdateCamera();
 		UpdateLight();
 
-		//ogre.SetLookAtPos(XMFLOAT3(camera->GetPositionFloat3().x * -1, camera->GetPositionFloat3().y * -1, camera->GetPositionFloat3().z *-1));
+		angle += timer.DeltaTime() * 200 * simulationSpeed;
+		ogre1.SetPosition(5 *  cos( angle),
+						5 * sin( angle) , 0);
+		ogre1.SetLookAtPos(XMFLOAT3(0, 0, 0));
+		ogre1.AdjustRotation(0, 2 * timer.DeltaTime(), 0);
+
+		ball1.SetPosition(-5 *   cos(angle),
+						0, 5 *  sin( angle));
+		this->lightPos = ball1.GetPositionFloat3();
+
+		ball2.SetPosition(0, -5 *   cos( angle),
+						 -5 *  sin( angle));
+
+
+		amogus.SetPosition(6 *   sin( angle),
+						6 *  cos( angle) , 0);
+		amogus.SetLookAtPos(XMFLOAT3(0, 0, 0));
+
+		amogus2.SetPosition(5.5 *  sin( angle),0,
+						5.5 *  cos( angle) );  
+		amogus2.SetLookAtPos(XMFLOAT3(0, 0, 0));
+
+		amogus1.SetRotation(XMFLOAT3(0,angle/3,0));
+		ball.SetRotation(XMFLOAT3(angle/3, angle/5, 0));
+		
+		ogre.SetLookAtPos(XMFLOAT3(camera->GetPositionFloat3().x * -1, camera->GetPositionFloat3().y * -1, camera->GetPositionFloat3().z *-1));
 		//ogre.SetLookAtPos(camera->GetPositionFloat3());
-		if (RTE::Input::IsKeyPressed(RTE_KEY_TAB))
-			RTE_TRACE("Tab key is pressed (poll)!");
+		//if (RTE::Input::IsKeyPressed(RTE_KEY_TAB))
+		//	RTE_TRACE("Tab key is pressed (poll)!");
 	}
 
 	virtual void OnImGuiRender() override
@@ -79,8 +159,8 @@ public:
 		ImGui::Begin("Test");
 		if (ImGui::CollapsingHeader("Camera settings")) {
 
-			ImGui::SliderFloat("Camera sensitivity", &cameraSensitivity, 0, 5000);
-			ImGui::SliderFloat("Camera speed", &cameraSpeed, 1500, 15000);
+			ImGui::SliderFloat("Camera sensitivity", &cameraSensitivity, 0, 10000);
+			ImGui::SliderFloat("Camera speed", &cameraSpeed, 1500, 30000);
 		}
 		if (ImGui::CollapsingHeader("Light settings"))
 		{
@@ -104,10 +184,6 @@ public:
 				ImGui::Separator();
 				ImGui::Text("Set light position on camera");
 				ImGui::SameLine();
-				if (ImGui::Button("light")) {
-					this->lightPos = camera->GetPositionFloat3();
-				}
-				ImGui::SameLine();
 				ImGui::Checkbox("", &attachLightToCamera);
 
 			}
@@ -117,6 +193,9 @@ public:
 		if (attachLightToCamera) {
 			this->lightPos = camera->GetPositionFloat3();
 		}
+		ImGui::DragFloat("Simulation speed", &this->simulationSpeed, 0.2f, 0, 100);
+		ImGui::DragFloat3("Clear color", &rs->GetClearColor().x, 0.001, 0, 1);
+		ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
 		//ImGui::ShowDemoWindow();
 		ImGui::End();
 	}
@@ -137,6 +216,14 @@ public:
 		auto vp = camera->GetViewMatrix()* camera->GetProjectionMatrix();
 		//spot.Draw(vp);
 		ogre.Draw(vp);
+		ogre1.Draw(vp);
+		ball.Draw(vp);
+		ball1.Draw(vp);
+		ball2.Draw(vp);
+		ball3.Draw(vp);
+		amogus.Draw(vp);
+		amogus1.Draw(vp);
+		amogus2.Draw(vp);
 		//blub.Draw(vp);
 	}
 

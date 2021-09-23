@@ -78,6 +78,7 @@ namespace RTE {
 		float diffuseStrenght;
 
 		DirectX::XMFLOAT3 lightPosition;
+		float padding;
 
 		DirectX::XMFLOAT3 viewPosition;
 		float specularStrength;

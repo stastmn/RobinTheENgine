@@ -5,7 +5,7 @@
 #include "dxgi1_2.h"
 
 
-RTE::DirectX11RenderSystem::DirectX11RenderSystem(HWND hwnd) :m_hMainWnd(hwnd)
+RTE::DirectX11RenderSystem::DirectX11RenderSystem(HWND hwnd) :m_hMainWnd(hwnd), clearColor(1,0,1,1)
 {
 }
 
@@ -270,7 +270,7 @@ void RTE::DirectX11RenderSystem::OnRenderBegin()
 {
 
 	//	// Clear the back buffer and depth buffer.
-	m_DeviceContext->ClearRenderTargetView(m_RenderTargetView.Get(), DirectX::Colors::Magenta);
+	m_DeviceContext->ClearRenderTargetView(m_RenderTargetView.Get(), &clearColor.x);
 	m_DeviceContext->ClearDepthStencilView(m_DepthStencilView.Get(), D3D11_CLEAR_DEPTH, 1.f, 0);
 
 	m_DeviceContext->OMSetDepthStencilState(m_DepthStencilState.Get(), 0);

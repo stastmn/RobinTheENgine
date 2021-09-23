@@ -7,6 +7,8 @@ bool RTE::GameObject::Initialize(const std::string & path, ConstantBuffer<CB_VS_
 	if (!model.Initialize(path, cb_vs_vertexshader))
 		return false;
 
+	XMFLOAT3 scale = XMFLOAT3(1, 1, 1);
+	this->scaleVec = XMLoadFloat3(&scale);
 	this->SetPosition(0.0f, 0.0f, 0.0f);
 	this->SetRotation(0.0f, 0.0f, 0.0f);
 	this->UpdateWorldMatrix();
@@ -20,7 +22,8 @@ void RTE::GameObject::Draw(const XMMATRIX & viewProjectionMatrix)
 
 void RTE::GameObject::UpdateWorldMatrix()
 {
-	this->worldMatrix = XMMatrixRotationRollPitchYaw(this->rot.x, this->rot.y, this->rot.z) * XMMatrixTranslation(this->pos.x, this->pos.y, this->pos.z);
+	this->worldMatrix = XMMatrixScalingFromVector(this->scaleVec);
+	this->worldMatrix *= XMMatrixRotationRollPitchYaw(this->rot.x, this->rot.y, this->rot.z) * XMMatrixTranslation(this->pos.x, this->pos.y, this->pos.z);
 	XMMATRIX vecRotationMatrix = XMMatrixRotationRollPitchYaw(0.0f, this->rot.y, 0.0f);
 	this->vec_forward = XMVector3TransformCoord(this->DEFAULT_FORWARD_VECTOR, vecRotationMatrix);
 	this->vec_backward = XMVector3TransformCoord(this->DEFAULT_BACKWARD_VECTOR, vecRotationMatrix);
@@ -99,6 +102,14 @@ void RTE::GameObject::SetRotation(const XMVECTOR & rot)
 	this->rotVec = rot;
 	XMStoreFloat3(&this->rot, rot);
 	this->UpdateWorldMatrix();
+}
+
+void RTE::GameObject::SetScale(float x, float y, float z)
+{
+	XMFLOAT3 vec = XMFLOAT3(x, y, z);
+	this->scaleVec = XMLoadFloat3(&vec);
+	UpdateWorldMatrix();
+
 }
 
 void RTE::GameObject::SetRotation(const XMFLOAT3 & rot)

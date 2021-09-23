@@ -25,6 +25,7 @@ namespace RTE {
 		void SetRotation(const XMVECTOR & rot);
 		void SetRotation(const XMFLOAT3 & rot);
 		void SetRotation(float x, float y, float z);
+		void SetScale(float x, float y, float z);
 		void AdjustRotation(const XMVECTOR & rot);
 		void AdjustRotation(const XMFLOAT3 & rot);
 		void AdjustRotation(float x, float y, float z);
@@ -40,6 +41,7 @@ namespace RTE {
 		void UpdateWorldMatrix();
 		XMMATRIX worldMatrix = XMMatrixIdentity();
 
+		XMVECTOR scaleVec;
 		XMVECTOR posVec;
 		XMVECTOR rotVec;
 		XMFLOAT3 pos;

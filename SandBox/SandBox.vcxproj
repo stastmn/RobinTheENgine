@@ -68,7 +68,7 @@
     <IntDir>..\bin-int\Release-windows-x86_64\Sandbox\</IntDir>
     <TargetName>Sandbox</TargetName>
     <TargetExt>.exe</TargetExt>
-    <LibraryPath>F:\RTE\RobinTheEngine\vendor\bin\DirectXTK\Debug;$(LibraryPath)</LibraryPath>
+    <LibraryPath>F:\RTE\RobinTheEngine\vendor\bin\DirectXTK\Release;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Dist|x64'">
     <LinkIncremental>false</LinkIncremental>

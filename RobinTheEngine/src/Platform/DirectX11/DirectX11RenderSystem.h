@@ -33,6 +33,7 @@ namespace RTE {
 		void OnRenderEnd() override;
 		void LogAdapters();
 		/*auto  GetCommandList() const noexcept { return m_CommandList.Get(); }*/
+		DirectX::XMFLOAT4& GetClearColor() { return clearColor; }
 
 
 		Microsoft::WRL::ComPtr<ID3D11Device> GetDevice() { return m_d3dDevice; }
@@ -110,6 +111,7 @@ namespace RTE {
 		D3D11_RECT m_ScissorRect;
 
 		std::vector<IDXGIAdapter*> adapterList;
+		DirectX::XMFLOAT4 clearColor;
 
 	};
 }
