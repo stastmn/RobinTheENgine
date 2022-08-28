@@ -13,6 +13,9 @@ namespace RTE {
 		ImGuiLayer();
 		~ImGuiLayer();
 
+		void OnAttach();
+		void OnDetach();
+
 		virtual void OnImGuiRender() override;
 		void Begin();
 		void End();
